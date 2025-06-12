@@ -1,103 +1,54 @@
-import Image from "next/image";
-
-export default function Home() {
+import Change from '@/components/change';
+export default async function Home() {
+  const array = [
+    {
+      color: '#8e191c',
+      patternColor: '#c21f28',
+      main: '/ketchup.png',
+      side1: '/tomato.png',
+      side2: '/puff.png',
+    },
+    {
+      color: '#cd6628',
+      patternColor: '#eda554',
+      main: '/77.png',
+      side1: '/tomato.png',
+      side2: '/puff.png',
+    },
+  ];
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main
+      id="main"
+      className="h-full w-full flex justify-center items-center flex-col max-w-8xl relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[var(--colorArrow)] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover "
+      // style={{ "&::before": { mask: "url(/pattern.svg) center / cover" } }}
+      // mask: url(/pattern.svg) center center / cover;
+    >
+      <section
+        className="w-full flex justify-center items-center h-[100vh]  section"
+        data-bgcolor="#8e191c"
+      >
+        <div
+          className="grid w-[500px] h-1/2 justify-center items-center relative  before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%]"
+          style={{
+            gridTemplateAreas:
+              "'a b .' '. b c' 'i b v' '. b .' 'p b g' '. b .'",
+          }}
+        >
+          <Change array={array} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+      <section className="w-full h-[100vh]  section" data-bgcolor="#cd6628">
+        second
+      </section>
+      <section className="w-full h-[100vh] section" data-bgcolor="#016101">
+        third
+      </section>
+      <section className="w-full h-[100vh] section" data-bgcolor="#016101">
+        third
+      </section>
+      <section className="w-full h-[100vh] section" data-bgcolor="#016101">
+        third
+      </section>
+    </main>
   );
 }
