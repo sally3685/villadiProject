@@ -1,0 +1,469 @@
+{
+  "unAuthorized": { "title": "You do not have access permission" },
+  "SignIn": {
+    "title": "Sign In",
+    "stop": "You are already signed in",
+    "question": "Already have an account?"
+  },
+  "SignUp": {
+    "title": "Create Account",
+    "stop": "You have already created an account",
+    "validationTips": {
+      "name": {
+        "title": "Name Selection Tips",
+        "rules": [
+          "Between 2 to 24 characters",
+          "Always starts with a letter",
+          "Can contain letters, numbers, hyphens (-), and underscores (_)"
+        ]
+      },
+      "email": {
+        "title": "Email Tips",
+        "rules": [
+          "Must contain an @ symbol",
+          "Must contain characters before the @ symbol"
+        ]
+      },
+      "password": {
+        "title": "Password Tips",
+        "rules": [
+          "Between 8 to 24 characters",
+          "Contains at least one letter",
+          "Contains at least one number",
+          "Contains at least one special symbol (!@#$%^&*)"
+        ]
+      }
+    },
+    "question": "Don't have an account?"
+  },
+  "authForm": {
+    "validateFields": "All fields must be validated to proceed",
+    "name": "Username",
+    "namePlaceHolder": "Username",
+    "email": "Email",
+    "emailPlaceHolder": "Email",
+    "NEmail": "Unverified Email",
+    "password": "Password",
+    "passwordPlaceHolder": "Password",
+    "Epassword": "Password must:",
+    "NPassword": "Unverified Password"
+  },
+  "Logout": {
+    "title": "Sign Out"
+  },
+  "nav": {
+    "tab1": "Categories",
+    "tab2": "About us",
+    "tab3": "Do us a flavor",
+    "tab4": "Farm of smiles",
+    "tab5": "Where to buy",
+    "tab6": "Control",
+    "tab7": "Products"
+  },
+  "lang": {
+    "first": "English",
+    "second": "العربية"
+  },
+  "sideLinks": {
+    "page1": "Category",
+    "page2": "Product",
+    "page3": "Recipy",
+    "page4": "Map",
+    "page5": "Admin",
+    "page6": "Flavor",
+    "page7": "Video"
+  },
+  "addCategoryForm": {
+    "title": "ِAdd category",
+    "admin": "Hello Admin ",
+    "category": "choose the category",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "name": "Category name",
+    "oppName": "اسم الصنف",
+    "namePlaceHolder": "puffs",
+    "code": "Category code",
+    "oppCode": "كود الصنف",
+    "codePlaceHolder": "425-A",
+    "detailes": "Detailes",
+    "oppDetailes": "التفاصيل",
+    "detailesPlaceHolder": "Add some detailes for this new category",
+    "img": "Category image",
+    "oppImg": "صورة الصنف",
+    "addimg": "Click to upload image",
+    "imgselected": "Image selected",
+    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "Category added successfully ",
+    "validationError": "error !!",
+    "update": "Update category",
+    "steps": "Steps ",
+    "categoryRequired": "you should select the category",
+    "previous": "previous step",
+    "next": "next step",
+    "deleteAll": "delete all categories",
+    "deleteLabel": "Delete category",
+    "deleteWarning": "Are you sure you want to delete ? All related products and videos related to the products will be deleted with it ."
+  },
+  "addFlavorForm": {
+    "title": "Add Flavor",
+    "admin": "Hello Admin ",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "name": "Flavor name",
+    "oppName": "اسم النكهة",
+    "namePlaceHolder": "chedder",
+    "img": "Primary flavor image",
+    "oppImg": "صورة النكهة الأساسية",
+    "addimg": "Click to upload primary image",
+    "img2": "Secondary flavor image",
+    "oppImg2": "صورة النكهة الثانوية ",
+    "addimg2": "Click to upload secondary image",
+    "imgselected": "Image selected",
+    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "Flavor added successfully ",
+    "doneUpdate": "Flavor updated successfully",
+    "validationError": "error !!",
+    "update": "Update flavor",
+    "flavor": "choose flavor",
+    "deleteAll": "delete all flavors",
+    "deleteLabel": "Delete flavor",
+    "deleteWarning": "Are you sure you want to delete ? All related products ,videos related to products, recipes and the votes on them will be deleted with it ."
+  },
+  "addProductForm": {
+    "title": "Add Product",
+    "admin": "Hello Admin ",
+    "product": "choose product",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "category": "Choose product's category",
+    "oppCategory": "اختر الصنف الذي يتبع له المنتج",
+    "flavor": "Choose product's flavor",
+    "oppFlavor": "اختر نكهة المنتج",
+    "name": "Product name",
+    "oppName": "اسم المنتج",
+    "namePlaceHolder": "puff",
+    "img": "Product image",
+    "oppImg": "صورة المنتج ",
+    "addimg": "Click to upload image",
+    "code": "Product code",
+    "oppCode": "كود المنتج",
+    "codePlaceHolder": "425-A",
+    "detailes": "Detailes",
+    "oppDetailes": "التفاصيل",
+    "oppBackgroundColor": "لون الخلفية للمنتج",
+    "backgroundColor": "Product's background color",
+    "oppPatternColor": "لون نمط المنتج",
+    "patternColor": "Product's pattern color",
+    "detailesPlaceHolder": "Add some detailes for this new product",
+    "imgselected": "Image selected",
+    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "Product added successfully ",
+    "previous": "previous step",
+    "next": "next step",
+    "categoryRequired": "you select the category",
+    "flavorRequired": "you select the flavor",
+    "validationError": "error !!",
+    "steps": "Steps ",
+    "productRequired": "you should select the product",
+    "update": "Update Product",
+    "deleteAll": "delete all products",
+    "deleteLabel": "Delete product",
+    "deleteWarning": "Are you sure you want to delete ? All related videos will be deleted with it ."
+  },
+  "addRecipyForm": {
+    "title": "Add Recipy",
+    "admin": "Hello Admin ",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "oppFlavor": "اختر نكهة المنتج",
+    "flavor": "Choose recipy's flavor",
+    "oppName": "اسم الوصفة",
+    "name": "Recipy name",
+    "namePlaceHolder": "summer recipy",
+    "oppDetails": "التفاصيل",
+    "details": "Detailes",
+    "detailsPlaceHolder": "Add some detailes for this new recipy",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "recipy added successfully ",
+    "validationError": "error !!",
+    "steps": "Steps ",
+    "previous": "previous step",
+    "next": "next step",
+    "recipe": "choose recipe",
+    "recipeRequired": "you should choose the recipe",
+    "deleteAll": "delete all recipes",
+    "deleteLabel": "Delete recipe",
+    "deleteWarning": "Are you sure you want to delete ? All votes on the recipe will be deleted with it ."
+  },
+  "addAdminForm": {
+    "title": "Grant Admin Role",
+    "admin": "Hello Admin ",
+    "chooseAdmin": "Choose a user",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "permission granted successfully ",
+    "generalWarn": "Choose a user to complete",
+    "deleteLabel": "Remove the admin permission",
+    "deleteWarning": "Are you sure you want to remove this users from admins ?"
+  },
+  "addMapForm": {
+    "title": "Add Location",
+    "admin": "Hello Admin ",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "name": "Country name",
+    "oppName": "اسم البلد",
+    "namePlaceHolder": "Syria,Aleppo",
+    "img": "Country image",
+    "oppImg": "صورة البلد ",
+    "addimg": "Click to upload image",
+    "detailes": "Detailes",
+    "oppDetailes": "التفاصيل",
+    "detailesPlaceHolder": "Add some detailes for this new Location",
+    "imgselected": "Image selected",
+    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "Map added successfully ",
+    "previous": "previous step",
+    "next": "next step",
+    "categoryRequired": "you should select the category",
+    "flavorRequired": "you should select the flavor",
+    "validationError": "error !!",
+    "steps": "Steps ",
+    "imageUploadSuccess": "Image uploaded successfully you can continue ",
+    "upload": "upload",
+    "update": "update Map",
+    "map": "choose a map",
+    "mapRequired": "you should choose a map",
+    "changeImage": "Mark the check box if you want to change the image",
+    "deleteAll": "delete all maps",
+    "deleteLabel": "Delete map",
+    "deleteWarning": "Are you sure you want to delete ?"
+  },
+  "addVideoForm": {
+    "title": "Add Video",
+    "admin": "Hello Admin ",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية",
+    "name": "Video title",
+    "oppName": "عنوان الفيديو",
+    "namePlaceHolder": "snack it , love it ,want it",
+    "embededLink": "Video embeded Link",
+    "oppEmbededLink": "رابط الفيديو المضمن ",
+    "embededLinkPlaceHolder": "https://www.youtube.com/watch?v",
+    "img": "cover video image",
+    "oppImg": "صورة غلاف الفيديو ",
+    "addimg": "Click to upload image",
+    "imgselected": "Image selected",
+    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
+    "submit": "Submit",
+    "waitSubmit": "please wait ...",
+    "doneSubmit": "Product added successfully ",
+    "previous": "previous step",
+    "next": "next step",
+    "productRequired": "you should select the product",
+    "videoRequired": "you should select the video",
+
+    "oppProduct": "اختر المنتج الموافق للفيديو ",
+    "product": "Choose video's product",
+    "validationError": "error !!",
+    "steps": "Steps ",
+    "video": "choose video",
+    "update": "Update video",
+    "deleteAll": "delete all videos",
+    "deleteLabel": "Delete video",
+    "deleteWarning": "Are you sure you want to delete ?"
+  },
+  "Bar": {
+    "one": "Best sellers",
+    "two": "snack it ,love it , want it",
+    "three": "More than 11 flavors"
+  },
+  "videoWrapper": {
+    "name": "Videos",
+    "noVideos": "No more videos Added",
+    "more": "All videos",
+    "details": "Detailes"
+  },
+  "catigoriesWrapper": {
+    "noCats": "No Categories yet !!",
+    "all": "All Products",
+    "have": "What we have",
+    "view": "View All",
+    "Cats": "All Categories "
+  },
+  "recipesWrapper": {
+    "noRecs": "No Recipes yet !!",
+    "all": "Trending Recipes",
+    "view": "View All",
+    "Recs": "All Recipes "
+  },
+  "FAQ": {
+    "title": "FAQ",
+    "array": [
+      {
+        "id": 1,
+        "question": "Are your snacks gluten-free?",
+        "answer": "Some of our products are gluten-free! Check the packaging for the \"Gluten-Free\" label or visit our Products Page for details."
+      },
+      {
+        "id": 2,
+        "question": "Where can I buy your snacks?",
+        "answer": "Our snacks are available in supermarkets, convenience stores, and online retailers. Use our Store Locator to find the nearest seller."
+      },
+      {
+        "id": 3,
+        "question": "Do you use artificial flavors or preservatives?",
+        "answer": "No! We pride ourselves on using natural ingredients and avoid artificial additives. Our snacks are made for real flavor lovers."
+      },
+      {
+        "id": 4,
+        "question": "Are your products suitable for vegans?",
+        "answer": "Many of our snacks are vegan-friendly. Look for the \"Vegan\" badge on the packaging or check the ingredients list."
+      },
+      {
+        "id": 5,
+        "question": "How should I store your snacks for maximum freshness?",
+        "answer": "Keep them in a cool, dry place away from direct sunlight. Once opened, reseal the bag tightly or transfer to an airtight container."
+      },
+      {
+        "id": 6,
+        "question": "Do you offer bulk/wholesale orders?",
+        "answer": "Yes! Contact our sales team at sales@yourcompany.com for bulk pricing and distribution options."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "2023-11-15",
+    "sections": [
+      {
+        "id": "introduction",
+        "title": "Introduction",
+        "content": "Welcome to [Company Name]. These Terms and Conditions govern your use of our website, products, and services. By accessing or using our services, you agree to be bound by these terms."
+      },
+      {
+        "id": "definitions",
+        "title": "Definitions",
+        "content": "Key terms used in this agreement:\n- 'Company', 'We', 'Us' refers to [Company Name].\n- 'Products' means our snack foods and related goods.\n- 'Website' means [yourwebsite.com]."
+      },
+      {
+        "id": "purchases",
+        "title": "Purchases and Orders",
+        "content": "All orders are subject to product availability. We reserve the right to limit quantities and refuse service. Prices are subject to change without notice."
+      },
+      {
+        "id": "returns",
+        "title": "Returns and Refunds",
+        "content": "Due to the perishable nature of our products, we generally do not accept returns. Refunds may be issued at our discretion for damaged or defective items."
+      },
+      {
+        "id": "liability",
+        "title": "Limitation of Liability",
+        "content": "[Company Name] shall not be liable for any indirect, incidental, or consequential damages arising from product use. Maximum liability is limited to the purchase price of the product."
+      },
+      {
+        "id": "allergens",
+        "title": "Allergen Information",
+        "content": "Our products may contain allergens including wheat, milk, soy, and nuts. While we follow strict procedures, we cannot guarantee allergen-free production environments."
+      },
+      {
+        "id": "ip",
+        "title": "Intellectual Property",
+        "content": "All content on our website including logos, packaging designs, and product names are our exclusive property. Unauthorized use is prohibited."
+      },
+      {
+        "id": "governing-law",
+        "title": "Governing Law",
+        "content": "These terms shall be governed by the laws of [Country/State]. Any disputes shall be resolved in the courts of [Jurisdiction]."
+      },
+      {
+        "id": "changes",
+        "title": "Changes to Terms",
+        "content": "We may update these terms periodically. Continued use after changes constitutes acceptance of the modified terms."
+      },
+      {
+        "id": "contact",
+        "title": "Contact Us",
+        "content": "For questions about these terms, contact us at:\nEmail: legal@yourcompany.com\nAddress: [Your Company Address]"
+      }
+    ],
+    "acceptanceText": "By using our services, you acknowledge that you have read and agree to these Terms and Conditions."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "2023-11-15",
+    "sections": [
+      {
+        "id": "introduction",
+        "title": "Introduction",
+        "content": "At [Company Name], we are committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our website or purchase our products."
+      },
+      {
+        "id": "data-collection",
+        "title": "Information We Collect",
+        "content": "We may collect:\n- Contact details (name, email, phone)\n- Delivery addresses\n- Payment information\n- Purchase history\n- Website usage data (cookies, IP address)"
+      },
+      {
+        "id": "usage",
+        "title": "How We Use Your Information",
+        "content": "Your data helps us to:\n- Process orders and deliveries\n- Improve our products\n- Send marketing communications (with consent)\n- Comply with legal requirements"
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies and Tracking",
+        "content": "We use cookies to:\n- Remember cart items\n- Analyze website traffic\n- Personalize your experience\nYou can manage cookies in your browser settings."
+      },
+      {
+        "id": "sharing",
+        "title": "Data Sharing",
+        "content": "We only share data with:\n- Payment processors\n- Delivery partners\n- Legal authorities when required\nWe never sell your personal information."
+      },
+      {
+        "id": "security",
+        "title": "Data Security",
+        "content": "We implement:\n- SSL encryption\n- Secure payment gateways\n- Restricted staff access\n- Regular security audits"
+      },
+      {
+        "id": "retention",
+        "title": "Data Retention",
+        "content": "We retain your information:\n- For active customers: 5 years\n- For order records: 7 years (tax compliance)\n- For marketing lists: Until you unsubscribe"
+      },
+      {
+        "id": "rights",
+        "title": "Your Rights",
+        "content": "You have the right to:\n- Access your data\n- Request corrections\n- Delete your account\n- Opt-out of marketing\n- Withdraw consent"
+      },
+      {
+        "id": "children",
+        "title": "Children's Privacy",
+        "content": "We do not knowingly collect data from children under 13. Parents may contact us to review or delete any accidental collections."
+      },
+      {
+        "id": "changes",
+        "title": "Policy Updates",
+        "content": "We may update this policy periodically. Significant changes will be notified via email or website notices."
+      },
+      {
+        "id": "contact",
+        "title": "Contact Us",
+        "content": "For privacy concerns:\nEmail: privacy@yourcompany.com\nAddress: [Your Company Address]\nPhone: [Customer Service Number]"
+      }
+    ],
+    "acceptanceText": "By using our services, you acknowledge our privacy practices as described in this policy."
+  }
+}

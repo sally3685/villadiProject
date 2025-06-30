@@ -8,21 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "crypto": "^1.0.1",
-    "gsap": "^3.13.0",
-    "jose": "^6.0.11",
-    "lucide-react": "^0.513.0",
-    "next": "15.3.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "zod": "^3.25.56"
-  },
   "devDependencies": {
     "@prisma/client": "^6.9.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "i": "^0.3.7",
@@ -30,5 +20,27 @@
     "prisma": "^6.9.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "resolutions": {
+    "@babel/plugin-transform-typescript": "7.19.3"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "^0.6.1",
+    "@gsap/react": "^2.1.2",
+    "@types/negotiator": "^0.6.4",
+    "bcryptjs": "^3.0.2",
+    "color": "^5.0.0",
+    "crypto": "^1.0.1",
+    "gsap": "^3.13.0",
+    "jose": "^6.0.11",
+    "lucide-react": "^0.513.0",
+    "negotiator": "^1.0.0",
+    "next": "15.3.3",
+    "nodemailer": "^7.0.3",
+    "react": "^19.0.0",
+    "react-colorful": "^5.6.1",
+    "react-dom": "^19.0.0",
+    "react-toastify": "^11.0.5",
+    "zod": "^3.25.56"
   }
 }

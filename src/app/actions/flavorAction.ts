@@ -1,0 +1,204 @@
+"use server";
+
+import {
+  AddFlavor,
+  deleteFlavor,
+  updateFlavor,
+} from "../data-access-layer/flavorDAL";
+import { writeFile } from "fs/promises";
+import {
+  FlavorFormSchema,
+  FormFlavorState,
+  FormFlavorSuggestState,
+} from "../lib/definitions";
+import { redirect } from "next/dist/server/api-utils";
+import { getSession } from "../lib/session";
+
+export async function AddFlavorAction(
+  state: FormFlavorState,
+  formData: FormData
+): Promise<FormFlavorState> {
+  try {
+    // Validate required fields
+    const requiredFields = ["name", "img"];
+    for (const field of requiredFields) {
+      if (!formData.get(field)) {
+        return {
+          errors: {
+            [field]: ["This field is required"],
+          },
+        };
+      }
+    }
+
+    // Parse and validate form data
+    const result = FlavorFormSchema.safeParse({
+      name: formData.get("name"),
+      img: formData.get("img"),
+    });
+
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
+
+    const { name, img } = result.data;
+    const language = formData.get("language")?.toString() || "en";
+
+    // Handle image uploads
+    let imageName = "";
+    if (img instanceof File && img.size > 0) {
+      const bytes = await img.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      imageName = img.name.replace(/\s+/g, "");
+      await writeFile(`./public/${imageName}`, buffer);
+    }
+
+    // Add flavor to database
+    const { status, message } = await AddFlavor(name, imageName, language);
+
+    if (status === 409) {
+      return { errors: { name: [message] } };
+    }
+
+    if (status !== 201) {
+      return { general: message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error in AddFlavorAction:", error);
+    return {
+      general: "An unexpected error occurred. Please try again later.",
+    };
+  }
+}
+export async function UpdateFlavorAction(
+  state: FormFlavorState,
+  formData: FormData
+): Promise<FormFlavorState> {
+  try {
+    // Validate required fields
+    const requiredFields = ["id", "name", "img", "language"];
+    for (const field of requiredFields) {
+      if (!formData.get(field)) {
+        return {
+          errors: {
+            [field]: ["This field is required"],
+          },
+        };
+      }
+    }
+
+    // Parse and validate form data
+    const result = FlavorFormSchema.safeParse({
+      name: formData.get("name"),
+      img: formData.get("img"),
+    });
+
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
+
+    const { name, img } = result.data;
+    const language = formData.get("language")?.toString() || "en";
+    const id = formData.get("id") as string;
+
+    // Handle image uploads
+    let primaryImageName = "";
+
+    try {
+      // Upload primary image
+      const primaryBytes = await img.arrayBuffer();
+      const primaryBuffer = Buffer.from(primaryBytes);
+      primaryImageName = img.name.replace(/\s+/g, "");
+      await writeFile(`./public/${primaryImageName}`, primaryBuffer);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      return {
+        errors: {
+          img: ["Failed to upload images"],
+        },
+      };
+    }
+
+    // Add category to database
+    const { status, message } = await updateFlavor({
+      id: id,
+      name: name,
+      primaryImg: primaryImageName,
+      lang: language,
+    });
+
+    if (status === 404) {
+      return { errors: { name: [message] } };
+    }
+
+    if (status !== 200) {
+      return { general: message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error in AddCategoryAction:", error);
+    return {
+      general: "An unexpected error occurred. Please try again later.",
+    };
+  }
+}
+export async function DeleteFlavorAction(
+  deleteAll: string,
+  selectedField: any
+) {
+  try {
+    // Validate required fields
+    const { status } = await deleteFlavor(
+      deleteAll === "on" ? true : false,
+      selectedField
+    );
+    if (status !== 200) {
+      return { success: false };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+export async function SuggestFlavorAction(
+  state: FormFlavorSuggestState,
+  formData: FormData
+) {
+  try {
+    const user = await getSession();
+    if (user.success === false)
+      return {
+        success: false,
+        user: "faild to find user",
+      };
+    // Validate required fields
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: json,
+    });
+    const result = await response.json();
+    if (result.success) {
+      return { success: true };
+    } else {
+      return { success: false, general: "failed to send email" };
+    }
+  } catch (error) {
+    return { success: false, general: "failed to send email" };
+  }
+}

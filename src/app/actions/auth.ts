@@ -1,17 +1,20 @@
-'use server';
+"use server";
 import {
   SignupFormSchema,
   FormSignUpState,
   FormSignInState,
   SigninFormSchema,
-} from '../lib/definitions';
-import { createUser, checkUser } from '../data-access-layer/user';
-import { createSession, deleteSession } from '../lib/session';
-import { redirect } from 'next/navigation';
-import { generateSalt, hashPassword } from '../../../helpers/passwordHasher';
+} from "../lib/definitions";
+import { createUser, checkUser } from "../data-access-layer/user";
+import { createSession, deleteSession } from "../lib/session";
+import { redirect } from "next/navigation";
+import { generateSalt, hashPassword } from "../../../helpers/passwordHasher";
+
+import { headers } from "next/headers";
+
 export async function SignInAction(state: FormSignInState, formData: FormData) {
   const validatedFields = SigninFormSchema.safeParse({
-    email: formData.get('email'),
+    email: formData.get("email"),
   });
   if (!validatedFields.success) {
     return {
@@ -22,7 +25,7 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
   const { email } = validatedFields.data;
   const { status, message, user } = await checkUser(
     email,
-    formData.get('password') as string
+    formData.get("password") as string
   );
   //fix errors
   if (status === 500) {
@@ -44,18 +47,23 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
   }
   if (!user) {
     return {
-      general: 'error occured',
+      general: "error occured",
     };
   }
   await createSession(user.id, user.role);
-  redirect('/');
+
+  const headersList = await headers();
+  const fullUrl = headersList.get("referer") || "";
+  console.log(fullUrl);
+  if (fullUrl?.includes("en")) redirect("/en");
+  else redirect("/ar");
 }
 
 export async function SignUpAction(state: FormSignUpState, formData: FormData) {
   const validatedFields = SignupFormSchema.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
   });
 
   if (!validatedFields.success) {
@@ -89,20 +97,28 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
     }
     if (!user) {
       return {
-        general: 'error occured',
+        general: "error occured",
       };
     }
 
     await createSession(user.id, user.role);
   } catch (error) {
     return {
-      general: 'error occured',
+      general: "error occured",
     };
   }
 
-  redirect('/');
+  const headersList = await headers();
+  const fullUrl = headersList.get("referer") || "";
+  if (fullUrl?.includes("en")) redirect("/en");
+  else redirect("/ar");
 }
+
 export async function LogOut() {
   await deleteSession();
-  redirect('/');
+  const headersList = await headers();
+  const fullUrl = headersList.get("referer") || "";
+  console.log(fullUrl);
+  if (fullUrl?.includes("en")) redirect("/en");
+  else redirect("/ar");
 }

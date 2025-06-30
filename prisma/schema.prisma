@@ -1,7 +1,7 @@
 // import { DATABASE_URL } from "$env/static/private";
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -9,7 +9,15 @@ datasource db {
   url      ="mongodb+srv://Fadi:IU58@cluster0.nderwla.mongodb.net/Testing"
 }
 
-
+model Map{
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  details String
+  left String[]
+  top String[]
+  img String
+  lang String
+}
 model User {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   name     String
@@ -40,10 +48,31 @@ model VoteOnComment {
 
   @@unique([userId, commentId]) 
 }
+model Product {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  code      String
+  detailes  String
+  img       String
+  secondryImg String
+  flavorId  String   @db.ObjectId
+  flavor    Flavor   @relation(fields: [flavorId], references: [id])
+  color     String
+  p_color   String
+  categoryId String  @db.ObjectId
+  category  Category @relation(fields: [categoryId], references: [id])
+  lang      String
+  videos    Video[]  // One-to-many relationship
+}
+
 model Video {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  embededLink String @unique
-  redirectTo String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  embededLink String   @unique
+  name       String
+  productId   String   @db.ObjectId
+  coverImg    String
+  product     Product  @relation(fields: [productId], references: [id])
+  lang String
 }
 model Category {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -52,28 +81,17 @@ model Category {
   detailes String
   img String
   products Product[]
+  lang String
 }
 model Flavor{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   primaryImg String
-  secondryImg String
   products Product[]
   recipies Recipy[]
+  lang String
 }
-model Product{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  code String
-  detailes String
-  img String
-  flavorId String @db.ObjectId
-  flavor Flavor @relation(fields: [flavorId],references: [id])
-  color String
-  p_color String
-  categoryId String @db.ObjectId
-  category Category @relation(fields: [categoryId],references: [id])
-}
+
 model Recipy{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
@@ -81,6 +99,7 @@ model Recipy{
   flavorId String @db.ObjectId
   flavor Flavor @relation(fields: [flavorId],references: [id])
   votes     VoteOnRecipy[]
+  lang String
 }
 model VoteOnRecipy{
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -90,6 +109,9 @@ model VoteOnRecipy{
   recipy    Recipy  @relation(fields: [RecipyId], references: [id])
   @@unique([userId, RecipyId])
 }
+//social auto 
+//youtube with link
+//cover photo for the website 
 model social{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
