@@ -77,7 +77,7 @@ export async function AddMapAction(
     );
 
     if (status === 409) {
-      return { errors: { name: [message] } };
+      return { errors: { name: [message || "Failed to create Map"] } };
     }
 
     if (status !== 201) {
@@ -208,7 +208,7 @@ export async function UpdateMapAction(
     });
 
     if (status === 404) {
-      return { errors: { name: [message] } };
+      return { errors: { name: [message || "Failed to create Map"] } };
     }
 
     if (status !== 200) {

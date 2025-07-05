@@ -95,7 +95,7 @@ export async function AddProductAction(
     );
 
     if (status === 409) {
-      return { errors: { code: [message] } };
+      return { errors: { code: [message || "Failed to create product"] } };
     }
 
     if (status !== 201) {
@@ -202,7 +202,7 @@ export async function UpdateProductAction(
     });
 
     if (status === 404) {
-      return { errors: { code: [message] } };
+      return { errors: { code: [message || "Failed to create product"] } };
     }
 
     if (status !== 200) {
