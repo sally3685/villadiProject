@@ -1,7 +1,6 @@
 "use client";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Color from "color";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
@@ -305,15 +304,22 @@ export default function CarousalProducts({
     >
       {items.length === 0 ? (
         <div className="flex flex-col gap-8 max-w-8xl justify-center items-center w-full py-20 z-[1] ">
-          <h1 className="text-2xl md:text-5xl text-black">{noCats}</h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl text-black">
+            {noCats}
+          </h1>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(
+                    ${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`})] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </div>
       ) : (
         <>
-          <div className="flex items-center flex-col  gap-8 justify-center  max-w-6xl">
-            <h1 className="text-5xl text-black font-bold pb-8">{title}</h1>
+          <div className="flex items-center flex-col  gap-8 justify-center h-auto max-w-6xl">
+            <h1 className="text-2xl sm:text-4xl xl:text-5xl text-black font-bold pb-8">
+              {title}
+            </h1>
             <div
-              className={`flex items-center  flex-col sm:flex-row justify-center sm:justify- h-[60vh]  w-full ${
+              className={`flex items-center  flex-col sm:flex-row justify-center sm:justify- h-auto  w-full ${
                 items.length < (isMobile ? 3 : 5) ? "gap-8 flex-wrap" : ""
               }`}
             >
@@ -381,10 +387,10 @@ export default function CarousalProducts({
                   className="cursor-pointer text-black"
                 />
               )}
-              <div className="bg-white text-black font-bold  text-center  p-2 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-lg">
+              <div className="bg-white text-black font-bold  text-center  p-2 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-sm sm:text-lg">
                 {items && (
                   <Link
-                    href={`/${lang}/Catigories/${items[0].category.code}`}
+                    href={`/${lang}/Catigories/${items[0].category.code}/Products`}
                     className=" py-2 px-6 text-black rounded-2xl "
                   >
                     {all}

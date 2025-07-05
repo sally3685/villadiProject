@@ -1,7 +1,7 @@
 "server only";
 import prisma from "../lib/db";
 import { cache } from "react";
-import { Video } from "../../../prisma/generated/prisma";
+import { social, Video } from "../../../prisma/generated/prisma";
 import { revalidatePath } from "next/cache";
 import { getSession } from "../lib/session";
 
@@ -191,6 +191,57 @@ export const updateVideo = async (video: Video) => {
     };
   }
 };
+export const updateSocial = async (itemSocial: social) => {
+  try {
+    const result = await getSession();
+    if (result.success === false) {
+      return {
+        status: 500,
+      };
+    } else if (result.user?.role !== "Admin") {
+      return {
+        status: 403,
+      };
+    }
+    const existingSocial = await prisma.social.findFirst({
+      where: { id: itemSocial.id },
+    });
+    if (!existingSocial) {
+      return {
+        status: 404,
+        message: "No social found",
+      };
+    }
+
+    const item = await prisma.social.update({
+      where: { id: itemSocial.id },
+      data: {
+        name: itemSocial.name,
+        embededlink: itemSocial.embededlink,
+        channelLink: itemSocial.channelLink,
+      },
+    });
+
+    if (!item) {
+      return {
+        status: 500,
+        message: "couldnt update",
+      };
+    }
+    revalidatePath("/en/Control/Update/Social");
+    revalidatePath("/ar/Control/Update/Social");
+    return {
+      status: 200,
+      message: "Social updated successfully",
+    };
+  } catch (error) {
+    console.error("Error in update Social:", error);
+    return {
+      status: 500,
+      message: "Internal server error",
+    };
+  }
+};
 export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
   try {
     const result = await getSession();
@@ -244,3 +295,30 @@ export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
     };
   }
 };
+
+export const getAllSocialWithoutLang = cache(async () => {
+  try {
+    const socials = await prisma.social.findMany();
+
+    if (!socials || socials.length === 0) {
+      return {
+        status: 404,
+        message: "No socials found",
+        socials: [],
+      };
+    }
+
+    return {
+      status: 200,
+      message: "socials retrieved successfully",
+      socials,
+    };
+  } catch (error) {
+    console.error("Error in getAllsocials:", error);
+    return {
+      status: 500,
+      message: "Internal server error",
+      socials: [],
+    };
+  }
+});

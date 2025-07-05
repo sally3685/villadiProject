@@ -1,10 +1,11 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { LucideGlobe, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { LogOut } from "../actions/auth";
+import { useRouter } from "next/navigation";
 function replaceLangInPath(pathname: string, newLang: string): string {
   const segments = pathname.split("/").filter((segment) => segment !== "");
 
@@ -35,10 +36,10 @@ export default function Nav({
   const [openLanguage, setOpenLanguage] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(false);
   return (
-    <nav className="bg-white fixed top-5 z-[3] rounded-2xl  w-[90%]">
-      <div className="mx-auto max-w-[1350px]  px-2  lg:px-8">
+    <nav className="bg-white fixed top-5 z-[3] rounded-2xl  w-[95%]">
+      <div className="mx-auto max-w-[1435px] w-auto  px-2  xl:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
+          <div className="absolute inset-y-0 left-0 flex items-center xl:hidden">
             {/* <!-- Mobile menu button--> */}
             <button
               type="button"
@@ -81,69 +82,117 @@ export default function Nav({
               </svg>
             </button>
           </div>
-          <div className="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
+          <div className="flex flex-1 items-center justify-center xl:items-stretch xl:justify-start">
             <div className="flex shrink-0 items-center">
               <Image
                 width={20}
                 height={20}
-                className="h-14 w-auto"
+                className="h-14 w-auto cursor-pointer hidden sm:block"
+                onClick={() => {
+                  redirect(`/${getLang(pathname)}`);
+                }}
                 src={
-                  getLang(pathname) ? "/villadiLogo.svg" : "/villadiLogoAr.svg"
+                  getLang(pathname) === "en"
+                    ? "/villadiLogo.svg"
+                    : "/villadiLogoAr.svg"
                 }
-                alt="Your Company"
+                alt="Villadi company"
               />
             </div>
-            <div className="hidden lg:mx-6 lg:flex lg:justify-center lg:items-center">
+            <div className="hidden xl:mx-6 xl:flex xl:justify-center xl:items-center">
               <div className="flex space-x-4">
                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                 <Link
                   href={`/${getLang(pathname)}/Catigories`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.endsWith("Catigories")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                   aria-current="page"
                 >
                   {t.nav.tab1}
                 </Link>
                 <Link
                   href={`/${getLang(pathname)}/Products`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.endsWith("Products")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                   aria-current="page"
                 >
                   {t.nav.tab7}
                 </Link>
                 <Link
+                  href={`/${getLang(pathname)}/Recipes`}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("Recipes")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
+                  aria-current="page"
+                >
+                  {t.nav.tab8}
+                </Link>
+                <Link
                   href={`/${getLang(pathname)}/Aboutus`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("Aboutus")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                 >
                   {t.nav.tab2}
                 </Link>
                 <Link
                   href={`/${getLang(pathname)}/SuggestAFlavor`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("SuggestAFlavor")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                 >
                   {t.nav.tab3}
                 </Link>
                 <Link
                   href={`/${getLang(pathname)}/Opinion`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium`}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("Opinion")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                 >
                   {t.nav.tab4}
                 </Link>
                 <Link
                   href={`/${getLang(pathname)}/Maps`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("Maps")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                 >
                   {t.nav.tab5}
                 </Link>
                 <Link
                   href={`/${getLang(pathname)}/Videos`}
-                  className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                  className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                    pathname.includes("Videos")
+                      ? "text-white bg-black"
+                      : "text-black hover:text-white hover:bg-black"
+                  }  transition-all duration-2 font-medium`}
                 >
                   {getLang(pathname) === "en" ? "Videos" : "الفيديوهات"}
                 </Link>
                 {user?.role === "Admin" ? (
                   <Link
                     href={`/${getLang(pathname)}/Control`}
-                    className={`rounded-md px-3 py-2 text-sm md:text-lg  text-black hover:text-white hover:bg-black transition-all duration-2 font-medium `}
+                    className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+                      pathname.includes("Control")
+                        ? "text-white bg-black"
+                        : "text-black hover:text-white hover:bg-black"
+                    }  transition-all duration-2 font-medium`}
                   >
                     {t.nav.tab6}
                   </Link>
@@ -153,7 +202,7 @@ export default function Nav({
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 xl:static xl:inset-auto xl:ml-6 xl:pr-0">
             <div className="relative ml-3">
               <div>
                 <button
@@ -171,7 +220,7 @@ export default function Nav({
                 </button>
               </div>
               <div
-                className={`absolute right-0 z-10 mt-2 w-48 origin-top-right border-3 border-t-0 border-black bg-white  rounded-md ${
+                className={`absolute ${getLang(pathname) === "en" ? "right-0" : "-right-[60px]"} z-10 mt-2 w-48 origin-top-right border-3 border-t-0 border-black bg-white  rounded-md ${
                   openLanguage
                     ? "transition ease-out duration-100 transform block scale-100"
                     : "transition ease-in duration-75 transform hidden scale-95"
@@ -221,7 +270,7 @@ export default function Nav({
                   </button>
                 </div>
                 <div
-                  className={`absolute right-0 z-10 mt-2 w-48 origin-top-right border-3 border-t-0 border-black bg-white  rounded-md  ${
+                  className={`absolute  z-10 ${getLang(pathname) === "en" ? "right-0" : "-right-[60px]"} mt-2 w-48 origin-top-right border-3 border-t-0 border-black bg-white  rounded-md  ${
                     openProfileMenu
                       ? "transition ease-out duration-100 transform block scale-100"
                       : "transition ease-in duration-75 transform hidden scale-95"
@@ -234,7 +283,7 @@ export default function Nav({
                   <p className="block px-4 py-2 text-sm text-black font-bold text-center">
                     Hi {user.name}
                   </p>
-                  <p className="block px-4 py-2 text-sm text-black font-bold  text-center">
+                  <p className="block px-4 py-2 text-sm text-black font-bold  text-center wrap-break-word">
                     {user.email}
                   </p>
                   <button
@@ -258,11 +307,25 @@ export default function Nav({
       </div>
 
       <div
-        className={`${openNavMenu ? "block" : "hidden"} lg:hidden`}
+        className={`${openNavMenu ? "block" : "hidden"} xl:hidden`}
         id="mobile-menu"
       >
         <div className="space-y-1 px-2 pt-2 pb-3 bg-white rounded-b-2xl border-3 border-black border-t-0">
           {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
+          <Image
+            width={20}
+            height={20}
+            className="h-14 w-full cursor-pointer "
+            onClick={() => {
+              redirect(`/${getLang(pathname)}`);
+            }}
+            src={
+              getLang(pathname) === "en"
+                ? "/villadiLogo.svg"
+                : "/villadiLogoAr.svg"
+            }
+            alt="Villadi company"
+          />
           <Link
             href={`/${getLang(pathname)}/Catigories`}
             className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
@@ -277,13 +340,24 @@ export default function Nav({
           <Link
             href={`/${getLang(pathname)}/Products`}
             className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
-              pathname.includes("Categories")
+              pathname.includes("Products")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
             }  transition-all duration-2 font-medium`}
             aria-current="page"
           >
             {t.nav.tab7}
+          </Link>
+          <Link
+            href={`/${getLang(pathname)}/Recipes`}
+            className={`block text-center  rounded-md px-3 py-2 text-sm md:text-lg ${
+              pathname.includes("Recipes")
+                ? "text-white bg-black"
+                : "text-black hover:text-white hover:bg-black"
+            }  transition-all duration-2 font-medium`}
+            aria-current="page"
+          >
+            {t.nav.tab8}
           </Link>
           <Link
             href={`/${getLang(pathname)}/Aboutus`}

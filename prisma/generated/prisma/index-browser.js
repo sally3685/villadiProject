@@ -129,7 +129,8 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   salt: 'salt',
-  role: 'role'
+  role: 'role',
+  verified: 'verified'
 };
 
 exports.Prisma.CommentScalarFieldEnum = {
@@ -187,6 +188,7 @@ exports.Prisma.FlavorScalarFieldEnum = {
 exports.Prisma.RecipyScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  code: 'code',
   detailes: 'detailes',
   flavorId: 'flavorId',
   lang: 'lang'

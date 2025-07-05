@@ -7,6 +7,7 @@ import { getSession } from "../lib/session";
 
 export const AddRecipe = async (
   name: string,
+  code: string,
   details: string,
   flavorId: string,
   language: string
@@ -37,9 +38,8 @@ export const AddRecipe = async (
     // Check if recipe with same name already exists
     const existingRecipe = await prisma.recipy.findFirst({
       where: {
-        name,
+        code,
         lang: language,
-        flavorId,
       },
     });
 
@@ -54,6 +54,7 @@ export const AddRecipe = async (
     const newRecipe = await prisma.recipy.create({
       data: {
         name,
+        code,
         detailes: details,
         flavorId,
         lang: language,
@@ -68,8 +69,8 @@ export const AddRecipe = async (
     }
 
     // Revalidate relevant paths
-    revalidatePath(`/[lang]/recipes`, "page");
-    revalidatePath(`/[lang]/flavors`, "page");
+    // revalidatePath(`/${lang}/Recipes`, "page");
+    // revalidatePath(`/${lang}`, "page");
 
     return {
       status: 201,
@@ -145,10 +146,10 @@ export const getAllRecipies = cache(async (lang: string) => {
     };
   }
 });
-export const getAllRecipyById = cache(async (id: string) => {
+export const getAllRecipyById = cache(async (code: string, lang: string) => {
   try {
     const recipie = await prisma.recipy.findFirst({
-      where: { id: id },
+      where: { code: code, lang: lang },
       include: {
         flavor: true,
         _count: {
@@ -200,7 +201,7 @@ export const updateRecipe = async (recipe: Recipy) => {
     if (!existingRecipe) {
       return {
         status: 404,
-        message: "No products found",
+        message: "recipy was not found",
       };
     }
 
@@ -211,6 +212,7 @@ export const updateRecipe = async (recipe: Recipy) => {
         name: recipe.name,
         detailes: recipe.detailes,
         flavorId: recipe.flavorId,
+        code: recipe.code,
       },
     });
 

@@ -164,12 +164,12 @@ export default function LeaveAcomment({
           update
             ? handleSubmitUpdate
             : deleteF
-            ? handleSubmitDelete
-            : handleSubmit
+              ? handleSubmitDelete
+              : handleSubmit
         }
         className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
       >
-        <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
+        <div className="h-auto flex items-center justify-center border-b border-gray-900/10 pb-12">
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 z-[2] relative w-[80%]">
             <div className="lg:col-span-3 w-full space-y-8 flex justify-center flex-col ">
               <div className="grid grid-cols-1  w-full  gap-x-6 gap-y-8 lg:grid-cols-6 lg:col-span-2 ">

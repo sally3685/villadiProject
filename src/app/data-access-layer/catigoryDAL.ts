@@ -64,7 +64,7 @@ export const AddCategory = async (
     }
 
     // Revalidate relevant paths
-    revalidatePath(`/[lang]/categories`, "page");
+    revalidatePath(`/[lang]/Categories`, "page");
     revalidatePath(`/[lang]`, "page");
 
     return {

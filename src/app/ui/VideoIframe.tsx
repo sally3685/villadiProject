@@ -6,41 +6,149 @@ import { useGSAP } from "@gsap/react";
 import ErrorPage from "../[lang]/error";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+
 export default function VideoIframe({
   t,
   video,
+  lang,
   setStep,
   step,
   boundry,
 }: {
   t: any;
+  lang: string;
   video: any;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   step: number;
   boundry: number;
 }) {
   const [showVideo, setShowVideo] = useState(false);
-  //   console.log(video.video.coverImg, "fff");
+  const [isVisible, setIsVisible] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const autoScrollRef = useRef<NodeJS.Timeout>(null);
+  const resumeTimerRef = useRef<NodeJS.Timeout>(null);
+  const observerRef = useRef<IntersectionObserver>(null);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const box2Ref = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
-
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+
+  // Intersection Observer for auto-scroll visibility
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+
+    observerRef.current.observe(containerRef.current);
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (boundry <= 1) return;
+
+    const autoScroll = () => {
+      if (!isVisible || isPaused) return;
+
+      setStep((prev) => {
+        if (prev >= boundry - 1) return 0; // Loop to start
+        return prev + 1;
+      });
+    };
+
+    // Clear any existing interval
+    if (autoScrollRef.current) {
+      clearInterval(autoScrollRef.current);
+    }
+
+    // Set up new interval if component is visible and not paused
+    if (isVisible && !isPaused) {
+      autoScrollRef.current = setInterval(autoScroll, 5000);
+    }
+
+    return () => {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current);
+      }
+    };
+  }, [boundry, isVisible, isPaused, setStep]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+  }, []);
+
+  const handleNext = () => {
+    if (step < boundry - 1) {
+      // Pause auto-scrolling
+      setIsPaused(true);
+
+      // Clear any pending resume
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+      }
+
+      // Update step
+      setStep((prev) => prev + 1);
+
+      // Schedule resume after 3 seconds
+      resumeTimerRef.current = setTimeout(() => {
+        setIsPaused(false);
+      }, 3000);
+    }
+  };
+
+  const handlePrev = () => {
+    if (step > 0) {
+      // Pause auto-scrolling
+      setIsPaused(true);
+
+      // Clear any pending resume
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+      }
+
+      // Update step
+      setStep((prev) => prev - 1);
+
+      // Schedule resume after 3 seconds
+      resumeTimerRef.current = setTimeout(() => {
+        setIsPaused(false);
+      }, 3000);
+    }
+  };
+
+  // Update background colors when step changes
   useEffect(() => {
     const mainElement = document.getElementById("section2");
 
     if (mainElement) {
       mainElement.setAttribute(
         "data-bgcolor",
-        video ? video.product.color : "#000000"
+        video ? video.product.color : "#ff832b"
       );
       mainElement.setAttribute(
         "data-color",
         video ? video.product.p_color : "#ffffff"
       );
     }
-  }, [step]);
+  }, [step, video]);
+
   useGSAP(
     () => {
       if (
@@ -57,8 +165,14 @@ export default function VideoIframe({
       const mainElement = document.getElementById("section2");
 
       if (mainElement) {
-        mainElement.setAttribute("data-bgcolor", video.product.color);
-        mainElement.setAttribute("data-color", video.product.p_color);
+        mainElement.setAttribute(
+          "data-bgcolor",
+          video ? video.product.color : "#ff832b"
+        );
+        mainElement.setAttribute(
+          "data-color",
+          video ? video.product.p_color : "#ffffff"
+        );
       }
 
       tlRef.current = gsap.timeline({
@@ -92,7 +206,7 @@ export default function VideoIframe({
         }
       };
     },
-    { scope: containerRef } // Added step to dependencies
+    { scope: containerRef, dependencies: [step] }
   );
 
   return (
@@ -100,7 +214,9 @@ export default function VideoIframe({
       ref={containerRef}
       className={`relative aspect-video w-full h-full rounded-lg flex flex-col justify-center items-center overflow-hidden`}
     >
-      <h1 className=" font-bold text-4xl mb-12">{t.videoWrapper.name}</h1>
+      <h1 className=" font-bold text-2xl sm:text-4xl xl:text-5xl mb-12">
+        {t.videoWrapper.name}
+      </h1>
       {!showVideo && video ? (
         // Cover photo with play button
         <button
@@ -150,7 +266,7 @@ export default function VideoIframe({
             ></iframe>
           ) : (
             <Image
-              src={`/villadiLogo.svg`}
+              src={lang === "en" ? "/villadiLogo.svg" : "/villadiLogoAr.svg"}
               alt={`Cover for video`}
               width={100}
               height={100}
@@ -166,11 +282,7 @@ export default function VideoIframe({
       >
         {video && (
           <ArrowLeft
-            onClick={() => {
-              console.log(boundry, step);
-              if (step === 0) return;
-              setStep((prev) => prev - 1);
-            }}
+            onClick={handlePrev}
             className={`${
               step === 0
                 ? "cursor-not-allowed text-gray-600"
@@ -178,12 +290,12 @@ export default function VideoIframe({
             }`}
           ></ArrowLeft>
         )}
-        <div className="bg-white text-black font-bold  text-center  px-6 py-6 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-2xl">
+        <div className="bg-white text-black font-bold  text-center  px-6 py-6 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-lg sm:text-2xl">
           <h2>"{video ? `${video.name}` : `${t.videoWrapper.noVideos}`}"</h2>
           {video && (
             <Link
               href={"/Videos"}
-              className="bg-black text-white text-sm py-2 px-4 rounded-3xl"
+              className="bg-black text-white text-sm sm:text-lg py-2 px-4 rounded-3xl"
             >
               {t.videoWrapper.more}
             </Link>
@@ -191,14 +303,7 @@ export default function VideoIframe({
         </div>
         {video && (
           <ArrowRight
-            onClick={() => {
-              if (step === boundry - 1) {
-                return;
-              } else {
-                console.log(boundry, step, step === boundry);
-                setStep((prev) => prev + 1);
-              }
-            }}
+            onClick={handleNext}
             className={`${
               step === boundry - 1
                 ? "cursor-not-allowed text-gray-600"

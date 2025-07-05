@@ -3,10 +3,16 @@
 import {
   AddVideo,
   deleteVideo,
+  updateSocial,
   updateVideo,
 } from "../data-access-layer/videoDAL";
 import { writeFile } from "fs/promises";
-import { VideoFormSchema, FormVideoState } from "../lib/definitions";
+import {
+  VideoFormSchema,
+  FormVideoState,
+  SocailFormSchema,
+  FormSocialState,
+} from "../lib/definitions";
 
 export async function AddVideoAction(
   state: FormVideoState,
@@ -78,7 +84,9 @@ export async function AddVideoAction(
     );
 
     if (status === 409) {
-      return { errors: { embededLink: [message] } };
+      return {
+        errors: { embededLink: [message ? message : "Failed to create video"] },
+      };
     }
 
     if (status !== 201) {
@@ -161,7 +169,9 @@ export async function UpdateVideoAction(
     });
 
     if (status === 404) {
-      return { errors: { name: [message] } };
+      return {
+        errors: { name: [message ? message : "Failed to create video"] },
+      };
     }
 
     if (status !== 200) {
@@ -190,5 +200,66 @@ export async function DeleteVideoAction(deleteAll: string, selectedField: any) {
     return { success: true };
   } catch (error) {
     return { success: false };
+  }
+}
+
+export async function UpdateSocialAction(
+  state: FormSocialState,
+  formData: FormData
+): Promise<FormSocialState> {
+  try {
+    // Validate required fields
+    const requiredFields = ["name", "embededLink", "channelLink"];
+    for (const field of requiredFields) {
+      if (!formData.get(field)) {
+        return {
+          errors: {
+            [field]: ["This field is required"],
+          },
+        };
+      }
+    }
+
+    // Parse and validate form data
+    const result = SocailFormSchema.safeParse({
+      embededLink: formData.get("embededLink"),
+      channelLink: formData.get("channelLink"),
+    });
+
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
+
+    const { ...socialData } = result.data;
+    const id = formData.get("id") as string;
+    const name = formData.get("name") as string;
+
+    const { status, message } = await updateSocial({
+      id: id,
+      name: name,
+      embededlink: socialData.embededLink,
+      channelLink: socialData.channelLink,
+    });
+
+    if (status === 404) {
+      return {
+        errors: {
+          embededLink: [message ? message : "Failed to create social"],
+        },
+      };
+    }
+
+    if (status !== 200) {
+      return { general: message || "Failed to create Recipe" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error in AddRecipeAction:", error);
+    return {
+      general: "An unexpected error occurred. Please try again later.",
+    };
   }
 }

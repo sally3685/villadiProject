@@ -50,6 +50,7 @@ export default function DeleteForm({
   const [selectedField, setSelectedField] = useState();
 
   useEffect(() => {
+    console.log(state);
     if (state) {
       if (state.success) {
         toast.success(lang === "en" ? "Deletion successful" : "تم الحذف بنجاح");

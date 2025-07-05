@@ -21,28 +21,27 @@ export default async function ProdCodeDetails({
   const allProds = await getAllProdCats(productId, lang);
 
   if (prods.status === 500 || allProds.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error ")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error ")}></ErrorPage>;
   }
   return (
-    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
+    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c4d] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
       {!allProds || !allProds.products ? (
         <>
-          <h1 className="text-2xl md:text-5xl text-black z-[0]">
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black z-[0]">
             {lang === "en" ? "No products found" : "لا يوجد منتجات لعرضها"}
           </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </>
       ) : !prods || !prods.product ? (
         <>
-          <h1 className="text-2xl md:text-5xl text-black z-[0]">
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black z-[0]">
             {lang === "en" ? "Product was not found" : "لم يتم إيجاد المنتج"}
           </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </>
       ) : (
         <>

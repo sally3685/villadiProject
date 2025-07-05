@@ -29,7 +29,7 @@ export default async function Admin({
           lang === "en" ? "pl-12" : "pr-12"
         }`}
       >
-        {t.addVideoForm.deleteLabel}
+        {lang === "en" ? "Remove admin permission" : "إزالة صلاحية الأدمن"}
       </h1>
       <DeleteForm
         t={t}
@@ -37,16 +37,18 @@ export default async function Admin({
         type="admin"
         user={result.success && result.user ? result.user : undefined}
         options={users.users}
-        label={t.addVideoForm.deleteLabel}
+        label={
+          lang === "en" ? "Remove admin permission" : "إزالة صلاحية الأدمن"
+        }
         deleteAllLabel={t.addVideoForm.deleteAll}
         warning={t.addVideoForm.deleteWarning}
         noPermissionText={{
-          en: "You don't have permission to delete",
-          ar: "ليس لديك إذن للحذف",
+          en: "You don't have permission to remove admin",
+          ar: "ليس لديك إذن لازالة الادمن",
         }}
         noSelectionText={{
-          en: "Please select an item to delete",
-          ar: "الرجاء تحديد عنصر للحذف",
+          en: "Please select a user to delete",
+          ar: "الرجاء تحديد ادمن للحذف",
         }}
       />
     </>

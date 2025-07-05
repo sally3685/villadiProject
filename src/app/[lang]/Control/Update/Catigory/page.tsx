@@ -13,12 +13,7 @@ export default async function Catigory({
   const t = await getDictionary(lang);
   const category = await getAllCategoriesWithoutLang();
   if (category.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
   return (
     <>

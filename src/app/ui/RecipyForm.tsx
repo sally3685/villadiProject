@@ -39,6 +39,7 @@ export default function RecipeForm({
   const [formDataf, setFormDataf] = useState({
     name: "",
     details: "",
+    code: "",
   });
   const nameRef = useRef<HTMLInputElement>(null);
   const [selectedFlavor, setSelectedFlavor] = useState<FlavorType | null>(null);
@@ -58,7 +59,7 @@ export default function RecipeForm({
       if (state.success) {
         toast.success(t.addRecipyForm.doneSubmit, { position: "top-right" });
         // Reset form on success
-        setFormDataf({ name: "", details: "" });
+        setFormDataf({ name: "", details: "", code: "" });
         setStep(0);
         setSelectedFlavor(null);
       } else if (state.general) {
@@ -87,7 +88,7 @@ export default function RecipeForm({
 
   const toggleLanguage = () => {
     setTempLang((prev) => (prev === "en" ? "ar" : "en"));
-    setFormDataf({ name: "", details: "" });
+    setFormDataf({ name: "", details: "", code: "" });
     setStep(0);
     setSelectedFlavor(null);
   };
@@ -114,7 +115,7 @@ export default function RecipeForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Left Sidebar */}
           <div className="lg:col-span-1 space-y-8 flex justify-center flex-col">
             <div className="flex flex-col gap-8 mx-4">
@@ -185,7 +186,17 @@ export default function RecipeForm({
                   error={state?.errors?.name}
                   required
                 />
-
+                <FormInput
+                  id="code"
+                  label={lang === "en" ? "recipe code" : "كود الوصفة"}
+                  placeholder={lang === "en" ? "456-z" : "451-z"}
+                  value={formDataf.code}
+                  onChange={(value) =>
+                    setFormDataf({ ...formDataf, code: value })
+                  }
+                  error={state?.errors?.code}
+                  required
+                />
                 <FormTextarea
                   id="details"
                   label={

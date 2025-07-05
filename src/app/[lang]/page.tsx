@@ -5,12 +5,18 @@ import { getAllRecipies } from "../data-access-layer/recipyDAL";
 import Carousal3D from "../ui/Carousal3D";
 import { getAllCategory } from "../data-access-layer/catigoryDAL";
 import { getDictionary } from "./dictionaries";
-import { getAllVideosWithProd } from "../data-access-layer/videoDAL";
+import {
+  getAllSocialWithoutLang,
+  getAllVideosWithProd,
+} from "../data-access-layer/videoDAL";
 import VideoWrapper from "../ui/videoWrapper";
 import Carousal3DRec from "../ui/Carousal3DRec";
 import { getSession } from "../lib/session";
-import FacebookFeed from "../ui/FaceBook";
 import Social from "../ui/Social";
+import localFont from "next/font/local";
+const myFont3 = localFont({
+  src: "./fonts/StanHand.ttf",
+});
 export default async function Home({
   params,
 }: {
@@ -22,15 +28,17 @@ export default async function Home({
   const { status, message, products } = await getProdsWithFlavs(lang);
   const video = await getAllVideosWithProd(lang);
   const recipe = await getAllRecipies(lang);
+  const socials = await getAllSocialWithoutLang();
 
   const category = await getAllCategory(lang);
   if (
     status === 500 ||
     category.status === 500 ||
     video.status === 500 ||
-    recipe.status === 500
+    recipe.status === 500 ||
+    socials.status === 500
   ) {
-    return <ErrorPage error={new Error(message)} reset={() => {}}></ErrorPage>;
+    return <ErrorPage error={new Error(message)}></ErrorPage>;
   }
 
   return (
@@ -55,14 +63,14 @@ export default async function Home({
       <section
         id="section2"
         className="w-full relative h-[100vh] flex justify-center items-center flex-col  section"
-        data-bgcolor="#CD6628"
-        data-color="#F7BC65"
+        data-bgcolor="#ff832b"
+        data-color="#ffffff"
       >
-        <VideoWrapper t={t} lang={lang} videos={video} />
+        <VideoWrapper t={t} lang={lang} videos={video} myFont3={myFont3} />
       </section>
       <section
         id="section3"
-        className="w-full h-[100vh] section flex justify-center items-center"
+        className="w-full h-auto min-h-dvh section flex justify-center items-center"
         data-bgcolor="#7ABC43"
         data-color="#ffffff"
       >
@@ -76,7 +84,8 @@ export default async function Home({
         />
       </section>
       <section
-        className="w-full h-[100vh] section flex justify-center items-center"
+        id="section4"
+        className="w-full h-auto min-h-dvh section flex justify-center items-center"
         data-bgcolor="#DA9A40"
         data-color="#ffffff"
       >
@@ -91,12 +100,13 @@ export default async function Home({
         />
       </section>
       <section
-        className="w-full h-auto sm:h-[100vh] section flex justify-center items-center"
+        id="section5"
+        className="w-full h-auto lg:h-[100vh] section flex justify-center items-center"
         data-bgcolor="#5F9FD6"
         data-color="#ffffff"
       >
         {/* <FacebookFeed /> */}
-        <Social t={t} lang={lang}></Social>
+        <Social t={t} lang={lang} socialItems={socials.socials}></Social>
       </section>
     </main>
   );

@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/[lang]/dictionaries.ts",
-    "src/app/[lang]/@modal/(.)TermsConditions"
+    "src/app/[lang]/@modal/(.)TermsConditions",
+    "src/app/ui/InstaWrapper"
   ],
   "exclude": ["node_modules"]
 }

@@ -44,14 +44,7 @@ export function SignUpForm({ t, lang }: { t: any; lang: string }) {
   }, []);
   const router = useRouter();
   if (state?.general)
-    return (
-      <ErrorPage
-        error={new Error(state.general)}
-        reset={() => {
-          router.refresh();
-        }}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error(state.general)}></ErrorPage>;
   return (
     <>
       <form
@@ -64,6 +57,7 @@ export function SignUpForm({ t, lang }: { t: any; lang: string }) {
         }}
       >
         <h1 className="font-bold text-xl md:text-2xl"> {t.SignUp.title} :</h1>
+        <h2 className="text-pink-800 mb-2 font-bold">{state?.general2}</h2>
         <div className="text-neutral-800 text-sm ">
           <p
             className={
@@ -288,6 +282,14 @@ export function SignUpForm({ t, lang }: { t: any; lang: string }) {
         href={`/${lang}/signIn`}
       >
         {t.SignIn.question}
+      </Link>
+      <Link
+        className={`py-2 px-1 text-sm rounded cursor-pointer md:text-lg text-black`}
+        href={`/${lang}/VerifyEmail`}
+      >
+        {lang === "en"
+          ? "Already Signed up ? click to verify"
+          : "أنشأت حساب ؟ اضغط لتحقيق الحساب"}
       </Link>
     </>
   );

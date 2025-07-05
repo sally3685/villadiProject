@@ -209,6 +209,10 @@ export const deleteFlavor = async (
         prisma.recipy.deleteMany(),
         prisma.flavor.deleteMany(),
       ]);
+      console.log(
+        item,
+        "delete alll;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
+      );
     } else {
       if (!flavor) {
         return {

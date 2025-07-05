@@ -62,9 +62,14 @@ export default function VideoUpdateForm({
       nameRef.current?.focus();
 
       if (state.success) {
-        toast.success(t.addVideoForm.doneSubmit, {
-          position: "top-right",
-        });
+        toast.success(
+          lang === "en"
+            ? "Video updated successfully"
+            : "تم تعديل الفيديو بنجاح",
+          {
+            position: "top-right",
+          }
+        );
         window.scroll(0, 0);
         setStep(0);
         setSelectedProduct(null);
@@ -87,11 +92,11 @@ export default function VideoUpdateForm({
 
   const handleSubmit = (formData: FormData) => {
     if (!selectedProduct) {
-      toast.warning(t.addvideoForm.productRequired);
+      toast.warning(t.addVideoForm.productRequired);
       return;
     }
     if (!selectedVideo) {
-      toast.warning(t.addvideoForm.videoRequired);
+      toast.warning(t.addVideoForm.videoRequired);
       return;
     }
     formData.append("language", selectedVideo?.lang);
@@ -142,7 +147,7 @@ export default function VideoUpdateForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Main Form Content */}
           <div className="lg:col-span-2 space-y-8 flex justify-center flex-col">
             <div>
@@ -156,7 +161,7 @@ export default function VideoUpdateForm({
             {step === 0 && (
               <div>
                 <label className="block text-black text-lg lg:text-xl font-bold">
-                  {t.addRecipyForm.recipe}
+                  {lang === "en" ? "Choose video" : "اختر فيديو"}
                 </label>
                 <SearchableSelect
                   options={video}

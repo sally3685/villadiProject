@@ -19,12 +19,7 @@ export default async function Flavor({
   }
   const flavor = await getAllFlavorsWithoutLang();
   if (flavor.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
 
   return (

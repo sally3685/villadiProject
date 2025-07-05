@@ -1,7 +1,13 @@
 import { User } from "../../../prisma/generated/prisma";
 import prisma from "../lib/db";
 import { cache } from "react";
-import { comparePasswords } from "../../../helpers/passwordHasher";
+import {
+  comparePasswords,
+  generateSalt,
+  hashPassword,
+} from "../../../helpers/passwordHasher";
+import { date } from "zod/v4";
+import { verify } from "crypto";
 function getSignUpDTO(user: User) {
   return {
     id: user.id,
@@ -102,6 +108,51 @@ export const checkUser = cache(async (email: string, password: string) => {
     };
   }
 });
+
+export const updateUserPassword = cache(
+  async (email: string, password: string) => {
+    try {
+      const data = await prisma.user.findFirst({
+        where: { email: email },
+      });
+
+      if (!data) {
+        return {
+          status: 404,
+          message: "email not found",
+        };
+      }
+      const salt = generateSalt();
+      const hashedPassword = await hashPassword(password, salt);
+      console.log(email, password);
+      const data1 = await prisma.user.update({
+        where: { email: email },
+        data: {
+          password: hashedPassword,
+          salt: salt,
+        },
+      });
+
+      if (!data1) {
+        return {
+          status: 404,
+          message: "email not found",
+        };
+      }
+      return {
+        status: 200,
+        message: "password reset successfully",
+        user: data1,
+      };
+    } catch (error) {
+      return {
+        status: 500,
+        message: "internal server error",
+      };
+    }
+  }
+);
+
 export const getUserById = cache(async (userId: string) => {
   try {
     const userData = await prisma.user.findFirst({
@@ -111,6 +162,54 @@ export const getUserById = cache(async (userId: string) => {
     return {
       success: true,
       userData,
+    };
+  } catch (error) {
+    return {
+      success: false,
+    };
+  }
+});
+export const getUserByEmail = cache(async (email: string) => {
+  try {
+    const userData = await prisma.user.findFirst({
+      where: { email: email },
+    });
+    return {
+      success: true,
+      userData,
+    };
+  } catch (error) {
+    return {
+      success: false,
+    };
+  }
+});
+export const UpdateUserVerify = cache(async (id: string) => {
+  try {
+    const userData = await prisma.user.update({
+      where: { id: id },
+      data: {
+        verified: true,
+      },
+    });
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+    };
+  }
+});
+export const GetUserVerify = cache(async (id: string) => {
+  try {
+    const userData = await prisma.user.findFirst({
+      where: { id: id },
+      select: { verified: true },
+    });
+    return {
+      success: true,
+      verified: userData,
     };
   } catch (error) {
     return {
@@ -226,6 +325,7 @@ export const grantAdminP = async (userId: string) => {
 export const removeAdminP = async (userP: User) => {
   try {
     // Validate user ID
+    console.log(userP, "userp");
     if (!userP.id || typeof userP.id !== "string") {
       return {
         status: 400,
@@ -249,7 +349,7 @@ export const removeAdminP = async (userP: User) => {
     if (user.role === "User") {
       return {
         status: 400,
-        message: "User is already an admin",
+        message: "Admin is already a user",
       };
     }
     const finalUser = await prisma.user.findMany({

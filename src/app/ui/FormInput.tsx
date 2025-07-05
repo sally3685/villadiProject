@@ -47,9 +47,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           value={value}
           onChange={(e) => onChange(e.target.value)}
         />
-        {error && !value && (
-          <p className="mt-3 text-sm/6 text-red-600">{error}</p>
-        )}
+        {error && <p className="mt-3 text-sm/6 text-red-600">{error}</p>}
       </div>
     </div>
   )

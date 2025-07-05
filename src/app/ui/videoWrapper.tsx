@@ -9,20 +9,21 @@ export default function VideoWrapper({
   t,
   lang,
   videos,
+  myFont3,
 }: {
   t: any;
   lang: string;
   videos: any;
+  myFont3: any;
 }) {
   const [step, setStep] = useState(0);
   if (videos.status === 500) {
-    return (
-      <ErrorPage error={new Error(videos.message)} reset={() => {}}></ErrorPage>
-    );
+    return <ErrorPage error={new Error(videos.message)}></ErrorPage>;
   }
   return (
     <>
       <Items
+        lang={lang}
         img={
           videos.videos.length > 0
             ? videos.videos[step].product.secondryImg
@@ -34,10 +35,11 @@ export default function VideoWrapper({
             : null
         }
       ></Items>
-      <Bars t={t} />
+      <Bars t={t} myFont3={myFont3} />
       <div className="w-full h-[600px] sm:h-[650px] scale-[0.9]">
         <VideoIframe
           t={t}
+          lang={lang}
           setStep={setStep}
           video={videos.videos.length > 0 ? videos.videos[step] : null}
           step={step}

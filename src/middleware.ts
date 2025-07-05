@@ -12,18 +12,33 @@ const protectedRoutes = ["/Control"];
 function getLocale(request: NextRequest): string {
   if (request.cookies.has(cookieName))
     return request.cookies.get(cookieName)!.value;
+  console.log(request.cookies.get(cookieName), "ccccc");
   const acceptLang = request.headers.get("Accept-Language");
   if (!acceptLang) return defaultLocale;
   const headers = { "accept-language": acceptLang };
   const languages = new Negotiator({ headers }).languages();
   return match(languages, locales, defaultLocale);
 }
-
+const specialRoutes = ["FAQ", "ContactUs,PrivacyPolicy", "TermsConditions"];
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-
   if (path.startsWith("/_next")) return NextResponse.next();
-
+  for (const route of specialRoutes) {
+    const normalizedPath = path.endsWith("/") ? path : `${path}/`;
+    const normalizedReferer = req.headers.get("referer")?.endsWith("/")
+      ? req.headers.get("referer")
+      : `${req.headers.get("referer")}/`;
+    if (
+      normalizedPath.includes(`/${route}/`) &&
+      normalizedReferer?.includes(`/${route}/`) &&
+      ((normalizedPath.includes("ar") && normalizedReferer?.includes("en")) ||
+        (normalizedPath.includes("en") && normalizedReferer?.includes("ar")))
+    ) {
+      req.nextUrl.pathname = `/${path.includes("/en") ? "en" : "ar"}/${route}Page`;
+      const response = NextResponse.redirect(req.nextUrl);
+      return response;
+    }
+  }
   const pathnameHasLocale = locales.some(
     (locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`
   );
@@ -49,7 +64,7 @@ export default async function middleware(req: NextRequest) {
 
   const locale = getLocale(req);
   req.nextUrl.pathname = `/${locale}${path}`;
-
+  console.log(req.nextUrl.pathname, path);
   const response = NextResponse.redirect(req.nextUrl);
   response.cookies.set(cookieName, locale);
 

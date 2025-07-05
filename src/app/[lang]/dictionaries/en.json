@@ -58,7 +58,8 @@
     "tab4": "Farm of smiles",
     "tab5": "Where to buy",
     "tab6": "Control",
-    "tab7": "Products"
+    "tab7": "Products",
+    "tab8": "Recipes"
   },
   "lang": {
     "first": "English",
@@ -71,7 +72,8 @@
     "page4": "Map",
     "page5": "Admin",
     "page6": "Flavor",
-    "page7": "Video"
+    "page7": "Video",
+    "page8": "Media"
   },
   "addCategoryForm": {
     "title": "ِAdd category",
@@ -289,15 +291,15 @@
     "deleteWarning": "Are you sure you want to delete ?"
   },
   "Bar": {
-    "one": "Best sellers",
+    "one": "Best flavors 🔥",
     "two": "snack it ,love it , want it",
-    "three": "More than 11 flavors"
+    "three": "Crunch into happiness ✨"
   },
   "videoWrapper": {
     "name": "Videos",
     "noVideos": "No more videos Added",
     "more": "All videos",
-    "details": "Detailes"
+    "details": "product detailes"
   },
   "catigoriesWrapper": {
     "noCats": "No Categories yet !!",
@@ -308,7 +310,7 @@
   },
   "recipesWrapper": {
     "noRecs": "No Recipes yet !!",
-    "all": "Trending Recipes",
+    "all": "Recipe detailes",
     "view": "View All",
     "Recs": "All Recipes "
   },

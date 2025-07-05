@@ -37,6 +37,7 @@ export default function RecipeUpdateForm({
   const [formDataf, setFormDataf] = useState({
     name: "",
     detailes: "",
+    code: "",
   });
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
@@ -59,9 +60,14 @@ export default function RecipeUpdateForm({
       nameRef.current?.focus();
 
       if (state.success) {
-        toast.success(t.addRecipyForm.doneSubmit, {
-          position: "top-right",
-        });
+        toast.success(
+          lang === "en"
+            ? "Recipe updated successfully"
+            : "تم تعديل الوصفة بنجاح",
+          {
+            position: "top-right",
+          }
+        );
         window.scroll(0, 0);
         setStep(0);
         setSelectedFlavor(null);
@@ -70,6 +76,7 @@ export default function RecipeUpdateForm({
         setFormDataf({
           name: "",
           detailes: "",
+          code: "",
         });
       } else if (state.general) {
         toast.error(state.general);
@@ -114,6 +121,7 @@ export default function RecipeUpdateForm({
     setFormDataf({
       name: selectedRecipe?.name,
       detailes: selectedRecipe?.detailes,
+      code: selectedRecipe?.code,
     });
 
     const flavorF = flavors.find((flav) => flav.id === selectedRecipe.flavorId);
@@ -121,7 +129,10 @@ export default function RecipeUpdateForm({
       toast.warning(t.addRecipyForm.flavor);
       return;
     }
-    setSelectedFlavor({ id: selectedRecipe?.flavorId, name: flavorF.name });
+    setSelectedFlavor({
+      id: selectedRecipe?.flavorId,
+      name: flavorF.name,
+    });
     setStep(1);
   };
 
@@ -136,7 +147,7 @@ export default function RecipeUpdateForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Main Form Content */}
           <div className="lg:col-span-2 space-y-8 flex justify-center flex-col">
             <div>
@@ -175,7 +186,17 @@ export default function RecipeUpdateForm({
                   error={state?.errors?.name}
                   required
                 />
-
+                <FormInput
+                  id="code"
+                  label={lang === "en" ? "recipe code" : "كود الوصفة"}
+                  placeholder={lang === "en" ? "456-z" : "451-z"}
+                  value={formDataf.code}
+                  onChange={(value) =>
+                    setFormDataf({ ...formDataf, code: value })
+                  }
+                  error={state?.errors?.code}
+                  required
+                />
                 <FormTextarea
                   id="detailes"
                   label={t.addRecipyForm.details}

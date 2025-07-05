@@ -19,12 +19,7 @@ export default async function Flavor({
     redirect("/unAuthorized");
   }
   if (flavor.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
   return (
     <>

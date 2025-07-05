@@ -2908,6 +2908,7 @@ export namespace Prisma {
     password: string | null
     salt: string | null
     role: string | null
+    verified: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2917,6 +2918,7 @@ export namespace Prisma {
     password: string | null
     salt: string | null
     role: string | null
+    verified: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2926,6 +2928,7 @@ export namespace Prisma {
     password: number
     salt: number
     role: number
+    verified: number
     _all: number
   }
 
@@ -2937,6 +2940,7 @@ export namespace Prisma {
     password?: true
     salt?: true
     role?: true
+    verified?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2946,6 +2950,7 @@ export namespace Prisma {
     password?: true
     salt?: true
     role?: true
+    verified?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2955,6 +2960,7 @@ export namespace Prisma {
     password?: true
     salt?: true
     role?: true
+    verified?: true
     _all?: true
   }
 
@@ -3037,6 +3043,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified: boolean
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3063,6 +3070,7 @@ export namespace Prisma {
     password?: boolean
     salt?: boolean
     role?: boolean
+    verified?: boolean
     comments?: boolean | User$commentsArgs<ExtArgs>
     votesOnComments?: boolean | User$votesOnCommentsArgs<ExtArgs>
     votesOnRecipies?: boolean | User$votesOnRecipiesArgs<ExtArgs>
@@ -3078,9 +3086,10 @@ export namespace Prisma {
     password?: boolean
     salt?: boolean
     role?: boolean
+    verified?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "salt" | "role", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "salt" | "role" | "verified", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comments?: boolean | User$commentsArgs<ExtArgs>
     votesOnComments?: boolean | User$votesOnCommentsArgs<ExtArgs>
@@ -3102,6 +3111,7 @@ export namespace Prisma {
       password: string
       salt: string
       role: string
+      verified: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3503,6 +3513,7 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly salt: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
+    readonly verified: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -10042,6 +10053,7 @@ export namespace Prisma {
   export type RecipyMinAggregateOutputType = {
     id: string | null
     name: string | null
+    code: string | null
     detailes: string | null
     flavorId: string | null
     lang: string | null
@@ -10050,6 +10062,7 @@ export namespace Prisma {
   export type RecipyMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    code: string | null
     detailes: string | null
     flavorId: string | null
     lang: string | null
@@ -10058,6 +10071,7 @@ export namespace Prisma {
   export type RecipyCountAggregateOutputType = {
     id: number
     name: number
+    code: number
     detailes: number
     flavorId: number
     lang: number
@@ -10068,6 +10082,7 @@ export namespace Prisma {
   export type RecipyMinAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     detailes?: true
     flavorId?: true
     lang?: true
@@ -10076,6 +10091,7 @@ export namespace Prisma {
   export type RecipyMaxAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     detailes?: true
     flavorId?: true
     lang?: true
@@ -10084,6 +10100,7 @@ export namespace Prisma {
   export type RecipyCountAggregateInputType = {
     id?: true
     name?: true
+    code?: true
     detailes?: true
     flavorId?: true
     lang?: true
@@ -10165,6 +10182,7 @@ export namespace Prisma {
   export type RecipyGroupByOutputType = {
     id: string
     name: string
+    code: string
     detailes: string
     flavorId: string
     lang: string
@@ -10190,6 +10208,7 @@ export namespace Prisma {
   export type RecipySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    code?: boolean
     detailes?: boolean
     flavorId?: boolean
     lang?: boolean
@@ -10203,12 +10222,13 @@ export namespace Prisma {
   export type RecipySelectScalar = {
     id?: boolean
     name?: boolean
+    code?: boolean
     detailes?: boolean
     flavorId?: boolean
     lang?: boolean
   }
 
-  export type RecipyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "detailes" | "flavorId" | "lang", ExtArgs["result"]["recipy"]>
+  export type RecipyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "detailes" | "flavorId" | "lang", ExtArgs["result"]["recipy"]>
   export type RecipyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     flavor?: boolean | FlavorDefaultArgs<ExtArgs>
     votes?: boolean | Recipy$votesArgs<ExtArgs>
@@ -10224,6 +10244,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      code: string
       detailes: string
       flavorId: string
       lang: string
@@ -10623,6 +10644,7 @@ export namespace Prisma {
   interface RecipyFieldRefs {
     readonly id: FieldRef<"Recipy", 'String'>
     readonly name: FieldRef<"Recipy", 'String'>
+    readonly code: FieldRef<"Recipy", 'String'>
     readonly detailes: FieldRef<"Recipy", 'String'>
     readonly flavorId: FieldRef<"Recipy", 'String'>
     readonly lang: FieldRef<"Recipy", 'String'>
@@ -12943,7 +12965,8 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     salt: 'salt',
-    role: 'role'
+    role: 'role',
+    verified: 'verified'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -13022,6 +13045,7 @@ export namespace Prisma {
   export const RecipyScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    code: 'code',
     detailes: 'detailes',
     flavorId: 'flavorId',
     lang: 'lang'
@@ -13081,6 +13105,13 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -13187,6 +13218,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     salt?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
+    verified?: BoolFilter<"User"> | boolean
     comments?: CommentListRelationFilter
     votesOnComments?: VoteOnCommentListRelationFilter
     votesOnRecipies?: VoteOnRecipyListRelationFilter
@@ -13199,6 +13231,7 @@ export namespace Prisma {
     password?: SortOrder
     salt?: SortOrder
     role?: SortOrder
+    verified?: SortOrder
     comments?: CommentOrderByRelationAggregateInput
     votesOnComments?: VoteOnCommentOrderByRelationAggregateInput
     votesOnRecipies?: VoteOnRecipyOrderByRelationAggregateInput
@@ -13214,6 +13247,7 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     salt?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
+    verified?: BoolFilter<"User"> | boolean
     comments?: CommentListRelationFilter
     votesOnComments?: VoteOnCommentListRelationFilter
     votesOnRecipies?: VoteOnRecipyListRelationFilter
@@ -13226,6 +13260,7 @@ export namespace Prisma {
     password?: SortOrder
     salt?: SortOrder
     role?: SortOrder
+    verified?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -13241,6 +13276,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     salt?: StringWithAggregatesFilter<"User"> | string
     role?: StringWithAggregatesFilter<"User"> | string
+    verified?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type CommentWhereInput = {
@@ -13615,6 +13651,7 @@ export namespace Prisma {
     NOT?: RecipyWhereInput | RecipyWhereInput[]
     id?: StringFilter<"Recipy"> | string
     name?: StringFilter<"Recipy"> | string
+    code?: StringFilter<"Recipy"> | string
     detailes?: StringFilter<"Recipy"> | string
     flavorId?: StringFilter<"Recipy"> | string
     lang?: StringFilter<"Recipy"> | string
@@ -13625,6 +13662,7 @@ export namespace Prisma {
   export type RecipyOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     detailes?: SortOrder
     flavorId?: SortOrder
     lang?: SortOrder
@@ -13638,6 +13676,7 @@ export namespace Prisma {
     OR?: RecipyWhereInput[]
     NOT?: RecipyWhereInput | RecipyWhereInput[]
     name?: StringFilter<"Recipy"> | string
+    code?: StringFilter<"Recipy"> | string
     detailes?: StringFilter<"Recipy"> | string
     flavorId?: StringFilter<"Recipy"> | string
     lang?: StringFilter<"Recipy"> | string
@@ -13648,6 +13687,7 @@ export namespace Prisma {
   export type RecipyOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     detailes?: SortOrder
     flavorId?: SortOrder
     lang?: SortOrder
@@ -13662,6 +13702,7 @@ export namespace Prisma {
     NOT?: RecipyScalarWhereWithAggregatesInput | RecipyScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Recipy"> | string
     name?: StringWithAggregatesFilter<"Recipy"> | string
+    code?: StringWithAggregatesFilter<"Recipy"> | string
     detailes?: StringWithAggregatesFilter<"Recipy"> | string
     flavorId?: StringWithAggregatesFilter<"Recipy"> | string
     lang?: StringWithAggregatesFilter<"Recipy"> | string
@@ -13836,6 +13877,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentCreateNestedManyWithoutUserInput
     votesOnComments?: VoteOnCommentCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyCreateNestedManyWithoutUserInput
@@ -13848,6 +13890,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     votesOnComments?: VoteOnCommentUncheckedCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyUncheckedCreateNestedManyWithoutUserInput
@@ -13859,6 +13902,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUpdateManyWithoutUserNestedInput
     votesOnComments?: VoteOnCommentUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUpdateManyWithoutUserNestedInput
@@ -13870,6 +13914,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     votesOnComments?: VoteOnCommentUncheckedUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUncheckedUpdateManyWithoutUserNestedInput
@@ -13882,6 +13927,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -13890,6 +13936,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -13898,6 +13945,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CommentCreateInput = {
@@ -14258,6 +14306,7 @@ export namespace Prisma {
   export type RecipyCreateInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     lang: string
     flavor: FlavorCreateNestedOneWithoutRecipiesInput
@@ -14267,6 +14316,7 @@ export namespace Prisma {
   export type RecipyUncheckedCreateInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     flavorId: string
     lang: string
@@ -14275,6 +14325,7 @@ export namespace Prisma {
 
   export type RecipyUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
     flavor?: FlavorUpdateOneRequiredWithoutRecipiesNestedInput
@@ -14283,6 +14334,7 @@ export namespace Prisma {
 
   export type RecipyUncheckedUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     flavorId?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
@@ -14292,6 +14344,7 @@ export namespace Prisma {
   export type RecipyCreateManyInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     flavorId: string
     lang: string
@@ -14299,12 +14352,14 @@ export namespace Prisma {
 
   export type RecipyUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
   }
 
   export type RecipyUncheckedUpdateManyInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     flavorId?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
@@ -14459,6 +14514,11 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type CommentListRelationFilter = {
     every?: CommentWhereInput
     some?: CommentWhereInput
@@ -14496,6 +14556,7 @@ export namespace Prisma {
     password?: SortOrder
     salt?: SortOrder
     role?: SortOrder
+    verified?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -14505,6 +14566,7 @@ export namespace Prisma {
     password?: SortOrder
     salt?: SortOrder
     role?: SortOrder
+    verified?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -14514,6 +14576,15 @@ export namespace Prisma {
     password?: SortOrder
     salt?: SortOrder
     role?: SortOrder
+    verified?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -14760,6 +14831,7 @@ export namespace Prisma {
   export type RecipyCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     detailes?: SortOrder
     flavorId?: SortOrder
     lang?: SortOrder
@@ -14768,6 +14840,7 @@ export namespace Prisma {
   export type RecipyMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     detailes?: SortOrder
     flavorId?: SortOrder
     lang?: SortOrder
@@ -14776,6 +14849,7 @@ export namespace Prisma {
   export type RecipyMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    code?: SortOrder
     detailes?: SortOrder
     flavorId?: SortOrder
     lang?: SortOrder
@@ -14892,6 +14966,10 @@ export namespace Prisma {
     connectOrCreate?: VoteOnRecipyCreateOrConnectWithoutUserInput | VoteOnRecipyCreateOrConnectWithoutUserInput[]
     createMany?: VoteOnRecipyCreateManyUserInputEnvelope
     connect?: VoteOnRecipyWhereUniqueInput | VoteOnRecipyWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type CommentUpdateManyWithoutUserNestedInput = {
@@ -15402,6 +15480,19 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -15571,6 +15662,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     votesOnComments?: VoteOnCommentCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyCreateNestedManyWithoutUserInput
   }
@@ -15582,6 +15674,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     votesOnComments?: VoteOnCommentUncheckedCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyUncheckedCreateNestedManyWithoutUserInput
   }
@@ -15627,6 +15720,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     votesOnComments?: VoteOnCommentUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUpdateManyWithoutUserNestedInput
   }
@@ -15637,6 +15731,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     votesOnComments?: VoteOnCommentUncheckedUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -15664,6 +15759,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyCreateNestedManyWithoutUserInput
   }
@@ -15675,6 +15771,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     votesOnRecipies?: VoteOnRecipyUncheckedCreateNestedManyWithoutUserInput
   }
@@ -15720,6 +15817,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUpdateManyWithoutUserNestedInput
   }
@@ -15730,6 +15828,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     votesOnRecipies?: VoteOnRecipyUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -16086,6 +16185,7 @@ export namespace Prisma {
   export type RecipyCreateWithoutFlavorInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     lang: string
     votes?: VoteOnRecipyCreateNestedManyWithoutRecipyInput
@@ -16094,6 +16194,7 @@ export namespace Prisma {
   export type RecipyUncheckedCreateWithoutFlavorInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     lang: string
     votes?: VoteOnRecipyUncheckedCreateNestedManyWithoutRecipyInput
@@ -16146,6 +16247,7 @@ export namespace Prisma {
     NOT?: RecipyScalarWhereInput | RecipyScalarWhereInput[]
     id?: StringFilter<"Recipy"> | string
     name?: StringFilter<"Recipy"> | string
+    code?: StringFilter<"Recipy"> | string
     detailes?: StringFilter<"Recipy"> | string
     flavorId?: StringFilter<"Recipy"> | string
     lang?: StringFilter<"Recipy"> | string
@@ -16239,6 +16341,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentCreateNestedManyWithoutUserInput
     votesOnComments?: VoteOnCommentCreateNestedManyWithoutUserInput
   }
@@ -16250,6 +16353,7 @@ export namespace Prisma {
     password: string
     salt: string
     role: string
+    verified?: boolean
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     votesOnComments?: VoteOnCommentUncheckedCreateNestedManyWithoutUserInput
   }
@@ -16262,6 +16366,7 @@ export namespace Prisma {
   export type RecipyCreateWithoutVotesInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     lang: string
     flavor: FlavorCreateNestedOneWithoutRecipiesInput
@@ -16270,6 +16375,7 @@ export namespace Prisma {
   export type RecipyUncheckedCreateWithoutVotesInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     flavorId: string
     lang: string
@@ -16297,6 +16403,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUpdateManyWithoutUserNestedInput
     votesOnComments?: VoteOnCommentUpdateManyWithoutUserNestedInput
   }
@@ -16307,6 +16414,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     salt?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     votesOnComments?: VoteOnCommentUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -16324,6 +16432,7 @@ export namespace Prisma {
 
   export type RecipyUpdateWithoutVotesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
     flavor?: FlavorUpdateOneRequiredWithoutRecipiesNestedInput
@@ -16331,6 +16440,7 @@ export namespace Prisma {
 
   export type RecipyUncheckedUpdateWithoutVotesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     flavorId?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
@@ -16506,6 +16616,7 @@ export namespace Prisma {
   export type RecipyCreateManyFlavorInput = {
     id?: string
     name: string
+    code: string
     detailes: string
     lang: string
   }
@@ -16550,6 +16661,7 @@ export namespace Prisma {
 
   export type RecipyUpdateWithoutFlavorInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
     votes?: VoteOnRecipyUpdateManyWithoutRecipyNestedInput
@@ -16557,6 +16669,7 @@ export namespace Prisma {
 
   export type RecipyUncheckedUpdateWithoutFlavorInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
     votes?: VoteOnRecipyUncheckedUpdateManyWithoutRecipyNestedInput
@@ -16564,6 +16677,7 @@ export namespace Prisma {
 
   export type RecipyUncheckedUpdateManyWithoutFlavorInput = {
     name?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
     detailes?: StringFieldUpdateOperationsInput | string
     lang?: StringFieldUpdateOperationsInput | string
   }

@@ -7,7 +7,7 @@ import { FormInput } from "./FormInput";
 import { FormFileInput } from "./FormFileInput";
 import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
-import { Flavor } from "@/generated/prisma";
+import { Flavor } from "../../../prisma/generated/prisma";
 
 interface User {
   name: string;
@@ -96,7 +96,7 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Main Form Content */}
           <div className="lg:col-span-2 space-y-8 flex justify-center flex-col">
             <div>

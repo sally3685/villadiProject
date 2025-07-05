@@ -20,7 +20,7 @@ export default async function Opinion({
     return redirect("/signIn");
   }
   if (status !== 200) {
-    return <ErrorPage error={new Error(message)} reset={() => {}}></ErrorPage>;
+    return <ErrorPage error={new Error(message)}></ErrorPage>;
   }
 
   return (

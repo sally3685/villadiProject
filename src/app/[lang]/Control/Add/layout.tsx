@@ -15,7 +15,7 @@ export default async function ControlLayout({
     <main className="relative min-h-screen w-full bg-white flex items-end pt-[100px]">
       <ToastContainer />
       <div className=" min-h-screen w-full flex flex-col-reverse lg:flex-row  relative">
-        <aside className="lg:w-[250px] lg:h-auto w-full h-1/5 bg-white">
+        <aside className="fixed h-auto bottom-0 lg:relative z-[2] lg:w-[250px] lg:h-auto w-full bg-white">
           <SideLinks t={t} lang={lang}></SideLinks>
         </aside>
         <section

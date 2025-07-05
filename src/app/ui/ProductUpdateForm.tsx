@@ -8,7 +8,7 @@ import { FormTextarea } from "./FormTextarea";
 import { FormFileInput } from "./FormFileInput";
 import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
-import { Product } from "@/generated/prisma";
+import { Product } from "../../../prisma/generated/prisma";
 import FormColorInput from "./FormColorPicker";
 
 type CategoryType = {
@@ -67,9 +67,14 @@ export default function ProductUpdateForm({
       nameRef.current?.focus();
 
       if (state.success) {
-        toast.success(t.addProductForm.doneSubmit, {
-          position: "top-right",
-        });
+        toast.success(
+          lang === "en"
+            ? "Product updated successfully"
+            : "تم تعديل الصنف بنجاح",
+          {
+            position: "top-right",
+          }
+        );
         window.scroll(0, 0);
         setStep(0);
         setSelectedCategory(null);
@@ -176,7 +181,7 @@ export default function ProductUpdateForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Main Form Content */}
           <div className="lg:col-span-2 space-y-8 flex justify-center flex-col">
             <div>

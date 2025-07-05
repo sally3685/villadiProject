@@ -373,6 +373,7 @@ export const getAllProdCats = cache(async (code: string, lang: string) => {
               select: {
                 id: true,
                 code: true,
+                name: true,
               },
             },
           },

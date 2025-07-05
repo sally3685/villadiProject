@@ -7,6 +7,7 @@ import {
   ShieldUser,
   Laugh,
   Video,
+  Facebook,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -21,6 +22,7 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
   const adminLinkRef = useRef<HTMLLIElement>(null);
   const flavorLinkRef = useRef<HTMLLIElement>(null);
   const videoLinkRef = useRef<HTMLLIElement>(null);
+  const socialLinkRef = useRef<HTMLLIElement>(null);
   const ulRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   // State
@@ -92,6 +94,7 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
     else if (pathname.includes("Admin")) activeRef = adminLinkRef;
     else if (pathname.includes("Flavor")) activeRef = flavorLinkRef;
     else if (pathname.includes("Video")) activeRef = videoLinkRef;
+    else if (pathname.includes("Social")) activeRef = socialLinkRef;
 
     if (activeRef?.current) {
       positionGreenIndicator(activeRef.current);
@@ -100,8 +103,8 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
   const action = pathname.includes("Add")
     ? "Add"
     : pathname.includes("Update")
-    ? "Update"
-    : "Delete";
+      ? "Update"
+      : "Delete";
   return (
     <div
       ref={containerRef}
@@ -213,23 +216,41 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
         </li>
 
         {pathname.includes("Update") ? (
-          <></>
+          <>
+            <li ref={socialLinkRef}>
+              <Link
+                href={`/${lang}/Control/${action}/Social`}
+                className={`flex items-center p-2 ${
+                  pathname.includes("Social")
+                    ? "text-white font-bold hover:text-black"
+                    : "text-black"
+                } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+              >
+                <Facebook className="z-[1] relative" />
+                <span className="ms-3 lg:block hidden z-[1]">
+                  {t.sideLinks.page8}
+                </span>
+              </Link>
+            </li>
+          </>
         ) : (
-          <li ref={adminLinkRef}>
-            <Link
-              href={`/${lang}/Control/${action}/Admin`}
-              className={`flex items-center p-2 ${
-                pathname.includes("Admin")
-                  ? "text-white font-bold hover:text-black"
-                  : "text-black"
-              } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
-            >
-              <ShieldUser className="z-[1] relative" />
-              <span className="ms-3 lg:block hidden z-[1]">
-                {t.sideLinks.page5}
-              </span>
-            </Link>
-          </li>
+          <>
+            <li ref={adminLinkRef}>
+              <Link
+                href={`/${lang}/Control/${action}/Admin`}
+                className={`flex items-center p-2 ${
+                  pathname.includes("Admin")
+                    ? "text-white font-bold hover:text-black"
+                    : "text-black"
+                } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+              >
+                <ShieldUser className="z-[1] relative" />
+                <span className="ms-3 lg:block hidden z-[1]">
+                  {t.sideLinks.page5}
+                </span>
+              </Link>
+            </li>
+          </>
         )}
 
         <li ref={flavorLinkRef}>

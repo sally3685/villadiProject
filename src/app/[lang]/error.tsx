@@ -5,10 +5,8 @@ import { useEffect } from "react";
 
 export default function ErrorPage({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
 }) {
   const router = useRouter();
   useEffect(() => {}, [error]);
@@ -22,7 +20,6 @@ export default function ErrorPage({
           // Attempt to recover by trying to re-render the segment
           () => {
             router.refresh();
-            reset();
           }
         }
       >

@@ -71,6 +71,7 @@ export default function ProductForm({
   }, []);
 
   useEffect(() => {
+    console.log(state);
     if (state) {
       window.scroll(0, 0);
       nameRef.current?.focus();
@@ -106,7 +107,7 @@ export default function ProductForm({
       );
       return;
     }
-
+    formData.append("language", tempLang);
     formData.append("selectedC", selectedCategory.id);
     formData.append("selectedF", selectedFlavor.id);
     formData.append("backgroundColor", formDataf.backgroundColor);
@@ -159,7 +160,7 @@ export default function ProductForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Left Sidebar */}
           <div className="lg:col-span-1 space-y-8 flex justify-center flex-col">
             <div className="flex flex-col gap-8 mx-4">

@@ -1,7 +1,7 @@
 "use client";
 import { ArrowRight, ArrowLeft, ThumbsUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import Color from "color";
+
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Image from "next/image";
@@ -284,15 +284,22 @@ export default function Carousal3D({
     >
       {items.length === 0 ? (
         <div className="flex flex-col gap-8 max-w-8xl justify-center items-center w-full py-20 z-[1] ">
-          <h1 className="text-2xl md:text-5xl text-black">{noCats}</h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
+            {noCats}
+          </h1>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(
+                    ${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`})] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </div>
       ) : (
         <>
-          <div className="flex items-center flex-col  gap-8 justify-center  max-w-6xl">
-            <h1 className="text-5xl text-black font-bold pb-8">{title}</h1>
+          <div className="flex items-center h-auto flex-col  gap-8 justify-center  max-w-6xl">
+            <h1 className="text-2xl sm:text-4xl xl:text-5xl text-black font-bold pb-8">
+              {title}
+            </h1>
             <div
-              className={`flex items-center  flex-col sm:flex-row justify-center sm:justify- h-[60vh]  w-full ${
+              className={`flex items-center  flex-col sm:flex-row justify-center sm:justify- h-auto  w-full ${
                 items.length < (isMobile ? 3 : 5) ? "gap-8 flex-wrap" : ""
               }`}
             >
@@ -306,7 +313,7 @@ export default function Carousal3D({
                       ...getStyleForIndex(index),
                     }}
                     key={index}
-                    className={`w-[300px] h-[300px] sm:w-[350px] sm:h-[300px] bg-white/70 flex justify-center items-center relative rounded-2xl flex-col gap-4  ${
+                    className={`w-[300px] h-[350px] sm:w-[350px] sm:h-[350px] bg-white/70 flex justify-center items-center relative rounded-2xl flex-col gap-4  ${
                       items.length < (isMobile ? 3 : 5) ? "mb-[66px]" : ""
                     }`}
                   >
@@ -314,40 +321,65 @@ export default function Carousal3D({
                       className="absolute w-full h-full before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
              after:absolute after:content-[''] after:w-1/3 after:h-1/2 after:bg-[#ffffff66] after:bottom-[-10px] after:blur-2xl after:right-[15%] after:opacity-50 z-[0] "
                     ></div>
-                    <Image
-                      className="relative w-full h-[200px] object-contain"
-                      src={`/${
-                        item ? item.flavor.primaryImg : "villadiLogo.svg"
-                      }`}
-                      alt="category image"
-                      width={300}
-                      height={400}
-                    />
-                    <h1 className="text-3xl font-bold text-black relative text-center">
-                      {item.name}
-                    </h1>
-                    <div className="left-[30%] relative flex flex-col justify-center items-center gap-2">
-                      <button
-                        style={{
-                          ...getStyleForOpacityIndex(index),
-                        }}
-                        className="cursor-pointer z-[0] w-[30px] h-[30px] relative top-0  text-sm"
-                        onClick={async () => {
-                          if (user && user.user.email) {
-                            const res = await AddVotesAction(
-                              user.email,
-                              item.id
-                            );
-                          }
-                        }}
-                      >
-                        <ThumbsUp className="relative w-full hover:bg-black hover:text-white p-1 h-[35px] rounded-full" />
-                      </button>
-                      <h2 className=" relative text-sm ">
-                        {lang === "en" ? "votes" : "التصويتات"}{" "}
-                        {item?._count?.votes}
-                      </h2>
+                    <div className="relative h-[300px] p-4 w-full flex justify-center items-center">
+                      <Image
+                        className="absolute top-0 left-[20%] opacity-50 rotate-[30deg] w-full h-[180px] object-contain"
+                        src={`/chef.png`}
+                        alt="chef image"
+                        width={300}
+                        height={400}
+                      />
+                      <Image
+                        className="relative w-full h-[150px] object-contain"
+                        src={`/${
+                          item
+                            ? item.flavor.primaryImg
+                            : lang === "en"
+                              ? "villadiLogo.svg"
+                              : "villadiLogoAr.svg"
+                        }`}
+                        alt="category image"
+                        width={300}
+                        height={400}
+                      />
                     </div>
+                    <div className="flex justify-center">
+                      <h2 className="text-xl w-[90%] sm:text-2xl p-2 font-bold text-black relative text-center">
+                        {item.name}
+                      </h2>{" "}
+                      <div className=" absolute left-[80%] flex flex-col justify-center items-center gap-2">
+                        <button
+                          style={{
+                            ...getStyleForOpacityIndex(index),
+                          }}
+                          className="cursor-pointer z-[0] w-[30px] h-[30px] relative top-0  text-sm"
+                          onClick={async () => {
+                            if (user && user.user.email) {
+                              const res = await AddVotesAction(
+                                user.email,
+                                item.id
+                              );
+                            }
+                          }}
+                        >
+                          <ThumbsUp className="relative w-full hover:bg-black hover:text-white p-1 h-[35px] rounded-full" />
+                        </button>
+                        <h2 className=" relative text-sm text-center p-2">
+                          {lang === "en" ? "votes" : "التصويتات"}{" "}
+                          {item?._count?.votes}
+                        </h2>
+                      </div>
+                    </div>
+
+                    <Link
+                      style={{
+                        ...getStyleForOpacityIndex(index),
+                      }}
+                      className="bg-black relative top-4 text-white! px-4 py-3 z-[0] rounded-2xl"
+                      href={`/${lang}/Recipes/${item.code}`}
+                    >
+                      {lang === "en" ? "Recipe Details" : "تفاصيل الوصفة"}
+                    </Link>
                   </div>
                 )
               )}
@@ -359,10 +391,10 @@ export default function Carousal3D({
                   className="cursor-pointer text-black"
                 />
               )}
-              <div className="bg-white text-black font-bold  text-center  p-2 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-lg">
+              <div className="bg-white text-black font-bold  text-center  p-2 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-sm sm:text-lg">
                 {items && (
                   <Link
-                    href={`/${lang}/Catigories`}
+                    href={`/${lang}/Recipes`}
                     className=" py-2 px-6 text-black rounded-2xl "
                   >
                     {all}

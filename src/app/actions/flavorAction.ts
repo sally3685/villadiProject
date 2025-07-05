@@ -13,6 +13,8 @@ import {
 } from "../lib/definitions";
 import { redirect } from "next/dist/server/api-utils";
 import { getSession } from "../lib/session";
+import { Resend } from "resend";
+import { EmailFlavorTemplate } from "../ui/SuggestFlavorEmailTemplate";
 
 export async function AddFlavorAction(
   state: FormFlavorState,
@@ -174,29 +176,28 @@ export async function SuggestFlavorAction(
 ) {
   try {
     const user = await getSession();
-    if (user.success === false)
+
+    if (user.success === false || !user.user)
       return {
         success: false,
         user: "faild to find user",
       };
     // Validate required fields
-
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: json,
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: process.env.EMAIL_CO!,
+      subject: "Flavor suggestion",
+      react: EmailFlavorTemplate({
+        userName: user.user.name,
+        userEmail: user.user?.email,
+        text: formData.get("details") as string,
+      }),
     });
-    const result = await response.json();
-    if (result.success) {
-      return { success: true };
-    } else {
+    if (error) {
       return { success: false, general: "failed to send email" };
+    } else {
+      return { success: true };
     }
   } catch (error) {
     return { success: false, general: "failed to send email" };

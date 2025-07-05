@@ -6,19 +6,12 @@ import { toast } from "react-toastify";
 import { FormTextarea } from "./FormTextarea";
 import Image from "next/image";
 
-interface User {
-  name: string;
-  email: string;
-  role: string;
-}
-
-interface RecipeFormProps {
+interface SuggestFlavorFormProps {
   t: any;
-  user: User | null;
   lang: string;
 }
 
-export default function SuggestAFlavor({ t, user, lang }: RecipeFormProps) {
+export default function SuggestAFlavor({ t, lang }: SuggestFlavorFormProps) {
   const [formDataf, setFormDataf] = useState({
     details: "",
   });
@@ -50,22 +43,16 @@ export default function SuggestAFlavor({ t, user, lang }: RecipeFormProps) {
   }, [state, t]);
 
   const handleSubmit = (formData: FormData) => {
-    formData.append("access_key", "b5e8ae19-24f4-4d9a-bbdb-7b086a08e08c");
-
     action(formData);
-  };
-
-  const toggleLanguage = () => {
-    setFormDataf({ details: "" });
   };
 
   return (
     <>
       <form
         action={handleSubmit}
-        className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
+        className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-y-auto overflow-x-hidden h-[90%] rounded-[50px] flex flex-col justify-center"
       >
-        <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
+        <div className="h-auto flex items-center justify-center border-b border-gray-900/10 pb-12">
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 z-[2] relative w-[80%]">
             <div className="lg:col-span-3 w-full space-y-8 flex justify-center flex-col ">
               <div className="grid grid-cols-1  w-full  gap-x-6 gap-y-8 lg:grid-cols-6 lg:col-span-2 ">
@@ -99,7 +86,9 @@ export default function SuggestAFlavor({ t, user, lang }: RecipeFormProps) {
             </div>
           </div>
         </div>
-        <div className="absolute z-[1] top-[10%] rotate-[-60deg] left-[70%] flex flex-col gap-[40px]">
+        <div
+          className={`absolute z-[1] top-[10%] rotate-[-100deg] ${lang === "en" ? "left-[70%]" : "right-[70%]"} flex flex-col gap-[40px]`}
+        >
           <Image
             src={"/mayo.png"}
             alt={`Cover for `}

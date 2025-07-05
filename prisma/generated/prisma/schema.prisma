@@ -26,6 +26,7 @@ model User {
   password        String
   salt            String
   role            String
+  verified        Boolean         @default(false)
   comments        Comment[]
   votesOnComments VoteOnComment[]
   votesOnRecipies VoteOnRecipy[]

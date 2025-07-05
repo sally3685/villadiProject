@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 // Register plugins once
 
@@ -139,30 +140,47 @@ export default function LeftRightMenuRec({
       scope: containerRef,
     }
   );
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
+  if (!isMounted) {
+    return null; // or a loading spinner
+  }
   return (
     <div
       ref={containerRef}
       className="flex flex-col gap-8 max-w-8xl justify-center items-center w-full pt-42 z-[1] "
     >
-      <h1 className="text-black font-bold text-3xl sm:text-4xl z-0">{title}</h1>
       {items.length === 0 ? (
         <>
-          <h1 className="text-2xl md:text-5xl text-black">
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
             {t.recipesWrapper.noRecs}
           </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`})] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </>
       ) : (
         <>
-          <input
-            type="text"
-            className="bg-white/50 z-[1] p-2 rounded-2xl text-black border-2 border-black"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
+          <h1 className="text-black font-bold  text-2xl sm:text-4xl xl:text-5xl z-0">
+            {title}
+          </h1>
+          <div className="relative w-[300px]">
+            <input
+              type="text"
+              className="bg-[#46260f]/65 z-[1] p-2 w-full rounded-2xl text-white border-2 border-black"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={
+                lang === "en" ? "Search recipe ..." : "بحث عن وصفة ..."
+              }
+            />
+            <Search
+              className={`text-white top-2  absolute ${lang === "en" ? "right-0" : "left-0"}`}
+            ></Search>
+          </div>
           {filteredItems.map((item: any, index: any) => (
             <div
               ref={setRowRef(index)}
@@ -173,30 +191,42 @@ export default function LeftRightMenuRec({
                   : "flex-col sm:flex-row "
               } min-h-[50vh] w-full px-4 opacity-0 will-change-transform`}
             >
-              <div className="flex flex-col w-80 h-80 justify-center items-center gap-6">
-                <h1 className="text-5xl font-bold text-black relative  break-words">
-                  {renderAnimatedText(item.name, index)}
-                </h1>
+              <div className="flex flex-col w-80  h-[200px] pt-12  justify-center items-center gap-6">
+                <h2 className=" text-xl sm:text-3xl xl:text-4xl font-bold text-black relative ">
+                  {lang === "en"
+                    ? renderAnimatedText(item.name, index)
+                    : item.name}
+                </h2>
                 <Link
-                  href={`/${lang}/Recipes/${item.id}/`}
-                  className="bg-[#34351A]/50 text-white rounded-2xl py-2 px-4"
+                  href={`/${lang}/Recipes/${item.code}/`}
+                  className="bg-[#46260f]/65 text-white rounded-2xl py-2 px-4 text-sm sm:text-lg"
                 >
                   {t.recipesWrapper.all}
                 </Link>
               </div>
 
-              <div className="bg-[#34351A]/50 rounded-2xl w-[320px] h-80 md:w-[450px] md:h-80 flex justify-evenly items-center p-4 relative flex-col overflow-hidden">
+              <div className="bg-[#46260f]/65 rounded-2xl w-[320px] h-80 md:w-[450px] md:h-80 flex justify-evenly items-center p-4 relative flex-col overflow-hidden">
                 <div
                   className="absolute w-full h-full before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
              after:absolute after:content-[''] after:w-1/3 after:h-1/2 after:bg-[#ffffff66] after:bottom-[-10px] after:blur-2xl after:right-[15%] after:opacity-50 z-[0]"
                 ></div>
-                <Image
-                  className="absolute bottom-0 w-[200px] h-[200px] object-contain"
-                  src={`/${item ? item.flavor.primaryImg : "villadiLogo.svg"}`}
-                  alt="category image"
-                  width={300}
-                  height={400}
-                />
+
+                <div className="relative h-[300px] p-4 w-full flex justify-center items-center">
+                  <Image
+                    className="absolute top-0 left-[20%] opacity-70 rotate-[30deg] w-full h-[180px] object-contain"
+                    src={`/chef.png`}
+                    alt="chef image"
+                    width={300}
+                    height={400}
+                  />
+                  <Image
+                    className="relative w-full h-[150px] object-contain"
+                    src={`/${item ? item.flavor.primaryImg : lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}
+                    alt="recipe image"
+                    width={300}
+                    height={400}
+                  />
+                </div>
               </div>
             </div>
           ))}

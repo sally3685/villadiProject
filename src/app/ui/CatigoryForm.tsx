@@ -63,12 +63,6 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
   const handleSubmit = (formData: FormData) => {
     formData.append("language", tempLang);
     action(formData);
-    setFormDataf({
-      name: "",
-      code: "",
-      detailes: "",
-      img: "",
-    });
   };
 
   const toggleLanguage = () => {

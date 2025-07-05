@@ -29,12 +29,7 @@ export default async function Product({
     flavorEn.status === 500 ||
     flavorAr.status === 500
   ) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
   return (
     <>

@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 // Register plugins once
 
@@ -155,24 +156,35 @@ export default function LeftRightMenuVideos({
       ref={containerRef}
       className="flex flex-col gap-8 max-w-8xl justify-center items-center w-full pt-42 z-[1]"
     >
-      <h1 className="text-black font-bold text-3xl sm:text-4xl z-0">{title}</h1>
-
       {videos.length === 0 ? (
         <>
-          <h1 className="text-2xl md:text-5xl text-black">
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
             {t.videoWrapper.noVideos}
           </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(
+                    ${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`})] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </>
       ) : (
         <>
-          <input
-            type="text"
-            className="bg-white/50 z-[1] p-2 rounded-2xl text-black border-2 border-black"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search videos..."
-          />
+          <h1 className="text-black font-bold  text-2xl sm:text-4xl xl:text-5xl z-0">
+            {title}
+          </h1>
+          <div className="relative w-[300px]">
+            <input
+              type="text"
+              className="bg-[#ffffff]/80 z-[1] p-2 w-full rounded-2xl text-black border-2 border-black"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={
+                lang === "en" ? "Search video ..." : "بحث عن فيديو ..."
+              }
+            />
+            <Search
+              className={`text-black top-2  absolute ${lang === "en" ? "right-0" : "left-0"}`}
+            ></Search>
+          </div>
 
           {filteredItems.map((video: any, index: number) => (
             <div
@@ -185,9 +197,9 @@ export default function LeftRightMenuVideos({
               } min-h-[50vh] w-full px-4 opacity-0 will-change-transform`}
             >
               <div
-                className={`flex flex-col w-80 h-80 justify-center items-center gap-6 `}
+                className={`flex flex-col w-80  h-[200px] pt-12  justify-center items-center gap-6 `}
               >
-                <Image
+                {/* <Image
                   className={`z-[0] ${
                     index % 2 === 0 ? "left-[10%]" : "right-[10%]"
                   } stick absolute max-w-[200px] left- object-contain max-h-[160px]`}
@@ -195,13 +207,15 @@ export default function LeftRightMenuVideos({
                   width={200}
                   height={200}
                   alt="stick"
-                />
-                <h1 className="text-5xl font-bold text-black relative">
-                  {renderAnimatedText(video.name, index)}
-                </h1>
+                /> */}
+                <h2 className=" text-xl sm:text-3xl xl:text-4xl font-bold text-black relative ">
+                  {lang === "en"
+                    ? renderAnimatedText(video.name, index)
+                    : video.name}
+                </h2>
                 <Link
                   href={`/${lang}/Catigories/Products/${video.product.code}`}
-                  className="bg-black text-white rounded-2xl py-2 px-4"
+                  className="bg-[#ffffff]/80 text-black rounded-2xl py-2 px-4 text-sm sm:text-lg"
                 >
                   {t.videoWrapper.details}
                 </Link>
@@ -211,7 +225,7 @@ export default function LeftRightMenuVideos({
                 {!showVideo[index] ? (
                   <button
                     onClick={() => toggleVideo(index)}
-                    className="relative overflow-hidden w-[90%] h-[315px] max-w-[560px] cursor-pointer"
+                    className="relative overflow-hidden w-[90%] h-[315px] sm:h-[450px] max-w-[700px] cursor-pointer"
                     aria-label={`Play video ${video.name}`}
                   >
                     <Image
@@ -221,7 +235,7 @@ export default function LeftRightMenuVideos({
                       className="object-cover rounded-3xl"
                       priority
                     />
-                    <div className="overflow-hidden rounded-3xl absolute inset-0 flex items-center justify-center bg-gradient-to-tr from-[#000000]/80 transition hover:from-[#0A0505]/50 hover:to-[#451114]/50">
+                    <div className="overflow-hidden rounded-3xl absolute inset-0 flex items-center justify-center bg-gradient-to-tr from-[#000000]/80 transition hover:from-transparent hover:to-[#000000]/80">
                       <div className="h-16 w-16 overflow-hidden rounded-full bg-red-600 flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -239,7 +253,7 @@ export default function LeftRightMenuVideos({
                     width="560"
                     height="315"
                     onClick={() => toggleVideo(index)}
-                    className="rounded-3xl w-[90%] h-[315px] max-w-[560px]"
+                    className="rounded-3xl w-[90%] h-[315px] sm:h-[450px]! max-w-[700px]!"
                     src={`${video.embededLink}?autoplay=1`}
                     title={`${video.name} video player`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

@@ -1,12 +1,47 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "next/link";
 import { Facebook, Instagram, Youtube } from "lucide-react";
-export default function Social({ t, lang }: { t: any; lang: string }) {
+import { social } from "../../../prisma/generated/prisma";
+
+export default function Social({
+  t,
+  lang,
+  socialItems,
+}: {
+  t: any;
+  lang: string;
+  socialItems: social[];
+}) {
   const [step, setStep] = useState(0);
+  const [face, setFace] = useState<{ embed: string; channel: string }>({
+    embed: "",
+    channel: "",
+  });
+  const [insta, setInsta] = useState<{ embed: string; channel: string }>({
+    embed: "",
+    channel: "",
+  });
+  const [you, setYou] = useState<{ embed: string; channel: string }>({
+    embed: "",
+    channel: "",
+  });
+  useEffect(() => {
+    socialItems.map((item) => {
+      if (item.name === "facebook") {
+        setFace({ embed: item.embededlink, channel: item.channelLink });
+      }
+      if (item.name === "instagram") {
+        setInsta({ embed: item.embededlink, channel: item.channelLink });
+      }
+      if (item.name === "youtube") {
+        setYou({ embed: item.embededlink, channel: item.channelLink });
+      }
+    });
+  }, [socialItems]);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const instaRef = useRef<HTMLDivElement>(null);
@@ -18,7 +53,7 @@ export default function Social({ t, lang }: { t: any; lang: string }) {
     return (
       <h1
         ref={titleRef}
-        className="z-[2]  overflow-hidden text-5xl relative w-full h-full flex justify-center items-center text-black"
+        className="z-[0] top-[11%] overflow-hidden text-2xl sm:text-4xl xl:text-5xl font-bold relative w-full h-full flex justify-center items-center text-black"
       >
         {text.split("").map((letter, i) => (
           <span
@@ -116,63 +151,103 @@ export default function Social({ t, lang }: { t: any; lang: string }) {
     };
   }, [lang]); // Re-run when lang changes
 
+  // useEffect(() => {
+  // const instagram_embed = document.querySelectorAll(".instagram-embed");
+  // if (
+  //     typeof instagram_embed !== "undefined" &&
+  //     instagram_embed !== null &&
+  //     Object.values(instagram_embed).length > 0
+  // ) {
+  //     Object.values(instagram_embed).map((emb) => {
+  //         console.log(emb.textContent);
+  //         const url = emb?.textContent;
+  //         if (url.startsWith("https")) {
+  //             const newComponent = (
+  //                 <InstagramEmbed
+  //                     width={700}
+  //                     height={900}
+  //                     url={url}
+  //                     className="my-5"
+  //                 />
+  //             );
+  //             const root = ReactDOM.createRoot(emb);
+  //             root.render(newComponent);
+  //             return () => {
+  //                 root.unmount();
+  //             };
+  //         }
+  //     });
+  // }
+  // }, []);
+
   return (
     <div
       ref={containerRef}
-      className="relative py-20 flex sm:block flex-col gap-[30px] sm:gap-0 px-4 w-full h-auto sm:h-full justify-center items-center"
+      className="relative py-20 flex lg:block flex-col gap-[30px] lg:gap-0 px-4 w-full h-auto lg:h-full justify-center items-center"
     >
-      {renderAnimatedText(
-        lang === "en" ? "Get Social" : "تواجدنا على وسائل التواصل"
+      {lang === "en" ? (
+        renderAnimatedText("Get Social")
+      ) : (
+        <h1 className="z-[0]  overflow-hidden text-2xl lg:text-4xl xl:text-5xl font-bold relative w-full h-full flex justify-center items-center text-black">
+          تواجدنا على مواقع التواصل
+        </h1>
       )}
+      {/* <div class="instagram-embed">https://www.instagram.com/p/link/</div> */}
+
       <div
         ref={instaRef}
-        className="relative sm:absolute scale-[1]! sm:scale-none  bg-amber-900 rounded-2xl sm:w-[200px] sm:h-[300px] w-[300px] h-[200px] sm:top-1/2 sm:left-1/5 left-0 top-0"
+        className="relative lg:absolute  lg:top-[5%] lg:left-[28%] lg:scale-[0.7] top-0 left-0 scale-[1]!  rounded-2xl"
       >
-        <div className="rounded-full bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
-          <Link href={"/"}>
+        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
+          <Link href={insta.channel}>
             <div className="bg-[url(/insta.png)] bg-center bg-contain size-[60px] rounded-full "></div>
           </Link>
         </div>
         <iframe
-          src="https://www.instagram.com/reel/DLLGG13TAlC/?igsh=M3MwdWpubzBjb3g0"
-          width="500"
-          height="250"
-          className="w-full! h-full! rounded-2xl"
-          style={{ border: "none", overflow: "hidden" }}
-          scrolling="no"
-          allowFullScreen={true}
+          src={`https://www.instagram.com/p/${insta.embed}/embed/`}
+          // src="https://www.instagram.com/villadico/?igsh=MjBxeTA2Ynd4M3Y3#"
+          width="280"
+          height="300"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        ></iframe>
-      </div>
-      <div
-        ref={facebookRef}
-        className="relative sm:absolute  sm:w-[200px] sm:h-[300px] w-[300px] h-[200px]  sm:top-[10%] sm:left-[35%] sm:scale-[0.7] top-0 left-0 scale-[1]!  rounded-2xl"
-      >
-        <div className="rounded-full bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-20px] left-[-10px] flex justify-center items-center">
-          <Link href={"/"}>
-            <div className="bg-[url(/facebook.png)] bg-center bg-contain size-[60px] rounded-full "></div>
-          </Link>
-        </div>
-        <iframe
-          src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Frishi.gupta.259192%2Fposts%2Fpfbid02uGPJxPMH6zZFDn4CByw1UwxZXHLHtiK43xQPkFzk7h1hhvEYbZsqQTZHcXG7qpt4l&show_text=true&width=500"
-          width="500"
-          height="250"
-          className="w-full! h-full! rounded-2xl"
-          style={{ border: "none", overflow: "hidden" }}
-          scrolling="no"
-          allowFullScreen={true}
-          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          className="rounded-2xl lg:w-[280px]! lg:h-[300px]! w-[300px]! h-[300px]! "
         ></iframe>
       </div>
       <div
         ref={youTubeRef}
-        className="relative sm:absolute bg-amber-900 rounded-2xl sm:w-[200px] sm:h-[300px] w-[300px] h-[200px] sm:top-[40%] sm:left-[70%] left-0 top-0 sm:scale-[0.9] scale-[1]!"
+        className="relative lg:absolute scale-[1]! lg:scale-none bg-grey-600 rounded-2xl  lg:top-1/2 lg:left-[10%] left-0 top-0"
       >
-        <div className="rounded-full bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
-          <Link href={"/"}>
-            <div className="bg-[url(/youtube.png)] bg-center bg-contain size-[60px] rounded-full "></div>
+        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
+          <Link href={you.channel}>
+            <div className="bg-[url(/youtube.png)] bg-center   bg-contain size-[60px] rounded-full "></div>
           </Link>
         </div>
+        <iframe
+          src={`https://www.youtube.com/embed/${you.embed}`}
+          // src="https://www.youtube.com/user/webdevelopete"
+          // src="https://youtube.com/user/youtube?sub_confirmation=1"
+          width="300"
+          height="350"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          className="rounded-2xl lg:w-[300px]! lg:h-[350px]! w-[300px]! h-[300px]! "
+        ></iframe>
+      </div>
+      <div
+        ref={facebookRef}
+        className="relative lg:absolute  rounded-2xl  lg:top-[40%] lg:left-[70%] left-0 top-0 lg:scale-[0.9] scale-[1]!"
+      >
+        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-20px] left-[-10px] flex justify-center items-center">
+          <Link href={face.channel}>
+            <div className="bg-[url(/facebook.png)] bg-center bg-contain size-[60px] rounded-full "></div>
+          </Link>
+        </div>
+        <iframe
+          src={`https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F${face.embed}&tabs=timeline&width=300&height=350&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId`}
+          width="310"
+          height="360"
+          scrolling="no"
+          className="rounded-2xl  lg:w-[310px]! lg:h-[360px]! w-[300px]! h-[300px]!"
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share "
+        ></iframe>
       </div>
     </div>
   );

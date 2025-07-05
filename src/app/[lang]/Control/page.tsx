@@ -11,14 +11,14 @@ const Page = async ({ params }: { params: Promise<{ lang: string }> }) => {
   return (
     // <main className="min-h-screen w-full bg-[#da9a40] relative before:absolute before:content-[''] before:w-full before:h-full before:bg-white before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover flex justify-center items-center">
     <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[linear-gradient(to_left_bottom,#ffcd00,#0f7a00)] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffffff] p-8">
-      <div className="z-[1] w-full px-14  max-w-7xl h-3/4 relative flex flex-wrap justify-center items-center gap-12">
+      <div className="z-[1] w-full px-14 py-48 max-w-7xl h-3/4 relative flex flex-wrap justify-center items-center gap-12">
         <Link
           href={`Control/Add/Catigory`}
           className={`${LinkStyle} before:border-[#7abc43]`}
         >
           {" "}
           <LucidePlus size={50} color="#7abc43" />
-          Add Items
+          {lang === "en" ? "Add Items" : "إضافة عناصر"}
         </Link>
         <Link
           href={`Control/Update/Catigory`}
@@ -26,7 +26,7 @@ const Page = async ({ params }: { params: Promise<{ lang: string }> }) => {
         >
           {" "}
           <PenBoxIcon size={50} color="#7abc43" />
-          Edit Items
+          {lang === "en" ? "Edit Items" : "تعديل عناصر"}
         </Link>
         <Link
           href={`Control/Delete/Catigory`}
@@ -34,7 +34,7 @@ const Page = async ({ params }: { params: Promise<{ lang: string }> }) => {
         >
           {" "}
           <Trash2Icon size={50} color="#da9040" />
-          Delete Items
+          {lang === "en" ? "Delete Items" : "حذف عناصر"}
         </Link>
       </div>
     </main>

@@ -33,18 +33,11 @@ export function SignInForm({ t, lang }: { t: any; lang: string }) {
   }, []);
   const router = useRouter();
   if (state?.general)
-    return (
-      <ErrorPage
-        error={new Error(state.general)}
-        reset={() => {
-          router.refresh();
-        }}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error(state.general)}></ErrorPage>;
   return (
     <>
       <form
-        className="flex flex-col  gap-8 w-[250px] md:w-[350px]"
+        className="flex flex-col  gap-8 w-[250px] md:w-[350px] "
         action={(formData: FormData) => {
           if (!validEmail || !validPwd) {
           } else if (validEmail && validPwd) {
@@ -202,6 +195,12 @@ export function SignInForm({ t, lang }: { t: any; lang: string }) {
         href={`/${lang}/signUp`}
       >
         {t.SignUp.question}
+      </Link>
+      <Link
+        className={`py-2 px-1 text-sm rounded cursor-pointer md:text-lg text-black`}
+        href={`/${lang}/ForgetPassword`}
+      >
+        {lang === "en" ? "Forget Password ?" : "نسيت كلمة المرور ؟"}
       </Link>
     </>
   );

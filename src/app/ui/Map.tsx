@@ -1,6 +1,6 @@
 "use client";
 import { MapPin } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,17 +9,22 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const mapImg = useRef<HTMLImageElement>(null);
-  const pinMarker = useRef<HTMLDivElement>(null);
+  const pinMarker = useRef<(HTMLDivElement | null)[]>([]);
   const details = useRef<HTMLDivElement>(null);
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-
+  const setPinRef = useCallback(
+    (index: number) => (el: HTMLDivElement | null) => {
+      pinMarker.current[index] = el;
+    },
+    []
+  );
   useGSAP(
     () => {
       // Only animate if all refs are available
       if (
         !details.current ||
-        !pinMarker.current ||
+        !pinMarker.current.length ||
         !mapImg.current ||
         !containerRef.current
       )
@@ -52,10 +57,10 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
         .fromTo(
           pinMarker.current,
           {
-            opacity: 0,
+            scale: 0,
           },
           {
-            opacity: 1,
+            scale: 1,
           }
         )
         .fromTo(
@@ -68,21 +73,7 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
             x: 0,
             opacity: 1,
           }
-        )
-        .fromTo(
-          pinMarker.current,
-          {
-            rotate: -10,
-          },
-          {
-            rotate: 10,
-            repeat: 2,
-            yoyo: true,
-          }
-        )
-        .to(pinMarker.current, {
-          rotate: 0,
-        });
+        );
       return () => {
         if (tlRef.current) {
           tlRef.current.kill();
@@ -94,19 +85,16 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full  flex justify-evenly items-center flex-col max-w-7xl pt-[100px] sm:pt-[70px] gap-[4rem] sm:gap-[10rem]"
+      className="relative w-full  flex justify-evenly items-center flex-col max-w-7xl py-[100px] sm:pt-48 gap-[4rem] sm:gap-[150px] "
     >
       {maps.length === 0 ? (
-        <>
-          <h1 className="text-2xl md:text-5xl text-black">
-            {lang === "en" ? "Maps" : "خرائط"}
-          </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
-        </>
+        <h1 className=" h-full flex w-full justify-center items-center  text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
+          {lang === "en" ? "No maps added yet" : "لم يتم إضافة خرائط بعد "}
+        </h1>
       ) : (
         <>
-          <h1 className="text-4xl sm:text-6xl font-bold text-black">
-            Market of Villadi
+          <h1 className=" text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
+            {lang === "en" ? "Market of Villadi" : "انتشار شركة فيلادي"}
           </h1>
           <div className="w-full flex justify-evenly items-center h-1/2  max-w-7xl flex-wrap sm:flex-nowrap">
             <div className="relative w-[300px] h-[300px] sm:scale-[1.5] bg-[#033155] rounded-2xl overflow-hidden">
@@ -122,6 +110,7 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
                 <div
                   key={index}
                   // ref={pinMarker}
+                  ref={setPinRef(index)}
                   className="origin-bottom absolute size-[30px] bg-[url(/pinMap_1.svg)] bg-no-repeat bg-contain bg-center rounded-full pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-10"
                   style={{
                     top: `${item}%`,
@@ -134,10 +123,11 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
               ref={details}
               className="flex flex-col justify-center items-center text-black z-[2] gap-6 p-6 max-w-[90%] sm:max-w-[450px]"
             >
-              <h2 className="text-3xl sm:text-5xl font-semibold">
-                Market of {maps[step].name}
+              <h2 className="text-xl sm:text-3xl xl:text-4xl font-semibold">
+                {lang === "en" ? "Market of " : "الانتشار في "}{" "}
+                {maps[step].name}
               </h2>
-              <p className="text-xl sm:text-4xl font-medium">
+              <p className="text-lg sm:text-2xl xl:text-3xl font-medium">
                 {maps[step].details}
               </p>
             </div>

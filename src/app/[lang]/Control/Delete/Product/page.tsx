@@ -19,12 +19,7 @@ export default async function Product({
   }
   const product = await getAllProductsWithoutLang();
   if (product.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
 
   return (

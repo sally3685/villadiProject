@@ -2,9 +2,8 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
-import { StarsIcon, BookHeartIcon } from "lucide-react";
 import React, { useRef } from "react";
-const Bars = ({ t }: { t: any }) => {
+const Bars = ({ t, myFont3 }: { t: any; myFont3: any }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marquee2Ref = useRef<HTMLDivElement>(null);
@@ -104,25 +103,23 @@ const Bars = ({ t }: { t: any }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute z-[0] h-[250x] w-full rotate-[-5deg]"
+      className={`absolute z-[0] h-[300x] w-full rotate-[-5deg] ${myFont3.className} font-bold`}
     >
       <div
         ref={marqueeRef}
-        className=" text-xl sm:text-4xl  mt-12 h-[55px] w-full relative  overflow-hidden"
+        className=" text-2xl sm:text-3xl lg:text-4xl py-[8px]  mt-12my-5 h-auto w-full relative  overflow-hidden"
       >
-        <div className="w-full h-full flex justify-between items-center">
-          <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          <BookHeartIcon className="h-[90%] w-[10%] rounded-xl " />
-          <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
-          <p className="w-full text-center font-bold text-black">
+        <div className="w-full h-full flex  gap-[10px] items-center">
+          <p className="w-full text-center font-bold text-black">{t.Bar.two}</p>
+          <p className="w-full text-center font-bold text-white">{t.Bar.one}</p>
+          <p className="w-full text-center font-bold text-black hidden sm:block">
             {t.Bar.three}
           </p>
         </div>
-        <div className="w-full left-full absolute h-full flex justify-between items-center top-0">
-          <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          <BookHeartIcon className="h-[90%] w-[10%] rounded-xl " />
-          <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
-          <p className="w-full text-center font-bold text-black">
+        <div className="w-full left-full absolute h-full flex  gap-[10px] items-center top-0">
+          <p className="w-full text-center font-bold text-black">{t.Bar.two}</p>
+          <p className="w-full text-center font-bold text-white">{t.Bar.one}</p>
+          <p className="w-full text-center font-bold text-black hidden sm:block">
             {t.Bar.three}
           </p>
         </div>
@@ -130,49 +127,45 @@ const Bars = ({ t }: { t: any }) => {
 
       <div
         ref={marquee2Ref}
-        className=" text-2xl sm:text-4xl  h-[55px] w-full relative overflow-hidden"
+        className=" text-2xl sm:text-3xl lg:text-4xl py-[8px]  my-5 h-auto w-full relative overflow-hidden"
       >
-        <div className="w-full h-full flex justify-between items-center">
-          <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          {/* <div className=" w-[36%] h-[90%]  border-x-[1px]  text-black flex justify-center items-center gap-2 rounded-3xl px-2 py-1">
-            <p className="text-lg relative ">Smart Urban</p>
-            <StarsIcon fill="black"></StarsIcon>
-          </div> */}
-          <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
+        <div className="w-full h-full flex  gap-[10px] items-center">
           <p className="w-full text-center font-bold text-black">
             {t.Bar.three}
           </p>
-        </div>
-        <div className="w-full -left-full absolute h-full flex justify-between items-center top-0">
-          <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          {/* <div className="w-[36%]  h-[80%]  border-x-[2px] border-y-[2px] text-black flex justify-center items-center gap-2 rounded-3xl px-2 py-1">
-            <p className="text-lg relative ">Smart Urban</p>
-            <StarsIcon fill="black"></StarsIcon>
-          </div> */}
+
           <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
-          <p className="w-full text-center font-bold text-black">
+          <p className="w-full text-center font-bold text-black hidden sm:block">
+            {t.Bar.one}
+          </p>
+        </div>
+        <div className="w-full -left-full absolute h-full flex  gap-[10px] items-center top-0">
+          <p className="w-full text-center font-bold text-black ">
             {t.Bar.three}
+          </p>
+
+          <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
+          <p className="w-full text-center font-bold text-black hidden sm:block">
+            {t.Bar.one}
           </p>
         </div>
       </div>
 
       <div
         ref={marquee3Ref}
-        className=" text-2xl sm:text-4xl  h-[55px] w-full relative overflow-hidden"
+        className="text-2xl sm:text-3xl lg:text-4xl py-[8px]  my-5 h-auto w-full relative overflow-hidden"
       >
-        <div className="w-full h-full flex justify-between items-center">
+        <div className="w-full h-full flex  gap-[10px] items-center">
           <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          <StarsIcon className="h-[90%] w-[10%] rounded-xl " />
           <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
-          <p className="w-full text-center font-bold text-black">
+          <p className="w-full text-center font-bold text-black hidden sm:block">
             {t.Bar.three}
           </p>
         </div>
-        <div className="w-full left-full absolute h-full flex justify-between items-center top-0">
+        <div className="w-full left-full absolute h-full flex  gap-[10px] items-center top-0">
           <p className="w-full text-center font-bold text-black">{t.Bar.one}</p>
-          <StarsIcon className="h-[90%] w-[10%] rounded-xl " />
           <p className="w-full text-center font-bold text-white">{t.Bar.two}</p>
-          <p className="w-full text-center font-bold text-black">
+          <p className="w-full text-center font-bold text-black hidden sm:block">
             {t.Bar.three}
           </p>
         </div>

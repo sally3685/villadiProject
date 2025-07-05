@@ -4,9 +4,11 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 export default function Items({
+  lang,
   img,
   img2,
 }: {
+  lang: string;
   img: string | null;
   img2: string | null;
 }) {
@@ -159,7 +161,7 @@ export default function Items({
             {/* Top Left */}
             <div
               style={{ gridArea: "top-left" }}
-              className="flex justify-center items-center relative -left-1/4"
+              className={`flex justify-center items-center relative ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
             >
               <Image
                 ref={img1Ref}
@@ -176,7 +178,7 @@ export default function Items({
             {img2 && (
               <div
                 style={{ gridArea: "top-right" }}
-                className="flex justify-center items-center relative left-1/4"
+                className={`flex justify-center items-center relative ${lang === "en" ? "left-1/4" : "right-1/4"} `}
               >
                 <Image
                   ref={img2Ref}
@@ -210,7 +212,7 @@ export default function Items({
             {img2 && (
               <div
                 style={{ gridArea: "bottom-left" }}
-                className="flex justify-center items-center  relative -left-1/4"
+                className={`flex justify-center items-center  relative ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
               >
                 <Image
                   ref={img4Ref}
@@ -227,7 +229,7 @@ export default function Items({
             {/* Bottom Right */}
             <div
               style={{ gridArea: "bottom-right" }}
-              className="flex justify-center items-center  relative left-1/4"
+              className={`flex justify-center items-center  relative ${lang === "en" ? "left-1/4" : "right-1/4"}`}
             >
               <Image
                 ref={img5Ref}

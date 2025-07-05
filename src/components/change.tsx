@@ -44,8 +44,13 @@ const Change = ({
     | null;
 }) => {
   const [step, setStep] = useState(0);
+
   const [srcImage, setSrcImage] = useState<string[]>([
-    array?.length ? array[step].img : "villadiLogo.svg",
+    array?.length
+      ? array[step].img
+      : lang === "en"
+        ? "/villadiLogo.svg"
+        : "/villadiLogoAr.svg",
     array?.length ? array[step].flavor.primaryImg : "nothing.png",
     array?.length ? array[step].secondryImg : "nothing.png",
   ]);
@@ -166,15 +171,19 @@ const Change = ({
     if (mainElement) {
       mainElement.setAttribute(
         "data-bgcolor",
-        array?.length ? array[step].color : "#ffffff"
+        array?.length ? array[step].color : "#a7edff"
       );
       mainElement.setAttribute(
         "data-color",
-        array?.length ? array[step].p_color : "#000000"
+        array?.length ? array[step].p_color : "#ffffff"
       );
     }
     setSrcImage([
-      array?.length ? array[step].img : "villadiLogo.svg",
+      array?.length
+        ? array[step].img
+        : lang === "en"
+          ? "/villadiLogo.svg"
+          : "/villadiLogoAr.svg",
       array?.length ? array[step].flavor.primaryImg : "nothing.png",
       array?.length ? array[step].secondryImg : "nothing.png",
     ]);
@@ -379,138 +388,146 @@ const Change = ({
 
   return (
     <div className="w-full h-full flex justify-center items-end p-8 relative ">
-      <ArrowLeftCircleIcon
-        size={40}
-        className={`z-10 absolute top-[90%] sm:top-[50%] w-[50%] left-[0%] ${
-          array && step < array.length - 1
-            ? "cursor-pointer text-white"
-            : "cursor-not-allowed text-stone-400"
-        }`}
-        onClick={handleNext}
-      />
-      <div
-        className="absolute w-1/2 h-1/2 before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
+      {!array || array?.length === 0 ? (
+        <h1 className="w-full h-full flex justify-center items-center text-2xl sm:text-4xl xl:text-5xl font-bold ">
+          {lang === "en" ? "No Products yet" : "لا يوجد منتجات بعد"}
+        </h1>
+      ) : (
+        <>
+          <ArrowLeftCircleIcon
+            size={40}
+            className={`z-10 absolute top-[90%] sm:top-[50%] w-[50%] left-[0%] ${
+              array && step < array.length - 1
+                ? "cursor-pointer text-white"
+                : "cursor-not-allowed text-stone-400"
+            }`}
+            onClick={handleNext}
+          />
+          <div
+            className="absolute w-1/2 h-1/2 before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
              after:absolute after:content-[''] after:w-1/3 after:h-1/2 after:bg-[#ffffff66] after:bottom-0 after:blur-2xl after:right-[15%] after:opacity-50 "
-      ></div>
-      <div
-        ref={containerRef}
-        className="chips  w-full h-full bg-center bg-no-repeat bg-contain relative flex justify-center items-center max-w-[440px] max-h-[500px] scale-[0.7] sm:scale-[0.8] lg:scale-[0.9] xl:scale-[1] min-w-[320px]"
-        style={{
-          backgroundImage: `url(${srcImage[0]})`,
-        }}
-      >
-        <Image
-          ref={tomato1Ref}
-          className="z-[0] tomato1 absolute max-w-[100px] object-contain max-h-[160px] "
-          src={`/${srcImage[1]}`}
-          width={80}
-          height={100}
-          alt="tomato"
-        />
-        <Image
-          ref={tomato2Ref}
-          className="z-[0] tomato2 absolute max-w-[100px] object-contain max-h-[160px]"
-          src={`/${srcImage[1]}`}
-          width={80}
-          height={100}
-          alt="tomato"
-        />
-        <Image
-          ref={stickRef}
-          className="z-[0] stick absolute max-w-[100px] object-contain max-h-[160px]"
-          src={`/${srcImage[2]}`}
-          width={80}
-          height={80}
-          alt="stick"
-        />
-        <Image
-          ref={stick2Ref}
-          className="z-[0] stick2 absolute max-w-[100px] object-contain max-h-[160px]"
-          src={`/${srcImage[2]}`}
-          width={80}
-          height={100}
-          alt="stick"
-        />
-        <Image
-          ref={stick3Ref}
-          className="z-[0] stick3 absolute max-w-[100px] object-contain max-h-[160px]"
-          src={`/${srcImage[2]}`}
-          width={80}
-          height={100}
-          alt="stick"
-        />
-        <Image
-          ref={stick4Ref}
-          className="z-[0] stick4 absolute max-w-[100px] object-contain max-h-[160px]"
-          src={`/${srcImage[2]}`}
-          width={80}
-          height={100}
-          alt="stick"
-        />
-        <div className="absolute w-full h-full">
+          ></div>
           <div
-            ref={box2Ref}
-            className="absolute left-1/2 top-[-30%] md:top-0  md:left-[100%] w-40 h-32 bg-white flex items-start justify-center  mask-[url(/border.svg)] mask-center mask-contain mask-no-repeat before:absolute before:content-[''] before:w-full before:h-full before:bg-[url(/border_1.svg)] before:bg-contain before:bg-center before:bg-no-repeat"
+            ref={containerRef}
+            className="chips  w-full h-full bg-center bg-no-repeat bg-contain relative flex justify-center items-center max-w-[440px] max-h-[500px] scale-[0.7] sm:scale-[0.8] lg:scale-[0.9] xl:scale-[1] min-w-[320px]"
+            style={{
+              backgroundImage: `url(${srcImage[0]})`,
+            }}
           >
-            <Link
-              ref={textRef}
-              href={
-                array
-                  ? `${lang}/Catigories/${array[step].category.code}/Products`
-                  : `${lang}/Catigories`
-              }
-              className="text-black relative font-bold rotate-[15deg] text-center top-[20%] w-[90%] h-[55%]"
-            >
-              {array?.length ? array[step].category.name : message}
-            </Link>
-          </div>
-          <div
-            ref={poster1Ref}
-            className="relative w-full h-64 top-[20%] left-[-17%]"
-          >
-            <div
-              ref={circleRef}
-              className="absolute top-1/2 left-1/2 w-4 h-4 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2 before:absolute before:content-[''] before:w-8 before:h-8 before:border-4 before:border-black before:rounded-full before:-left-2 before:-top-2"
+            <Image
+              ref={tomato1Ref}
+              className="z-[0] tomato1 absolute w-auto max-w-[150px] object-contain max-h-[160px] "
+              src={`/${srcImage[1]}`}
+              width={80}
+              height={100}
+              alt="tomato"
             />
-
-            <div
-              ref={cornerRef}
-              className="absolute top-1/2 left-1/2 transform -translate-y-0 -translate-x-full rounded-tl-2xl"
-              style={{
-                borderTop: "0 solid black",
-                borderLeft: "0 solid black",
-                borderRight: "none",
-                borderBottom: "none",
-              }}
+            <Image
+              ref={tomato2Ref}
+              className="z-[0] tomato2 absolute w-auto max-w-[150px] object-contain max-h-[160px]"
+              src={`/${srcImage[1]}`}
+              width={80}
+              height={100}
+              alt="tomato"
             />
-            <div
-              ref={boxRef}
-              className="absolute top-full left-[-10%] w-32 h-20 bg-white border-4 border-gray-800 flex items-center justify-center  rounded-2xl"
-            >
-              <Link
-                ref={textRef}
-                href={
-                  array
-                    ? `${lang}/Catigories/Products/${array[step].code}`
-                    : `${lang}/Catigories`
-                }
-                className="text-gray-800 font-bold opacity-0 text-center"
+            <Image
+              ref={stickRef}
+              className="z-[0] stick absolute max-w-[100px] object-contain max-h-[160px]"
+              src={`/${srcImage[2]}`}
+              width={80}
+              height={80}
+              alt="stick"
+            />
+            <Image
+              ref={stick2Ref}
+              className="z-[0] stick2 absolute max-w-[100px] object-contain max-h-[160px]"
+              src={`/${srcImage[2]}`}
+              width={80}
+              height={100}
+              alt="stick"
+            />
+            <Image
+              ref={stick3Ref}
+              className="z-[0] stick3 absolute max-w-[100px] object-contain max-h-[160px]"
+              src={`/${srcImage[2]}`}
+              width={80}
+              height={100}
+              alt="stick"
+            />
+            <Image
+              ref={stick4Ref}
+              className="z-[0] stick4 absolute max-w-[100px] object-contain max-h-[160px]"
+              src={`/${srcImage[2]}`}
+              width={80}
+              height={100}
+              alt="stick"
+            />
+            <div className="absolute w-full h-full">
+              <div
+                ref={box2Ref}
+                className="absolute left-1/2 top-[-30%] md:top-0  md:left-[100%] w-40 h-32 bg-white flex items-start justify-center  mask-[url(/border.svg)] mask-center mask-contain mask-no-repeat before:absolute before:content-[''] before:w-full before:h-full before:bg-[url(/border_1.svg)] before:bg-contain before:bg-center before:bg-no-repeat"
               >
-                {array?.length ? array[step].name : message}
-              </Link>
+                <Link
+                  ref={textRef}
+                  href={
+                    array
+                      ? `${lang}/Catigories/${array[step].category.code}/Products`
+                      : `${lang}/Catigories`
+                  }
+                  className="text-black relative font-bold rotate-[15deg] text-center top-[20%] w-[90%] h-[55%]"
+                >
+                  {array?.length ? array[step].category.name : message}
+                </Link>
+              </div>
+              <div
+                ref={poster1Ref}
+                className="relative w-full h-64 top-[20%] left-[-17%]"
+              >
+                <div
+                  ref={circleRef}
+                  className="absolute top-1/2 left-1/2 w-4 h-4 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2 before:absolute before:content-[''] before:w-8 before:h-8 before:border-4 before:border-black before:rounded-full before:-left-2 before:-top-2"
+                />
+
+                <div
+                  ref={cornerRef}
+                  className="absolute top-1/2 left-1/2 transform -translate-y-0 -translate-x-full rounded-tl-2xl"
+                  style={{
+                    borderTop: "0 solid black",
+                    borderLeft: "0 solid black",
+                    borderRight: "none",
+                    borderBottom: "none",
+                  }}
+                />
+                <div
+                  ref={boxRef}
+                  className="absolute top-full left-[-10%] w-32 h-20 bg-white border-4 border-gray-800 flex items-center justify-center  rounded-2xl"
+                >
+                  <Link
+                    ref={textRef}
+                    href={
+                      array
+                        ? `${lang}/Catigories/Products/${array[step].code}`
+                        : `${lang}/Catigories`
+                    }
+                    className="text-gray-800 font-bold opacity-0 text-center"
+                  >
+                    {array?.length ? array[step].name : message}
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <ArrowRightCircleIcon
-        size={40}
-        className={`absolute w-[50%] right-[0%] top-[90%] sm:top-[50%] ${
-          array && step > 0
-            ? "cursor-pointer text-white"
-            : "cursor-not-allowed text-stone-400"
-        }`}
-        onClick={handlePrev}
-      />
+          <ArrowRightCircleIcon
+            size={40}
+            className={`absolute w-[50%] right-[0%] top-[90%] sm:top-[50%] ${
+              array && step > 0
+                ? "cursor-pointer text-white"
+                : "cursor-not-allowed text-stone-400"
+            }`}
+            onClick={handlePrev}
+          />
+        </>
+      )}
     </div>
   );
 };

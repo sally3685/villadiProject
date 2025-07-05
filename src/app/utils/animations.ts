@@ -8,6 +8,7 @@ export const animatePageIn = (pathname: string) => {
   if (sections) {
     // Cache elements with proper types
     const main = document.querySelector("main") as HTMLElement;
+    const sec1 = document.getElementById("section1") as HTMLElement;
     const sections = document.querySelectorAll("section");
 
     // Store current active section
@@ -15,17 +16,19 @@ export const animatePageIn = (pathname: string) => {
 
     // Function to update main background
     const updateMainBg = (color = "000000", pcolor = "ffffff") => {
-      gsap.to(main, {
-        backgroundColor: color,
-        duration: 0.5,
-        ease: "power2.inOut",
-        "--colorArrow": pcolor,
-      });
+      if (color != "000000" && pcolor !== "ffffff")
+        gsap.to(main, {
+          backgroundColor: color,
+          duration: 0.5,
+          ease: "power2.inOut",
+          "--colorArrow": pcolor,
+        });
     };
 
     // Initialize ScrollTrigger
     function initScrollColor() {
       sections.forEach((section) => {
+        console.log(section.dataset.color, section);
         ScrollTrigger.create({
           trigger: section,
           start: "top 50%",
@@ -44,15 +47,6 @@ export const animatePageIn = (pathname: string) => {
               activeSection.dataset.color
             );
           },
-          onLeave: () => {
-            if (section === sections[0] && sections[1]) {
-              const nextSection = sections[1] as HTMLElement;
-              updateMainBg(
-                nextSection?.dataset?.bgcolor,
-                nextSection?.dataset?.color
-              );
-            }
-          },
         });
       });
     }
@@ -67,6 +61,7 @@ export const animatePageIn = (pathname: string) => {
             mutation.target === activeSection
           ) {
             const target = mutation.target as HTMLElement; // Fix: Type assertion
+
             updateMainBg(target.dataset.bgcolor, target.dataset.color);
           }
         });

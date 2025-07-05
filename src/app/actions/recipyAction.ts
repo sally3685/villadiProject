@@ -12,7 +12,7 @@ export async function AddRecipeAction(
 ): Promise<FormRecipeState> {
   try {
     // Validate required fields
-    const requiredFields = ["name", "details", "selectedF"];
+    const requiredFields = ["name", "details", "selectedF", "code"];
     for (const field of requiredFields) {
       if (!formData.get(field)) {
         return {
@@ -28,6 +28,7 @@ export async function AddRecipeAction(
       name: formData.get("name"),
       details: formData.get("details"),
       selectedF: formData.get("selectedF"),
+      code: formData.get("code"),
     });
 
     if (!result.success) {
@@ -36,19 +37,36 @@ export async function AddRecipeAction(
       };
     }
 
-    const { name, details, selectedF } = result.data;
-    const language = formData.get("language")?.toString() || "en";
-
+    const { name, details, selectedF, code } = result.data;
+    const language = (formData.get("language") as string) || "en";
     // Add recipe to database
     const { status, message } = await AddRecipe(
       name,
+      code,
       details,
       selectedF,
       language
     );
-
+    if (status === 404) {
+      return {
+        errors: {
+          selectedF: [message ? message : "flavor not found"],
+        },
+      };
+    }
     if (status === 409) {
-      return { errors: { selectedF: [message] } };
+      return {
+        errors: {
+          name: [message ? message : "Recipy with this code already entered"],
+        },
+      };
+    }
+    if (status === 403) {
+      return {
+        errors: {
+          name: [message ? message : "Un authorized"],
+        },
+      };
     }
 
     if (status !== 201) {
@@ -86,6 +104,7 @@ export async function UpdateRecipeAction(
       name: formData.get("name"),
       details: formData.get("detailes"),
       selectedF: formData.get("selectedF"),
+      code: formData.get("code"),
     });
 
     if (!result.success) {
@@ -104,10 +123,11 @@ export async function UpdateRecipeAction(
       detailes: recipeData.details,
       flavorId: recipeData.selectedF,
       lang: language,
+      code: recipeData.code,
     });
 
     if (status === 404) {
-      return { errors: { name: [message] } };
+      return { errors: { name: [message ? message : "recipy was not found"] } };
     }
 
     if (status !== 200) {

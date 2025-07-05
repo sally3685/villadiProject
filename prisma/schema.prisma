@@ -25,6 +25,7 @@ model User {
   password String
   salt String
   role String
+  verified Boolean @default(false)
   comments Comment[]
   votesOnComments    VoteOnComment[]
   votesOnRecipies    VoteOnRecipy[]
@@ -95,6 +96,7 @@ model Flavor{
 model Recipy{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+  code String
   detailes String
   flavorId String @db.ObjectId
   flavor Flavor @relation(fields: [flavorId],references: [id])

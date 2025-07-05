@@ -19,32 +19,23 @@ export default async function ProdCode({
   const catsProds = await getAllCodeCategory(lang, codeId);
   const cats = await getAllCategory(lang);
   if (cats.status === 500 || catsProds.status === 500) {
-    return (
-      <ErrorPage
-        error={new Error("internal server error ")}
-        reset={() => {}}
-      ></ErrorPage>
-    );
+    return <ErrorPage error={new Error("internal server error ")}></ErrorPage>;
   }
   return (
-    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
+    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c4d] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
       {cats.categories.length === 0 ? (
         <>
-          <h1 className="text-2xl md:text-5xl text-black z-[0]">
-            {lang === "en" ? "No categories found" : "لا يوجد منتجات لعرضها"}
+          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black z-[0]">
+            {lang === "en" ? "No categories found" : "لا يوجد أصناف لعرضها"}
           </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
-        </>
-      ) : !catsProds || !catsProds.categories?.products ? (
-        <>
-          <h1 className="text-2xl md:text-5xl text-black z-[0]">
-            {lang === "en" ? "No products found" : "لا يوجد وصفات لعرضها"}
-          </h1>
-          <div className="w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(/villadiLogo.svg)] bg-center bg-contain bg-no-repeat"></div>
+
+          <div
+            className={`w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`})] bg-center bg-contain bg-no-repeat`}
+          ></div>
         </>
       ) : (
         <>
-          <div className="flex flex-col w-full gap-12 px-2 py-12 sm:py-40 max-w-7xl z-[0]">
+          <div className="flex flex-col w-full items-center justify-center gap-12 px-2 py-[100px] sm:py-40 max-w-7xl z-[0]">
             <ProdCodeItems catsProds={catsProds} lang={lang} />
             <Carousal3D
               items={cats.categories}
