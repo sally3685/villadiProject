@@ -23,7 +23,7 @@ export default async function Catigory({
   return (
     <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-white ">
       {/* [#ffd597]  */}
-      <Items img={"cheese.png"} img2={"vanillia.png"}></Items>
+      <Items img={"cheese.png"} img2={"vanillia.png"} lang={lang}></Items>
       <LeftRightMenuRec
         items={recipies}
         t={t}
