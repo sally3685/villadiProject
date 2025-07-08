@@ -89,7 +89,7 @@ export default function RecipeDetails({
                 />
               </div>
             </div>{" "}
-            <div className="flex text-white flex-col gap-6 items-center justify-center w-1/2 max-w-[400px] h-1/2">
+            <div className="flex text-white flex-col gap-6 items-center justify-center sm:w-1/2 max-w-[400px] w-full h-1/2">
               <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold ">
                 {recipe.name}
               </h2>

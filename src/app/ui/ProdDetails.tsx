@@ -51,7 +51,7 @@ export default function ProdDetails({
   return (
     <>
       <section className="w-full lg:min-w-5xl h-3/4 overflow-auto max-w-7xl rounded-2xl flex flex-wrap gap-20 py-12 px-4 relative bg-[#1c1100]/50  justify-center items-center flex-col">
-        <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold ">
+        <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold text-center">
           {product.product.category.name}{" "}
           {lang === "en" ? (
             <ArrowRight className="inline-block text-3xl font-bold" />
@@ -89,7 +89,7 @@ export default function ProdDetails({
                 height={200}
               />
             </div>
-            <div className="flex text-white flex-col gap-6 items-center justify-center w-1/2 max-w-[400px] h-1/2">
+            <div className="flex text-white flex-col gap-6 items-center justify-center sm:w-1/2 max-w-[400px] w-full h-1/2">
               <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold ">
                 {lang === "en" ? "Product : " : "المنتج : "}
                 {product.product.name}

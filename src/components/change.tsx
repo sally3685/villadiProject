@@ -6,7 +6,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "lucide-react";
 import Link from "next/link";
-import { normalizeImageUrl } from "../../helpers/normalizeUrl";
 const Change = ({
   array,
   message,
@@ -427,7 +426,7 @@ const Change = ({
             <Image
               ref={tomato1Ref}
               className="z-[0] tomato1 absolute w-auto max-w-[150px] object-contain max-h-[160px] "
-              src={`${normalizeImageUrl(srcImage[1])}`}
+              src={`${srcImage[1]}`}
               width={80}
               height={90}
               alt="flavor"

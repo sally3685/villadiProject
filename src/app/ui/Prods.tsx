@@ -74,7 +74,7 @@ export default function ProdItems({
       <div className="w-full lg:min-w-5xl h-3/4 overflow-y-auto max-w-7xl rounded-2xl flex flex-wrap gap-20 py-20 px-4 relative bg-[#1c1100]/50  justify-center items-center flex-col">
         {catsProds.length > 0 ? (
           <>
-            <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold ">
+            <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold text-center">
               {lang === "en" ? "Products" : "منتجات"}
             </h1>
             <div className="relative w-[300px]">

@@ -132,7 +132,30 @@ export default function VideoIframe({
       }, 3000);
     }
   };
+  function getContrastColor(bgColor: string): string {
+    // Clean the hex color (remove # if present)
+    const hex = bgColor.replace("#", "");
 
+    // Convert 3-digit hex to 6-digits if needed
+    const fullHex =
+      hex.length === 3
+        ? hex
+            .split("")
+            .map((c) => c + c)
+            .join("")
+        : hex;
+
+    // Parse RGB components
+    const r = parseInt(fullHex.substring(0, 2), 16);
+    const g = parseInt(fullHex.substring(2, 4), 16);
+    const b = parseInt(fullHex.substring(4, 6), 16);
+
+    // Calculate luminance (perceived brightness)
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Return black for light colors, white for dark colors
+    return luminance > 0.5 ? "black" : "white";
+  }
   // Update background colors when step changes
   useEffect(() => {
     const mainElement = document.getElementById("section2");
@@ -226,7 +249,9 @@ export default function VideoIframe({
       ref={containerRef}
       className={`relative aspect-video w-full h-full rounded-lg flex flex-col justify-center items-center overflow-hidden`}
     >
-      <h1 className=" font-bold text-2xl sm:text-4xl xl:text-5xl mb-12">
+      <h1
+        className={` font-bold text-2xl sm:text-4xl xl:text-5xl mb-12 text-${video && video.product ? getContrastColor(video.product.p_color) : "white"}`}
+      >
         {t.videoWrapper.name}
       </h1>
       {!showVideo && video ? (
