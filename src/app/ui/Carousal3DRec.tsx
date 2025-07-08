@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import Image from "next/image";
 import Link from "next/link";
 import { AddVotesAction } from "../actions/votes";
+import { toast } from "react-toastify";
 const xsmallL = {
   width: "400px",
   height: "400px",
@@ -354,12 +355,17 @@ export default function Carousal3D({
                           }}
                           className="cursor-pointer z-[0] w-[30px] h-[30px] relative top-0  text-sm"
                           onClick={async () => {
-                            if (user && user.user.email) {
+                            if (user && user.user && user.user.email) {
                               const res = await AddVotesAction(
                                 user.email,
                                 item.id
                               );
-                            }
+                            } else
+                              toast.warning(
+                                lang === "en"
+                                  ? "Please sign in first ♡"
+                                  : "من فضلك سجل دخول أولا ♡"
+                              );
                           }}
                         >
                           <ThumbsUp className="relative w-full hover:bg-black hover:text-white p-1 h-[35px] rounded-full" />

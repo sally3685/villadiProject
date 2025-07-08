@@ -21,11 +21,7 @@ export default async function Recipes({
   const recipes = await getAllRecipies(lang);
   const result = await getSession();
 
-  if (
-    result.success === false ||
-    recipe.status === 500 ||
-    recipes.status === 500
-  ) {
+  if (recipe.status === 500 || recipes.status === 500) {
     return <ErrorPage error={new Error("internal server error ")}></ErrorPage>;
   }
   return (
