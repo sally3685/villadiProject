@@ -92,53 +92,6 @@ export async function AddMapAction(
   }
 }
 
-export async function AddMapImageAction(
-  state: FormMapImageState,
-  formData: FormData
-): Promise<FormMapImageState> {
-  try {
-    // Validate required fields
-    const requiredFields = ["img"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
-    const result = MapImgFormSchema.safeParse({
-      img: formData.get("img"),
-    });
-
-    if (!result.success) {
-      return {
-        errors: result.error.flatten().fieldErrors,
-      };
-    }
-
-    const { img } = result.data;
-    // Handle image upload
-    let imageName = "";
-    if (img instanceof File && img.size > 0) {
-      const bytes = await img.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      imageName = img.name.replace(/\s+/g, "");
-      await writeFile(`./public/${imageName}`, buffer);
-    }
-
-    return {
-      success: true,
-    };
-  } catch (error) {
-    return {
-      general: "An unexpected error occurred. Please try again later.",
-    };
-  }
-}
 export async function UpdateMapAction(
   state: FormMapState,
   formData: FormData

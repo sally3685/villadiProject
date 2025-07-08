@@ -16,7 +16,7 @@ export default async function Catigory({
     return <ErrorPage error={new Error(message)}></ErrorPage>;
   }
   return (
-    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#ffffff8f] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
+    <main className="min-h-screen w-full flex overflow-x-hidden justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#ffffff8f] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
       <LeftRightMenuVideos
         videos={videos}
         t={t}

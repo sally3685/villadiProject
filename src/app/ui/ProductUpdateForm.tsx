@@ -10,7 +10,8 @@ import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
 import { Product } from "../../../prisma/generated/prisma";
 import FormColorInput from "./FormColorPicker";
-
+import { deleteUTFiles } from "../data-access-layer/uploadthingDAL";
+import Image from "next/image";
 type CategoryType = {
   name: string;
   code: string;
@@ -40,10 +41,22 @@ export default function ProductUpdateForm({
     name: "",
     code: "",
     detailes: "",
-    img: "",
-    img2: "",
     color: "",
     p_color: "",
+  });
+  const [imgAction, setAction] = useState(false);
+  const [imgAction2, setAction2] = useState(false);
+
+  const [imgDelete, setImgDelete] = useState(false);
+
+  const [imgDelete2, setImgDelete2] = useState(false);
+  const [key1, setKey1] = useState({
+    img: "",
+    key: "",
+  });
+  const [key2, setKey2] = useState({
+    img: "",
+    key: "",
   });
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
@@ -85,11 +98,12 @@ export default function ProductUpdateForm({
           name: "",
           code: "",
           detailes: "",
-          img: "",
-          img2: "",
           color: "",
           p_color: "",
         });
+
+        setKey1({ img: "", key: "" });
+        setKey2({ img: "", key: "" });
       } else if (state.general) {
         toast.error(state.general);
       } else if (state.errors) {
@@ -117,6 +131,8 @@ export default function ProductUpdateForm({
     formData.append("selectedF", selectedFlavor?.id);
     formData.append("backgroundColor", formDataf?.color);
     formData.append("patternColor", formDataf?.p_color);
+    formData.append("img", key1.img);
+    formData.append("img2", key2.img);
     action(formData);
   };
 
@@ -141,12 +157,18 @@ export default function ProductUpdateForm({
       name: selectedProduct?.name,
       code: selectedProduct?.code,
       detailes: selectedProduct?.detailes,
-      img: selectedProduct?.img,
-      img2: selectedProduct?.secondryImg,
       color: selectedProduct?.color,
       p_color: selectedProduct?.p_color,
     });
 
+    setKey1({
+      img: selectedProduct?.img,
+      key: selectedProduct?.img.split("/").pop() as string,
+    });
+    setKey2({
+      img: selectedProduct?.secondryImg,
+      key: selectedProduct?.secondryImg.split("/").pop() as string,
+    });
     const categoryF = categories.find(
       (cat) => cat.id === selectedProduct.categoryId
     );
@@ -276,36 +298,112 @@ export default function ProductUpdateForm({
                     </p>
                   )}
                 </div>
-                <FormFileInput
-                  id="img"
-                  label={t.addProductForm.img}
-                  addText={t.addProductForm.addimg}
-                  selectedText={t.addProductForm.imgselected}
-                  detailsText={t.addProductForm.imgdetailes}
-                  value={formDataf.img}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img: value })
-                  }
-                  error={state?.errors?.img}
-                  showLanguageInput
-                  lang={lang}
-                  tempLang={tempLang}
-                />
-                <FormFileInput
-                  id="img2"
-                  label={t.addFlavorForm.img2}
-                  addText={t.addFlavorForm.addimg2}
-                  selectedText={t.addFlavorForm.imgselected}
-                  detailsText={t.addFlavorForm.imgdetailes}
-                  value={formDataf.img2}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img2: value })
-                  }
-                  error={state?.errors?.img2}
-                  showLanguageInput
-                  lang={lang}
-                  tempLang={lang}
-                />
+
+                {!imgDelete ? (
+                  <div className="flex flex-col gap-2 col-span-full">
+                    <p className="text:sm lg:text-lg font-semibold">
+                      {lang === "en"
+                        ? "click on the image to delete and reupload"
+                        : "اضغط على الصورة لحذفها وإعادة الادخال"}
+                    </p>
+                    <p className="text:xs lg:text-sm ">
+                      {lang === "en"
+                        ? "if image is not here it is a network error . you can still click and delete it "
+                        : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
+                    </p>
+                    <Image
+                      src={key1.img}
+                      width={500}
+                      height={200}
+                      alt="product img"
+                      className="object-contain cursor-pointer h-[200px]"
+                      onClick={async () => {
+                        setAction(true);
+                        const res = await deleteUTFiles(key1.key as string);
+                        if (res.status === 200) {
+                          toast.success(
+                            lang === "en" ? "image deleted" : "تم حذف الصورة"
+                          );
+                          setKey1({ ...key1, img: "", key: "" });
+                          setImgDelete(true);
+                        } else
+                          toast.error(
+                            lang === "en" ? "deletion failed" : "فشل الحذف"
+                          );
+                        if (res) setAction(false);
+                      }}
+                    ></Image>
+                  </div>
+                ) : imgDelete ? (
+                  <FormFileInput
+                    label={t.addProductForm.img}
+                    error={state?.errors?.img}
+                    imgName={key1.img}
+                    onAction={setAction}
+                    toast={toast}
+                    setFormDataf={setKey1}
+                    formDataf={key1}
+                    lang={lang}
+                    alt={lang === "en" ? "product img" : "صورة المنتج"}
+                  />
+                ) : (
+                  <></>
+                )}
+                {!imgDelete2 ? (
+                  <div className="flex flex-col gap-2 col-span-full">
+                    <p className="text:sm lg:text-lg font-semibold">
+                      {lang === "en"
+                        ? "click on the image to delete and reupload"
+                        : "اضغط على الصورة لحذفها وإعادة الادخال"}
+                    </p>
+                    <p className="text:xs lg:text-sm ">
+                      {lang === "en"
+                        ? "if image is not here it is a network error . you can still click and delete it "
+                        : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
+                    </p>
+                    <Image
+                      src={key2.img}
+                      width={500}
+                      height={200}
+                      alt="product img"
+                      className="object-contain cursor-pointer h-[200px]"
+                      onClick={async () => {
+                        setAction2(true);
+                        const res = await deleteUTFiles(key2.key as string);
+                        if (res.status === 200) {
+                          toast.success(
+                            lang === "en" ? "image deleted" : "تم حذف الصورة"
+                          );
+                          setKey2({ ...key2, img: "", key: "" });
+                          setImgDelete2(true);
+                        } else
+                          toast.error(
+                            lang === "en" ? "deletion failed" : "فشل الحذف"
+                          );
+                        if (res) setAction2(false);
+                      }}
+                    ></Image>
+                  </div>
+                ) : imgDelete2 ? (
+                  <FormFileInput
+                    label={t.addFlavorForm.img2}
+                    error={state?.errors?.img2}
+                    imgName={key2.img}
+                    onAction={setAction2}
+                    toast={toast}
+                    setFormDataf={setKey2}
+                    formDataf={key2}
+                    lang={lang}
+                    alt={
+                      lang === "en"
+                        ? "product's side img"
+                        : "الصورة الجانبية للمنتج"
+                    }
+                  />
+                ) : (
+                  <></>
+                )}
+
                 <FormColorInput
                   label={t.addProductForm.backgroundColor}
                   color={formDataf.color}
@@ -353,7 +451,12 @@ export default function ProductUpdateForm({
                   {t.addProductForm.next}
                 </button>
               ) : (
-                <SubmitButton t={t} />
+                <SubmitButton
+                  t={t}
+                  imgAction={imgAction}
+                  lang={lang}
+                  imgAction2={imgAction2}
+                />
               )}
             </div>
           </div>
@@ -363,18 +466,36 @@ export default function ProductUpdateForm({
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+  imgAction2,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+  imgAction2: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
-      className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+      disabled={pending || imgAction || imgAction2}
+      className={`py-3 px-2 text-sm rounded lg:text-lg text-white ${
+        pending || imgAction || imgAction2
+          ? "bg-neutral-300 cursor-not-allowed "
+          : "bg-[#7abc43] hover:bg-[#6aab3a] cursor-pointer "
       }`}
       type="submit"
     >
-      {pending ? t.addProductForm.waitSubmit : t.addProductForm.submit}
+      {pending
+        ? t.addProductForm.waitSubmit
+        : (imgAction || imgAction2) && lang === "en"
+          ? "proccessing"
+          : (imgAction || imgAction2) && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addProductForm.submit}
     </button>
   );
 }

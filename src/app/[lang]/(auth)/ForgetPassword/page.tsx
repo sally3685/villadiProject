@@ -5,7 +5,6 @@ import {
   checkVerifySession,
 } from "@/app/lib/verifyEmailSession";
 import { sessionExist } from "@/app/lib/session";
-import { ResendCode } from "@/app/ui/ResendCode";
 import { getDictionary } from "../../dictionaries";
 import { ResendCodePass } from "@/app/ui/ResendCodePass";
 import VerifyPassForm from "@/app/ui/verifyPasswordForm";

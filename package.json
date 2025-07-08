@@ -28,6 +28,7 @@
     "@formatjs/intl-localematcher": "^0.6.1",
     "@gsap/react": "^2.1.2",
     "@types/negotiator": "^0.6.4",
+    "@uploadthing/react": "^7.3.2",
     "bcryptjs": "^3.0.2",
     "crypto": "^1.0.1",
     "gsap": "^3.13.0",
@@ -41,6 +42,7 @@
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
     "resend": "^4.6.0",
+    "uploadthing": "^7.7.3",
     "zod": "^3.25.56"
   }
 }

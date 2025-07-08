@@ -1,6 +1,6 @@
 "use client";
 import { redirect, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { LucideGlobe, UserIcon } from "lucide-react";
 import Link from "next/link";
@@ -35,8 +35,11 @@ export default function Nav({
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
   const [openLanguage, setOpenLanguage] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(false);
+  useEffect(() => {
+    setOpenNavMenu(false);
+  }, [pathname]);
   return (
-    <nav className="bg-white fixed top-5 z-[3] rounded-2xl  w-[95%]">
+    <nav className="bg-white fixed top-5 z-[555] rounded-2xl  w-[95%]">
       <div className="mx-auto max-w-[1435px] w-auto  px-2  xl:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center xl:hidden">
@@ -108,7 +111,7 @@ export default function Nav({
                     pathname.endsWith("Catigories")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                   aria-current="page"
                 >
                   {t.nav.tab1}
@@ -119,7 +122,7 @@ export default function Nav({
                     pathname.endsWith("Products")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                   aria-current="page"
                 >
                   {t.nav.tab7}
@@ -130,7 +133,7 @@ export default function Nav({
                     pathname.includes("Recipes")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                   aria-current="page"
                 >
                   {t.nav.tab8}
@@ -141,7 +144,7 @@ export default function Nav({
                     pathname.includes("Aboutus")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                 >
                   {t.nav.tab2}
                 </Link>
@@ -151,7 +154,7 @@ export default function Nav({
                     pathname.includes("SuggestAFlavor")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                 >
                   {t.nav.tab3}
                 </Link>
@@ -161,7 +164,7 @@ export default function Nav({
                     pathname.includes("Opinion")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                 >
                   {t.nav.tab4}
                 </Link>
@@ -171,7 +174,7 @@ export default function Nav({
                     pathname.includes("Maps")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                 >
                   {t.nav.tab5}
                 </Link>
@@ -181,7 +184,7 @@ export default function Nav({
                     pathname.includes("Videos")
                       ? "text-white bg-black"
                       : "text-black hover:text-white hover:bg-black"
-                  }  transition-all duration-2 font-medium`}
+                  }  transition-all duration-2 font-medium flex justify-center items-center`}
                 >
                   {getLang(pathname) === "en" ? "Videos" : "الفيديوهات"}
                 </Link>
@@ -192,7 +195,7 @@ export default function Nav({
                       pathname.includes("Control")
                         ? "text-white bg-black"
                         : "text-black hover:text-white hover:bg-black"
-                    }  transition-all duration-2 font-medium`}
+                    }  transition-all duration-2 font-medium flex justify-center items-center`}
                   >
                     {t.nav.tab6}
                   </Link>
@@ -297,7 +300,7 @@ export default function Nav({
             ) : (
               <Link
                 href={`/${getLang(pathname)}/signUp`}
-                className={`rounded-xl px-3 py-2 text-sm md:text-lg text-white bg-black transition-all duration-2 font-medium mx-4 hover:bg-white hover:text-black`}
+                className={`rounded-xl px-3 py-2 text-sm md:text-lg text-white bg-black transition-all duration-2 font-medium flex justify-center items-center mx-4 hover:bg-white hover:text-black`}
               >
                 {t.SignUp.title}
               </Link>
@@ -315,7 +318,7 @@ export default function Nav({
           <Image
             width={20}
             height={20}
-            className="h-14 w-full cursor-pointer "
+            className="h-14 w-full cursor-pointer sm:hidden"
             onClick={() => {
               redirect(`/${getLang(pathname)}`);
             }}
@@ -332,7 +335,7 @@ export default function Nav({
               pathname.includes("Categories")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            }  transition-all duration-2 font-medium`}
+            }  transition-all duration-2 font-medium flex justify-center items-center`}
             aria-current="page"
           >
             {t.nav.tab1}
@@ -343,7 +346,7 @@ export default function Nav({
               pathname.includes("Products")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            }  transition-all duration-2 font-medium`}
+            }  transition-all duration-2 font-medium flex justify-center items-center`}
             aria-current="page"
           >
             {t.nav.tab7}
@@ -354,7 +357,7 @@ export default function Nav({
               pathname.includes("Recipes")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            }  transition-all duration-2 font-medium`}
+            }  transition-all duration-2 font-medium flex justify-center items-center`}
             aria-current="page"
           >
             {t.nav.tab8}
@@ -365,7 +368,7 @@ export default function Nav({
               pathname.includes("Aboutus")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            } transition-all duration-2 font-medium `}
+            } transition-all duration-2 font-medium flex justify-center items-center `}
           >
             {t.nav.tab2}
           </Link>
@@ -375,7 +378,7 @@ export default function Nav({
               pathname.includes("SuggestAFlavor")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            } transition-all duration-2 font-medium `}
+            } transition-all duration-2 font-medium flex justify-center items-center `}
           >
             {t.nav.tab3}
           </Link>
@@ -385,7 +388,7 @@ export default function Nav({
               pathname.includes("Opinion")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            } transition-all duration-2 font-medium`}
+            } transition-all duration-2 font-medium flex justify-center items-center`}
           >
             {t.nav.tab4}
           </Link>
@@ -395,7 +398,7 @@ export default function Nav({
               pathname.includes("Maps")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            } transition-all duration-2 font-medium `}
+            } transition-all duration-2 font-medium flex justify-center items-center `}
           >
             {t.nav.tab5}
           </Link>
@@ -405,7 +408,7 @@ export default function Nav({
               pathname.includes("Videos")
                 ? "text-white bg-black"
                 : "text-black hover:text-white hover:bg-black"
-            } transition-all duration-2 font-medium `}
+            } transition-all duration-2 font-medium flex justify-center items-center `}
           >
             {getLang(pathname) === "en" ? "Videos" : "الفيديوهات"}
           </Link>
@@ -416,7 +419,7 @@ export default function Nav({
                 pathname.includes("Controle")
                   ? "text-white bg-black"
                   : "text-black hover:text-white hover:bg-black"
-              } transition-all duration-2 font-medium `}
+              } transition-all duration-2 font-medium flex justify-center items-center `}
             >
               {t.nav.tab6}
             </Link>

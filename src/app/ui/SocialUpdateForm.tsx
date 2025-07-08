@@ -38,7 +38,6 @@ export default function SocialUpdateForm({
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       nameRef.current?.focus();
 
@@ -63,7 +62,6 @@ export default function SocialUpdateForm({
       } else if (state.general) {
         toast.error(state.general);
       } else if (state.errors) {
-        console.log(state.errors);
         toast.error(t.addVideoForm.validationError);
       }
     }
@@ -114,7 +112,7 @@ export default function SocialUpdateForm({
       className="z-[1] relative bg-white mb-8 p-12 max-w-6xl w-full lg:w-[95%] xl:w-[97%] 2xl:w-full overflow-auto h-[90%] rounded-[50px]"
     >
       <div className="h-full flex items-center justify-center border-b border-gray-900/10 pb-12">
-        <div className="mt-10 flex gap-x-6 flex-col w-full">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 w-full">
           {/* Main Form Content */}
           <div className="lg:col-span-2 space-y-8 flex justify-center flex-col">
             <div>
@@ -147,54 +145,74 @@ export default function SocialUpdateForm({
                   {selectedSocial?.name === "instagram" ? (
                     <>
                       <h3 className="text-lg sm:text-xl">
-                        To get the instagram post id :
+                        {lang === "en"
+                          ? "To get the instagram post id :"
+                          : "للحصول على مفتاح منشور الانستغرام"}
                       </h3>
                       <p>
-                        Open a post in a browser window and copy the URL from
-                        the address bar.{" "}
+                        {lang === "en"
+                          ? "Open a post in a browser window "
+                          : "افتح المنشور في نافذة المتصفح "}
+                        {lang == "en"
+                          ? "and copy the URL from the address bar."
+                          : "وانسخ الرابط من شريط البحث"}
                       </p>
                       <p>
-                        {" "}
-                        The URL should be in the format:
+                        {lang === "en"
+                          ? "The URL should be in the format: "
+                          : "يجب أن يكون الرابط بهذه الصيغة :"}
                         https://www.instagram.com/p/
                         <span className="bg-[#7abc43]">abc123xyzAB</span>/
                       </p>
                       <p>
-                        Copy its id . it will be like the highlighted text above
+                        {lang === "en"
+                          ? "Copy its id . it will be like the highlighted text above"
+                          : "انسخ المفتاح . سيكون بمكان النص الملون فوق "}
                       </p>
                     </>
                   ) : selectedSocial?.name === "facebook" ? (
                     <>
                       <h3 className="text-lg sm:text-xl">
-                        To get the Facebook page name associated to the link:
+                        {lang === "en"
+                          ? "To get the Facebook page name associated to the link: "
+                          : "لتحصل على اسم صفحة الفيسبوك المتعلق بالرابط : "}
                       </h3>
                       <p>
-                        Get the page link it will be like this :
+                        {lang === "en"
+                          ? "Get the page link it will be in this format : "
+                          : "احصل على رابط الصفحة سيكون بالصيغة التالية"}
                         www.facebook.com/
                         <span className="bg-[#7abc43]">Villade11</span>?...
                       </p>
                       <p>
-                        Copy its name . it will be like the highlighted text
-                        above
+                        {lang === "en"
+                          ? "Copy its name . it will be like the highlighted text above "
+                          : "انسخ الاسم . سيكون بمكان النص الملون فوق "}
                       </p>
                     </>
                   ) : (
                     <>
                       <h3 className="text-lg sm:text-xl">
-                        To get the Youtube video link:
+                        {lang === "en"
+                          ? "To get the Youtube video link: "
+                          : "لتحصل على رابط فيديو اليوتيوب : "}
                       </h3>
                       <p>
-                        Open a video in a browser window and copy the URL from
-                        the address bar.{" "}
+                        {lang === "en"
+                          ? "Open a video in a browser window and copy the URL from the address bar. "
+                          : "افتح الفيديو في نافذة المتصفح وانسخ الرابط من شريط البحث "}
                       </p>
                       <p>
-                        {" "}
-                        The URL should be in the format:
+                        {lang === "en"
+                          ? "The URL should be in the format: "
+                          : "يجب أن يكون الرابط بهذه الصيغة"}
                         https://www.youtube.com/watch?v=
                         <span className="bg-[#7abc43]">K4xCjdwNKlA</span>/
                       </p>
                       <p>
-                        Copy its id . it will be like the highlighted text above
+                        {lang === "en"
+                          ? "Copy its id . it will be like the highlighted text above"
+                          : "انسخ المفتاح . سيكون بمكان النص الملون فوق "}
                       </p>
                     </>
                   )}
@@ -215,10 +233,16 @@ export default function SocialUpdateForm({
                   id="embededLink"
                   label={
                     selectedSocial?.name === "facebook"
-                      ? "Page link"
+                      ? lang === "en"
+                        ? "Page link"
+                        : "رابط الصفحة"
                       : selectedSocial?.name === "instagram"
-                        ? "Post id"
-                        : "Video id"
+                        ? lang === "en"
+                          ? "Post id"
+                          : "مفتاح المنشور"
+                        : lang === "en"
+                          ? "Video id"
+                          : "مفتاح الفيديو"
                   }
                   placeholder={
                     lang === "en"

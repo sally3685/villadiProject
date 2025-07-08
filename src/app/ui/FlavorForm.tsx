@@ -23,7 +23,9 @@ export default function FlavorForm({ t, lang, user }: FlavorFormProps) {
   const [formDataf, setFormDataf] = useState({
     name: "",
     img: "",
+    key: "",
   });
+  const [imgAction, setAction] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
 
@@ -44,17 +46,18 @@ export default function FlavorForm({ t, lang, user }: FlavorFormProps) {
         setFormDataf({
           name: "",
           img: "",
+          key: "",
         });
       } else if (state.general) {
         toast.error(state.general);
       } else if (state.errors) {
-        console.log(state.errors);
         toast.error(t.addFlavorForm.validationError);
       }
     }
   }, [state, t]);
 
   const handleSubmit = (formData: FormData) => {
+    formData.append("img", formDataf.img);
     formData.append("language", tempLang);
     action(formData);
   };
@@ -64,6 +67,7 @@ export default function FlavorForm({ t, lang, user }: FlavorFormProps) {
     setFormDataf({
       name: "",
       img: "",
+      key: "",
     });
   };
 
@@ -98,7 +102,9 @@ export default function FlavorForm({ t, lang, user }: FlavorFormProps) {
               </button>
             </div>
 
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}
@@ -117,43 +123,58 @@ export default function FlavorForm({ t, lang, user }: FlavorFormProps) {
               error={state?.errors?.name}
               required
             />
-
             <FormFileInput
-              id="img"
               label={
                 isOppositeLanguage
                   ? t.addFlavorForm.oppImg
                   : t.addFlavorForm.img
               }
-              addText={t.addFlavorForm.addimg}
-              selectedText={t.addFlavorForm.imgselected}
-              detailsText={t.addFlavorForm.imgdetailes}
-              value={formDataf.img}
-              onChange={(value) => setFormDataf({ ...formDataf, img: value })}
               error={state?.errors?.img}
-              required
+              imgName={formDataf.img}
+              onAction={setAction}
+              toast={toast}
+              setFormDataf={setFormDataf}
+              formDataf={formDataf}
+              lang={lang}
+              alt={lang === "en" ? "flavor img" : "صورة النكهة"}
             />
           </div>
         </div>
       </div>
 
-      <SubmitButton t={t} />
+      <SubmitButton t={t} imgAction={imgAction} lang={lang} />
     </form>
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
+      disabled={pending || imgAction}
       className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+        pending || imgAction
+          ? "bg-neutral-300"
+          : "bg-[#7abc43] hover:bg-[#6aab3a]"
       }`}
       type="submit"
     >
-      {pending ? t.addFlavorForm.waitSubmit : t.addFlavorForm.submit}
+      {pending
+        ? t.addFlavorForm.waitSubmit
+        : imgAction && lang === "en"
+          ? "proccessing"
+          : imgAction && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addFlavorForm.submit}
     </button>
   );
 }

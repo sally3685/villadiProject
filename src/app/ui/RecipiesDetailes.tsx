@@ -49,7 +49,7 @@ export default function RecipeDetails({
   return (
     <>
       <section className="w-full lg:min-w-5xl h-3/4 overflow-x-hidden overflow-y-auto max-w-7xl rounded-2xl flex flex-wrap gap-20 py-12 px-4 relative bg-[#1c1100]/50  justify-center items-center flex-col">
-        <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold ">
+        <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold text-center">
           {recipe.name}{" "}
           {lang === "en" ? (
             <ArrowRight className="inline-block text-3xl font-bold" />
@@ -82,7 +82,7 @@ export default function RecipeDetails({
                 />
                 <Image
                   className="relative w-full h-[150px] object-contain transition-all duration-75 hover:scale-[1.2]"
-                  src={`/${recipe.flavor.primaryImg}`}
+                  src={`${recipe.flavor.primaryImg}`}
                   alt="flavor image"
                   width={300}
                   height={400}

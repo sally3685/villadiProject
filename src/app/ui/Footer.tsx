@@ -10,13 +10,14 @@ export default function Footer({ lang }: { lang: string }) {
       className="bg-white h-auto relative text-black min-h-[400px] w-full p-12  flex flex-col justify-evenly gap-12 items-center"
     >
       <div
-        className={`relative text-3xl font-bold w-[310px] sm:w-[400px] h-[50px] flex flex-wrap sm:flex-nowrap sm:left-0 justify-center items-center gap-4`}
+        className={`relative text-3xl font-bold w-full h-[50px] flex flex-wrap sm:flex-nowrap sm:left-0 justify-center sm:justify-start items-center gap-4 float-left`}
       >
         <Image
           src={"/contactus.png"}
           width={200}
           height={250}
           alt="more"
+          className="w-[200px] sm:w-[300px]"
         ></Image>
         <div className="flex justify-center  gap-2">
           <svg

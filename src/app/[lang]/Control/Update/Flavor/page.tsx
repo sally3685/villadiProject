@@ -31,7 +31,7 @@ export default async function Flavor({
       >
         {t.addFlavorForm.update}
       </h1>
-      <FlavorUpdateForm t={t} flavor={flavor.flavors} />
+      <FlavorUpdateForm t={t} flavor={flavor.flavors} lang={lang} />
     </>
   );
 }

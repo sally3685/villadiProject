@@ -28,7 +28,6 @@ export const animatePageIn = (pathname: string) => {
     // Initialize ScrollTrigger
     function initScrollColor() {
       sections.forEach((section) => {
-        console.log(section.dataset.color, section);
         ScrollTrigger.create({
           trigger: section,
           start: "top 50%",

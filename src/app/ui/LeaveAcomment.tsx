@@ -72,7 +72,6 @@ export default function LeaveAcomment({
     }
   }, [state, t]);
   useEffect(() => {
-    console.log(stateUpdate);
     if (stateUpdate) {
       window.scroll(0, 0);
       textRef.current?.focus();

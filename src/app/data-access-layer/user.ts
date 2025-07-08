@@ -68,7 +68,6 @@ export const createUser = async (
 //       users: data,
 //     };
 //   } catch (error) {
-//     console.log('Failed to fetch user');
 //     return null;
 //   }
 // });
@@ -124,7 +123,6 @@ export const updateUserPassword = cache(
       }
       const salt = generateSalt();
       const hashedPassword = await hashPassword(password, salt);
-      console.log(email, password);
       const data1 = await prisma.user.update({
         where: { email: email },
         data: {
@@ -157,7 +155,6 @@ export const getUserById = cache(async (userId: string) => {
   try {
     const userData = await prisma.user.findFirst({
       where: { id: userId },
-      select: { role: true, name: true, email: true },
     });
     return {
       success: true,
@@ -325,7 +322,6 @@ export const grantAdminP = async (userId: string) => {
 export const removeAdminP = async (userP: User) => {
   try {
     // Validate user ID
-    console.log(userP, "userp");
     if (!userP.id || typeof userP.id !== "string") {
       return {
         status: 400,

@@ -8,7 +8,8 @@ import { FormFileInput } from "./FormFileInput";
 import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
 import { Video } from "../../../prisma/generated/prisma";
-
+import Image from "next/image";
+import { deleteUTFiles } from "../data-access-layer/uploadthingDAL";
 interface User {
   name: string;
   email: string;
@@ -38,11 +39,13 @@ export default function VideoUpdateForm({
     name: "",
     embededLink: "",
     productId: "",
-    coverImg: "",
+    img: "",
+    key: "",
   });
   const nameRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState(0);
-
+  const [imgAction, setAction] = useState(false);
+  const [imgDelete, setImgDelete] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
     null
   );
@@ -57,7 +60,6 @@ export default function VideoUpdateForm({
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       nameRef.current?.focus();
 
@@ -79,12 +81,12 @@ export default function VideoUpdateForm({
           name: "",
           embededLink: "",
           productId: "",
-          coverImg: "",
+          img: "",
+          key: "",
         });
       } else if (state.general) {
         toast.error(state.general);
       } else if (state.errors) {
-        console.log(state.errors);
         toast.error(t.addVideoForm.validationError);
       }
     }
@@ -101,6 +103,8 @@ export default function VideoUpdateForm({
     }
     formData.append("language", selectedVideo?.lang);
     formData.append("id", selectedVideo?.id);
+    formData.append("coverImg", formDataf.img);
+
     formData.append("selectedProduct", selectedProduct.id);
     action(formData);
   };
@@ -122,7 +126,8 @@ export default function VideoUpdateForm({
       name: selectedVideo.name,
       embededLink: selectedVideo.embededLink,
       productId: selectedVideo.productId,
-      coverImg: selectedVideo.coverImg,
+      img: selectedVideo.coverImg,
+      key: selectedVideo.coverImg.split("/").pop() as string,
     });
 
     const productF = products.find(
@@ -188,21 +193,56 @@ export default function VideoUpdateForm({
                     </p>
                   )} */}
                 </div>
-                <FormFileInput
-                  id="coverImg"
-                  label={t.addVideoForm.img}
-                  addText={t.addVideoForm.addimg}
-                  selectedText={t.addVideoForm.imgselected}
-                  detailsText={t.addVideoForm.imgdetailes}
-                  value={formDataf.coverImg}
-                  onChange={(value) => {
-                    setFormDataf({ ...formDataf, coverImg: value });
-                  }}
-                  error={state?.errors?.coverImg}
-                  showLanguageInput
-                  lang={lang}
-                  tempLang={lang}
-                />
+                {!imgDelete && formDataf.img && (
+                  <div className="flex flex-col gap-2 col-span-full">
+                    <p className="text:sm lg:text-lg font-semibold">
+                      {lang === "en"
+                        ? "click on the image to delete and reupload"
+                        : "اضغط على الصورة لحذفها وإعادة الادخال"}
+                    </p>
+                    <p className="text:xs lg:text-sm ">
+                      {lang === "en"
+                        ? "if image is not here it is a network error . you can still click and delete it "
+                        : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
+                    </p>
+                    <Image
+                      src={formDataf.img}
+                      width={500}
+                      height={200}
+                      alt="video img"
+                      className="object-contain cursor-pointer h-[200px]"
+                      onClick={async () => {
+                        setAction(true);
+                        const key = formDataf.img.split("/").pop();
+                        const res = await deleteUTFiles(key as string);
+                        if (res.status === 200) {
+                          toast.success(
+                            lang === "en" ? "image deleted" : "تم حذف الصورة"
+                          );
+                          setFormDataf({ ...formDataf, img: "", key: "" });
+                          setImgDelete(true);
+                        } else
+                          toast.error(
+                            lang === "en" ? "deletion failed" : "فشل الحذف"
+                          );
+                        if (res) setAction(false);
+                      }}
+                    ></Image>
+                  </div>
+                )}
+                {imgDelete && (
+                  <FormFileInput
+                    label={t.addVideoForm.img}
+                    error={state?.errors?.coverImg}
+                    imgName={formDataf.img}
+                    onAction={setAction}
+                    toast={toast}
+                    setFormDataf={setFormDataf}
+                    formDataf={formDataf}
+                    lang={lang}
+                    alt={lang === "en" ? "video img" : "صورة الفيديو"}
+                  />
+                )}
                 <FormInput
                   ref={nameRef}
                   id="name"
@@ -258,7 +298,7 @@ export default function VideoUpdateForm({
                   {t.addRecipyForm.next}
                 </button>
               ) : (
-                <SubmitButton t={t} />
+                <SubmitButton t={t} imgAction={imgAction} lang={lang} />
               )}
             </div>
           </div>
@@ -268,18 +308,34 @@ export default function VideoUpdateForm({
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
+      disabled={pending || imgAction}
       className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+        pending || imgAction
+          ? "bg-neutral-300"
+          : "bg-[#7abc43] hover:bg-[#6aab3a]"
       }`}
       type="submit"
     >
-      {pending ? t.addRecipyForm.waitSubmit : t.addRecipyForm.submit}
+      {pending
+        ? t.addFlavorForm.waitSubmit
+        : imgAction && lang === "en"
+          ? "proccessing"
+          : imgAction && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addFlavorForm.submit}
     </button>
   );
 }

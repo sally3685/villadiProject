@@ -96,12 +96,12 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
           <h1 className=" text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
             {lang === "en" ? "Market of Villadi" : "انتشار شركة فيلادي"}
           </h1>
-          <div className="w-full flex justify-evenly items-center h-1/2  max-w-7xl flex-wrap sm:flex-nowrap">
-            <div className="relative w-[300px] h-[300px] sm:scale-[1.5] bg-[#033155] rounded-2xl overflow-hidden">
+          <div className="w-full flex gap-[4rem] sm:gap-[150px] justify-evenly items-center h-1/2  max-w-7xl flex-wrap sm:flex-nowrap">
+            <div className="relative w-[300px] h-[300px] left-0 sm:left-[76px] sm:scale-[1.5] bg-[#033155] rounded-2xl overflow-hidden">
               <Image
                 ref={mapImg}
-                src={`/${maps[step].img}`}
-                alt="Interactive image"
+                src={`${maps[step].img}`}
+                alt="map image"
                 width={200}
                 height={200}
                 className="w-[300px] h-[300px] object-contain"
@@ -119,46 +119,48 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
                 ></div>
               ))}
             </div>
-            <div
-              ref={details}
-              className="flex flex-col justify-center items-center text-black z-[2] gap-6 p-6 max-w-[90%] sm:max-w-[450px]"
-            >
-              <h2 className="text-xl sm:text-3xl xl:text-4xl font-semibold">
-                {lang === "en" ? "Market of " : "الانتشار في "}{" "}
-                {maps[step].name}
-              </h2>
-              <p className="text-lg sm:text-2xl xl:text-3xl font-medium">
-                {maps[step].details}
-              </p>
+            <div className="w-full sm:w-[70%] h-full flex justify-center items-center flex-col ">
+              <div
+                ref={details}
+                className="flex flex-col justify-center items-center text-black z-[2] gap-6 p-6 max-w-[90%] sm:max-w-[450px]"
+              >
+                <h2 className="text-xl sm:text-3xl xl:text-4xl font-semibold text-center">
+                  {lang === "en" ? "Market of " : "الانتشار في "}{" "}
+                  {maps[step].name}
+                </h2>
+                <p className="text-lg sm:text-2xl xl:text-3xl font-medium">
+                  {maps[step].details}
+                </p>
+              </div>
+              <div className="w-full h-auto flex justify-around items-center">
+                <button
+                  className={`text-black  rounded-xl px-4 py-2  ${
+                    step + 1 < maps.length
+                      ? "cursor-pointer bg-[#fcdc43]"
+                      : "bg-gray-500 cursor-not-allowed"
+                  }`}
+                  disabled={step + 1 >= maps.length}
+                  onClick={() => {
+                    if (step + 1 < maps.length) setStep(step + 1);
+                  }}
+                >
+                  next
+                </button>
+                <button
+                  className={`text-black  rounded-xl px-4 py-2  ${
+                    step - 1 >= 0
+                      ? "cursor-pointer bg-[#fcdc43]"
+                      : "bg-gray-500 cursor-not-allowed"
+                  }`}
+                  disabled={step - 1 < 0}
+                  onClick={() => {
+                    if (step - 1 >= 0) setStep(step - 1);
+                  }}
+                >
+                  prev
+                </button>
+              </div>
             </div>
-            <button
-              className={`text-black  rounded-xl px-4 py-2  ${
-                step + 1 < maps.length
-                  ? "cursor-pointer bg-[#fcdc43]"
-                  : "bg-gray-500 cursor-not-allowed"
-              }`}
-              disabled={step + 1 >= maps.length}
-              onClick={() => {
-                console.log(step);
-                if (step + 1 < maps.length) setStep(step + 1);
-              }}
-            >
-              next
-            </button>
-            <button
-              className={`text-black  rounded-xl px-4 py-2  ${
-                step - 1 >= 0
-                  ? "cursor-pointer bg-[#fcdc43]"
-                  : "bg-gray-500 cursor-not-allowed"
-              }`}
-              disabled={step - 1 < 0}
-              onClick={() => {
-                console.log(step);
-                if (step - 1 >= 0) setStep(step - 1);
-              }}
-            >
-              prev
-            </button>
           </div>
         </>
       )}

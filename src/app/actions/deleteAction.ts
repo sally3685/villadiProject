@@ -7,6 +7,7 @@ import { DeleteFlavorAction } from "./flavorAction";
 import { DeleteMapAction } from "./mapAtion";
 import { DeleteProductAction } from "./productAction";
 import { DeleteRecipeAction } from "./recipyAction";
+import { DeleteVideoAction } from "./videoAction";
 
 export async function DeleteAction(
   state: { success: boolean; message: string } | undefined,
@@ -16,7 +17,6 @@ export async function DeleteAction(
     const type = (await formData.get("type")) as string;
     const deleteAll = (await formData.get("deleteAll")) as string;
     const selectedFeild = (await formData.get("selectedField")) as any;
-    console.log(deleteAll, selectedFeild, type);
     if (type === "category") {
       const { success } = await DeleteCategoryAction(
         deleteAll,
@@ -86,7 +86,6 @@ export async function DeleteAction(
         deleteAll,
         selectedFeild !== "undefined" ? JSON.parse(selectedFeild) : null
       );
-      console.log(success, "de");
       if (success) {
         return {
           success: true,
@@ -99,7 +98,8 @@ export async function DeleteAction(
         };
       }
     } else if (type === "video") {
-      const { success } = await removeAdminAction(
+      const { success } = await DeleteVideoAction(
+        deleteAll,
         selectedFeild !== "undefined" ? JSON.parse(selectedFeild) : null
       );
       if (success) {
@@ -118,7 +118,6 @@ export async function DeleteAction(
         deleteAll,
         selectedFeild !== "undefined" ? JSON.parse(selectedFeild) : null
       );
-      console.log(success, "sdssssssssssssssssss");
       if (success) {
         return {
           success: true,
@@ -147,7 +146,6 @@ export async function DeleteAction(
       }
     }
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       message: "Deleted failed",

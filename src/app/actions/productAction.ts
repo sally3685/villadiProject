@@ -53,30 +53,6 @@ export async function AddProductAction(
 
     const { img, img2, ...productData } = result.data;
     const language = formData.get("language")?.toString() || "en";
-    let primaryImageName = "";
-    let secondaryImageName = "";
-
-    try {
-      // Upload primary image
-      const primaryBytes = await img.arrayBuffer();
-      const primaryBuffer = Buffer.from(primaryBytes);
-      primaryImageName = img.name.replace(/\s+/g, "");
-      await writeFile(`./public/${primaryImageName}`, primaryBuffer);
-
-      // Upload secondary image
-      const secondaryBytes = await img2.arrayBuffer();
-      const secondaryBuffer = Buffer.from(secondaryBytes);
-      secondaryImageName = img2.name.replace(/\s+/g, "");
-      await writeFile(`./public/${secondaryImageName}`, secondaryBuffer);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      return {
-        errors: {
-          img: ["Failed to upload images"],
-          img2: ["Failed to upload images"],
-        },
-      };
-    }
 
     // Handle image upload
 
@@ -85,8 +61,8 @@ export async function AddProductAction(
       productData.name,
       productData.code,
       productData.detailes,
-      primaryImageName,
-      secondaryImageName,
+      img,
+      img2,
       productData.selectedC,
       productData.selectedF,
       productData.backgroundColor,
@@ -161,30 +137,6 @@ export async function UpdateProductAction(
     const { img, img2, ...productData } = result.data;
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
-    let primaryImageName = "";
-    let secondaryImageName = "";
-    // Handle image upload if provided
-    try {
-      // Upload primary image
-      const primaryBytes = await img.arrayBuffer();
-      const primaryBuffer = Buffer.from(primaryBytes);
-      primaryImageName = img.name.replace(/\s+/g, "");
-      await writeFile(`./public/${primaryImageName}`, primaryBuffer);
-
-      // Upload secondary image
-      const secondaryBytes = await img2.arrayBuffer();
-      const secondaryBuffer = Buffer.from(secondaryBytes);
-      secondaryImageName = img2.name.replace(/\s+/g, "");
-      await writeFile(`./public/${secondaryImageName}`, secondaryBuffer);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      return {
-        errors: {
-          img: ["Failed to upload images"],
-          img2: ["Failed to upload images"],
-        },
-      };
-    }
 
     // Add category to database
     const { status, message } = await updateProduct({
@@ -196,8 +148,8 @@ export async function UpdateProductAction(
       color: productData.backgroundColor,
       p_color: productData.patternColor,
       categoryId: productData.selectedC,
-      img: primaryImageName,
-      secondryImg: secondaryImageName,
+      img: img,
+      secondryImg: img2,
       lang: language,
     });
 

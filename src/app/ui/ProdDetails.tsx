@@ -75,15 +75,15 @@ export default function ProdDetails({
               ></div>
 
               <Image
-                src={`/${product.product.img}`}
+                src={`${product.product.img}`}
                 alt="product image"
                 className="w-[80%] h-[250px] object-contain z-[1]  transition-all duration-75 hover:scale-[1.2]"
                 width={200}
                 height={200}
               />
               <Image
-                src={`/${product.product.flavor.primaryImg}`}
-                alt="product image"
+                src={`${product.product.flavor.primaryImg}`}
+                alt="flavor image"
                 className=" absolute z-[0] w-[150px] h-[200px] object-contain top-[12%] left-[6%] sm:left-[11%]"
                 width={200}
                 height={200}

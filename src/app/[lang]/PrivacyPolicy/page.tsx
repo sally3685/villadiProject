@@ -9,7 +9,7 @@ export default async function Faq({
   const { lang } = await params;
   const t = await getDictionary(lang);
   return (
-    <div className="w-full h-[80vh] pt-[20vh] bg-[#d9d9d9] text-black top-[20%] p-6 rounded-2xl flex flex-col justify-center gap-4 overflow-hidden z-[0] before:absolute before:content-[''] before:w-full before:h-full before:bg-white/20 before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover">
+    <div className="w-full h-[80vh] relative pt-[20vh] bg-[#d9d9d9] text-black top-[20%] p-6 rounded-2xl flex flex-col justify-center gap-4 overflow-hidden z-[0] before:absolute before:content-[''] before:w-full before:h-full before:bg-white/20 before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover">
       <h1 className="z-[0] text-xl sm:text-2xl font-bold w-full text-center">
         {lang === "en" ? "Privacy Policy" : "الخصوصية والأمان "}
       </h1>

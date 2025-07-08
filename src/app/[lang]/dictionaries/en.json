@@ -6,7 +6,7 @@
     "question": "Already have an account?"
   },
   "SignUp": {
-    "title": "Create Account",
+    "title": "Sign up/in",
     "stop": "You have already created an account",
     "validationTips": {
       "name": {
@@ -274,7 +274,7 @@
     "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
     "submit": "Submit",
     "waitSubmit": "please wait ...",
-    "doneSubmit": "Product added successfully ",
+    "doneSubmit": "video added successfully ",
     "previous": "previous step",
     "next": "next step",
     "productRequired": "you should select the product",

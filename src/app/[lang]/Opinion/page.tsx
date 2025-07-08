@@ -15,7 +15,6 @@ export default async function Opinion({
   const t = await getDictionary(lang);
   const result = await getSession();
   const { status, message, comments } = await getAllComments();
-  console.log(comments, status);
   if (result.success === false) {
     return redirect("/signIn");
   }

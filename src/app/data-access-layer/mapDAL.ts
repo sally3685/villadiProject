@@ -4,6 +4,7 @@ import prisma from "../lib/db";
 import { cache } from "react";
 import { Map } from "../../../prisma/generated/prisma";
 import { getSession } from "../lib/session";
+import { deleteUTFiles } from "./uploadthingDAL";
 
 export const AddMap = async (
   name: string,
@@ -192,6 +193,14 @@ export const deleteMap = async (deleteAll: boolean, map: Map | null) => {
     }
     let item;
     if (deleteAll) {
+      const maps = await getAllMapWithoutLang();
+      if (maps.status !== 200)
+        return {
+          status: 500,
+        };
+      maps.maps.map(async (item) => {
+        await deleteUTFiles(item.img);
+      });
       item = await prisma.map.deleteMany();
     } else {
       if (!map) {
@@ -210,6 +219,7 @@ export const deleteMap = async (deleteAll: boolean, map: Map | null) => {
       }
       let item;
 
+      await deleteUTFiles(existingMap.img);
       item = await prisma.map.delete({ where: { id: map.id } });
 
       if (!item) {

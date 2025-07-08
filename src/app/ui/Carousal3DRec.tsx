@@ -58,7 +58,7 @@ const xsmallR = {
 
 const xsmallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.8)",
@@ -69,7 +69,7 @@ const xsmallLM = {
 };
 const smallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.9)",
@@ -79,7 +79,7 @@ const smallLM = {
   marginBottom: "49px ",
 };
 const largeM = {
-  width: "310px",
+  width: "300px",
   height: "380px",
   transition: "all 0.3s ease",
   transform: "scale(1) ",
@@ -331,14 +331,14 @@ export default function Carousal3D({
                       />
                       <Image
                         className="relative w-full h-[150px] object-contain"
-                        src={`/${
+                        src={`${
                           item
                             ? item.flavor.primaryImg
                             : lang === "en"
-                              ? "villadiLogo.svg"
-                              : "villadiLogoAr.svg"
+                              ? "/villadiLogo.svg"
+                              : "/villadiLogoAr.svg"
                         }`}
-                        alt="category image"
+                        alt="recipe image"
                         width={300}
                         height={400}
                       />

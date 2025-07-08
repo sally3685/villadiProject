@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { MapPin } from "lucide-react";
-
+import Image from "next/image";
 type MarkerPosition = {
   top: number;
   left: number;
@@ -86,10 +86,12 @@ const InteractiveImageMarker = ({
       >
         {/* Image with error handling */}
         {imageUrl ? (
-          <img
-            src={`/${imageUrl}`}
+          <Image
+            src={`${imageUrl}`}
             alt="Interactive map"
             className="w-[300px] h-[300px] object-contain pointer-events-none"
+            width={300}
+            height={300}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/default-map-image.png";
             }}

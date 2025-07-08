@@ -4,6 +4,9 @@ import prisma from "../lib/db";
 import { cache } from "react";
 import { Flavor } from "../../../prisma/generated/prisma";
 import { getSession } from "../lib/session";
+import { getAllVideossWithoutLang } from "./videoDAL";
+import { getAllProductsWithoutLang } from "./productDAL";
+import { deleteUTFiles } from "./uploadthingDAL";
 
 export const AddFlavor = async (
   name: string,
@@ -55,8 +58,8 @@ export const AddFlavor = async (
     }
 
     // Revalidate relevant paths
-    revalidatePath(`/[lang]/flavors`, "page");
-    revalidatePath(`/[lang]`, "page");
+    revalidatePath(`/en/flavors`, "page");
+    revalidatePath(`/ar/flavors`, "page");
 
     return {
       status: 201,
@@ -202,6 +205,27 @@ export const deleteFlavor = async (
     }
     let item;
     if (deleteAll) {
+      const resVideos = await getAllVideossWithoutLang();
+      const resProduct = await getAllProductsWithoutLang();
+      const resFlav = await getAllFlavorsWithoutLang();
+      if (
+        resVideos.status === 500 ||
+        resProduct.status === 500 ||
+        resFlav.status === 500
+      )
+        return {
+          status: 500,
+        };
+      resVideos.videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg.split("/").pop() as string);
+      });
+      resProduct.products.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+        await deleteUTFiles(item.secondryImg.split("/").pop() as string);
+      });
+      resFlav.flavors.map(async (item) => {
+        await deleteUTFiles(item.primaryImg.split("/").pop() as string);
+      });
       item = await prisma.$transaction([
         prisma.video.deleteMany(),
         prisma.product.deleteMany(),
@@ -209,10 +233,6 @@ export const deleteFlavor = async (
         prisma.recipy.deleteMany(),
         prisma.flavor.deleteMany(),
       ]);
-      console.log(
-        item,
-        "delete alll;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
-      );
     } else {
       if (!flavor) {
         return {
@@ -229,11 +249,16 @@ export const deleteFlavor = async (
           status: 404,
         };
       }
+      await deleteUTFiles(
+        existingFlavor?.primaryImg.split("/").pop() as string
+      );
       // Get all related data first
       const [products, recipies] = await Promise.all([
         prisma.product.findMany({
           where: { flavorId: flavor.id },
-          select: { id: true },
+          include: {
+            videos: true,
+          },
         }),
         prisma.recipy.findMany({
           where: { flavorId: flavor.id },
@@ -241,9 +266,20 @@ export const deleteFlavor = async (
         }),
       ]);
 
+      products.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+        await deleteUTFiles(item.secondryImg.split("/").pop() as string);
+      });
       const productIds = products.map((p) => p.id);
       const recipyIds = recipies.map((r) => r.id);
-
+      const videos = await prisma.video.findMany({
+        where: {
+          productId: { in: productIds },
+        },
+      });
+      videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg.split("/").pop() as string);
+      });
       item = await prisma.$transaction([
         // Delete videos for all products with this flavor
         prisma.video.deleteMany({

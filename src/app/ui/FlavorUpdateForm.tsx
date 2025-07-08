@@ -8,7 +8,8 @@ import { FormFileInput } from "./FormFileInput";
 import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
 import { Flavor } from "../../../prisma/generated/prisma";
-
+import Image from "next/image";
+import { deleteUTFiles } from "../data-access-layer/uploadthingDAL";
 interface User {
   name: string;
   email: string;
@@ -18,15 +19,19 @@ interface User {
 interface flavorFormProps {
   t: any;
   flavor: Flavor[];
+  lang: string;
 }
 
-export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
+export default function FlavorUpdateForm({ t, flavor, lang }: flavorFormProps) {
   const [formDataf, setFormDataf] = useState({
     name: "",
     img: "",
+    key: "",
   });
   const nameRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState(0);
+  const [imgDelete, setImgDelete] = useState(false);
+  const [imgAction, setAction] = useState(false);
 
   const [selectedFlavor, setSelectedFlavor] = useState<Flavor | undefined>(
     undefined
@@ -39,7 +44,6 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       nameRef.current?.focus();
 
@@ -54,6 +58,7 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
         setFormDataf({
           name: "",
           img: "",
+          key: "",
         });
       } else if (state.general) {
         toast.error(state.general);
@@ -69,6 +74,7 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
       return;
     }
     formData.append("language", selectedFlavor?.lang);
+    formData.append("img", formDataf.img);
     formData.append("id", selectedFlavor?.id);
     action(formData);
   };
@@ -81,6 +87,7 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
     setFormDataf({
       name: selectedFlavor?.name,
       img: selectedFlavor?.primaryImg,
+      key: selectedFlavor.primaryImg.split("/").pop() as string,
     });
     setStep(1);
   };
@@ -140,20 +147,56 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
                   error={state?.errors?.name}
                   required
                 />
-
-                <FormFileInput
-                  id="img"
-                  label={t.addFlavorForm.img}
-                  addText={t.addFlavorForm.addimg}
-                  selectedText={t.addFlavorForm.imgselected}
-                  detailsText={t.addFlavorForm.imgdetailes}
-                  value={formDataf.img}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img: value })
-                  }
-                  error={state?.errors?.img}
-                  required
-                />
+                {!imgDelete && formDataf.img && (
+                  <div className="flex flex-col gap-2 col-span-full">
+                    <p className="text:sm lg:text-lg font-semibold">
+                      {lang === "en"
+                        ? "click on the image to delete and reupload"
+                        : "اضغط على الصورة لحذفها وإعادة الادخال"}
+                    </p>
+                    <p className="text:xs lg:text-sm ">
+                      {lang === "en"
+                        ? "if image is not here it is a network error . you can still click and delete it "
+                        : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
+                    </p>
+                    <Image
+                      src={formDataf.img}
+                      width={500}
+                      height={200}
+                      alt="flavor img"
+                      className="object-contain cursor-pointer h-[200px]"
+                      onClick={async () => {
+                        setAction(true);
+                        const key = formDataf.img.split("/").pop();
+                        const res = await deleteUTFiles(key as string);
+                        if (res.status === 200) {
+                          toast.success(
+                            lang === "en" ? "image deleted" : "تم حذف الصورة"
+                          );
+                          setFormDataf({ ...formDataf, img: "", key: "" });
+                          setImgDelete(true);
+                        } else
+                          toast.error(
+                            lang === "en" ? "deletion failed" : "فشل الحذف"
+                          );
+                        if (res) setAction(false);
+                      }}
+                    ></Image>
+                  </div>
+                )}
+                {imgDelete && (
+                  <FormFileInput
+                    label={t.addFlavorForm.img}
+                    error={state?.errors?.img}
+                    imgName={formDataf.img}
+                    onAction={setAction}
+                    toast={toast}
+                    setFormDataf={setFormDataf}
+                    formDataf={formDataf}
+                    lang={lang}
+                    alt={lang === "en" ? "flavor img" : "صورة النكهة"}
+                  />
+                )}
               </div>
             )}
 
@@ -186,7 +229,7 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
                   {t.addRecipyForm.next}
                 </button>
               ) : (
-                <SubmitButton t={t} />
+                <SubmitButton t={t} imgAction={imgAction} lang={lang} />
               )}
             </div>
           </div>
@@ -195,19 +238,34 @@ export default function FlavorUpdateForm({ t, flavor }: flavorFormProps) {
     </form>
   );
 }
-
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
+      disabled={pending || imgAction}
       className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+        pending || imgAction
+          ? "bg-neutral-300"
+          : "bg-[#7abc43] hover:bg-[#6aab3a]"
       }`}
       type="submit"
     >
-      {pending ? t.addRecipyForm.waitSubmit : t.addRecipyForm.submit}
+      {pending
+        ? t.addFlavorForm.waitSubmit
+        : imgAction && lang === "en"
+          ? "proccessing"
+          : imgAction && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addFlavorForm.submit}
     </button>
   );
 }

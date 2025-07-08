@@ -28,7 +28,6 @@ export function ResendCodePass({ t, lang }: { t: any; lang: string }) {
     emailRef.current?.focus();
   }, []);
   const router = useRouter();
-  console.log(state, "state");
   useEffect(() => {
     if (state) {
       if (state.success) {

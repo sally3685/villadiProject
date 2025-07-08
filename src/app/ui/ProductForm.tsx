@@ -47,16 +47,25 @@ export default function ProductForm({
   lang,
   user,
 }: ProductFormProps) {
+  const [imgAction, setAction] = useState(false);
+  const [imgAction2, setAction2] = useState(false);
+  const [key1, setKey1] = useState({
+    img: "",
+    key: "",
+  });
+  const [key2, setKey2] = useState({
+    img: "",
+    key: "",
+  });
   const [step, setStep] = useState(0);
   const [formDataf, setFormDataf] = useState({
     name: "",
     code: "",
     detailes: "",
-    img: "",
-    img2: "",
     patternColor: "#aabbcc",
     backgroundColor: "#aabbcc",
   });
+
   const nameRef = useRef<HTMLInputElement>(null);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null
@@ -71,7 +80,6 @@ export default function ProductForm({
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       window.scroll(0, 0);
       nameRef.current?.focus();
@@ -82,11 +90,12 @@ export default function ProductForm({
           name: "",
           code: "",
           detailes: "",
-          img: "",
-          img2: "",
           patternColor: "#aabbcc",
           backgroundColor: "#aabbcc",
         });
+
+        setKey1({ img: "", key: "" });
+        setKey2({ img: "", key: "" });
         setSelectedCategory(null);
         setSelectedFlavor(null);
         setStep(0);
@@ -112,7 +121,8 @@ export default function ProductForm({
     formData.append("selectedF", selectedFlavor.id);
     formData.append("backgroundColor", formDataf.backgroundColor);
     formData.append("patternColor", formDataf.patternColor);
-
+    formData.append("img", key1.img);
+    formData.append("img2", key2.img);
     action(formData);
   };
 
@@ -140,11 +150,12 @@ export default function ProductForm({
       name: "",
       code: "",
       detailes: "",
-      img: "",
-      img2: "",
       patternColor: "#aabbcc",
       backgroundColor: "#aabbcc",
     });
+
+    setKey1({ img: "", key: "" });
+    setKey2({ img: "", key: "" });
     setStep(0);
     setSelectedCategory(null);
     setSelectedFlavor(null);
@@ -183,7 +194,9 @@ export default function ProductForm({
               </button>
             </div>
 
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}
@@ -289,44 +302,39 @@ export default function ProductForm({
                   }
                   error={state?.errors?.detailes}
                 />
-
                 <FormFileInput
-                  id="img"
                   label={
                     isOppositeLanguage
                       ? t.addProductForm.oppImg
                       : t.addProductForm.img
                   }
-                  addText={t.addProductForm.addimg}
-                  selectedText={t.addProductForm.imgselected}
-                  detailsText={t.addProductForm.imgdetailes}
-                  value={formDataf.img}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img: value })
-                  }
                   error={state?.errors?.img}
-                  showLanguageInput
+                  imgName={key1.img}
+                  onAction={setAction}
+                  toast={toast}
+                  setFormDataf={setKey1}
+                  formDataf={key1}
                   lang={lang}
-                  tempLang={tempLang}
+                  alt={lang === "en" ? "product img" : "صورة المنتج"}
                 />
                 <FormFileInput
-                  id="img2"
                   label={
                     isOppositeLanguage
                       ? t.addFlavorForm.oppImg2
                       : t.addFlavorForm.img2
                   }
-                  addText={t.addFlavorForm.addimg2}
-                  selectedText={t.addFlavorForm.imgselected}
-                  detailsText={t.addFlavorForm.imgdetailes}
-                  value={formDataf.img2}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img2: value })
-                  }
                   error={state?.errors?.img2}
-                  showLanguageInput
+                  imgName={key2.img}
+                  onAction={setAction2}
+                  toast={toast}
+                  setFormDataf={setKey2}
+                  formDataf={key2}
                   lang={lang}
-                  tempLang={tempLang}
+                  alt={
+                    lang === "en"
+                      ? "product's side img"
+                      : "الصورة الجانبية للمنتج"
+                  }
                 />
                 <FormColorInput
                   label={
@@ -387,7 +395,12 @@ export default function ProductForm({
                   {t.addProductForm.next}
                 </button>
               ) : (
-                <SubmitButton t={t} />
+                <SubmitButton
+                  t={t}
+                  imgAction={imgAction}
+                  lang={lang}
+                  imgAction2={imgAction2}
+                />
               )}
             </div>
           </div>
@@ -397,18 +410,36 @@ export default function ProductForm({
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+  imgAction2,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+  imgAction2: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
-      className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+      disabled={pending || imgAction || imgAction2}
+      className={`py-3 px-2 text-sm rounded lg:text-lg text-white ${
+        pending || imgAction || imgAction2
+          ? "bg-neutral-300 cursor-not-allowed "
+          : "bg-[#7abc43] hover:bg-[#6aab3a] cursor-pointer "
       }`}
       type="submit"
     >
-      {pending ? t.addProductForm.waitSubmit : t.addProductForm.submit}
+      {pending
+        ? t.addProductForm.waitSubmit
+        : (imgAction || imgAction2) && lang === "en"
+          ? "proccessing"
+          : (imgAction || imgAction2) && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addProductForm.submit}
     </button>
   );
 }

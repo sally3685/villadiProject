@@ -76,7 +76,6 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
 
   const headersList = await headers();
   const fullUrl = headersList.get("referer") || "";
-  console.log(fullUrl);
   if (fullUrl?.includes("en")) redirect("/en");
   else redirect("/ar");
 }
@@ -204,7 +203,6 @@ export async function VerifyCodeAction(
     numbers = numbers.concat(formData.get("code3") as string);
     numbers = numbers.concat(formData.get("code4") as string);
     numbers = JSON.stringify(numbers);
-    console.log(numbers, res.userCode);
     if (numbers !== res.userCode) {
       return {
         errors: {
@@ -277,7 +275,6 @@ export async function VerifyPassAction(
     numbers = numbers.concat(formData.get("code3") as string);
     numbers = numbers.concat(formData.get("code4") as string);
     numbers = JSON.stringify(numbers);
-    console.log(numbers, res.userCode);
     if (numbers !== res.userCode) {
       return {
         errors: {
@@ -312,10 +309,8 @@ export async function resetAction(state: FormResetState, formData: FormData) {
   }
 
   const { password } = validatedFields.data;
-  console.log(password);
   const res = await getVerifyPassSession();
   //fix errors
-  console.log(res);
   if (!res.success) {
     return {
       general2: "code expired",
@@ -337,7 +332,6 @@ export async function resetAction(state: FormResetState, formData: FormData) {
   await createSession(data1.user?.id, data1.user?.password);
   const headersList = await headers();
   const fullUrl = headersList.get("referer") || "";
-  console.log(fullUrl);
   if (fullUrl?.includes("en")) redirect("/en");
   else redirect("/ar");
 }
@@ -432,7 +426,6 @@ export async function LogOut() {
   await deleteSession();
   const headersList = await headers();
   const fullUrl = headersList.get("referer") || "";
-  console.log(fullUrl);
   if (fullUrl?.includes("en")) redirect("/en");
   else redirect("/ar");
 }

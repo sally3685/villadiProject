@@ -100,15 +100,15 @@ export default function ProdCodeItems({
                   ></div>
 
                   <Image
-                    src={`/${product.img}`}
+                    src={`${product.img}`}
                     alt="product image"
                     className="w-[80%] h-[250px] object-contain z-[1] hover:scale-[1.2] transition-all duration-75"
                     width={200}
                     height={200}
                   />
                   <Image
-                    src={`/${product.flavor.primaryImg}`}
-                    alt="product image"
+                    src={`${product.flavor.primaryImg}`}
+                    alt="flavor image"
                     className=" absolute z-[0] w-[150px] h-[200px] object-contain top-0 left-[6%] sm:left-[11%]"
                     width={200}
                     height={200}

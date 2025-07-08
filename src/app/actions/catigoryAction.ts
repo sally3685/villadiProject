@@ -14,7 +14,7 @@ export async function AddCategoryAction(
 ): Promise<FormCategoryState> {
   try {
     // Validate required fields
-    const requiredFields = ["name", "code"];
+    const requiredFields = ["name", "code", "img"];
     for (const field of requiredFields) {
       if (!formData.get(field)) {
         return {
@@ -30,7 +30,7 @@ export async function AddCategoryAction(
       name: formData.get("name"),
       code: formData.get("code"),
       detailes: formData.get("detailes"),
-      img: formData.get("img"),
+      img: formData.get("img") as string,
     });
 
     if (!result.success) {
@@ -39,33 +39,15 @@ export async function AddCategoryAction(
       };
     }
 
-    const { img, ...categoryData } = result.data;
+    const { ...categoryData } = result.data;
     const language = formData.get("language")?.toString() || "en";
-
-    // Handle image upload if provided
-    let imageName = "";
-    if (img instanceof File && img.size > 0) {
-      try {
-        const bytes = await img.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        imageName = img.name.replace(/\s+/g, "");
-
-        await writeFile(`./public/${imageName}`, buffer);
-      } catch (error) {
-        return {
-          errors: {
-            img: ["Failed to upload image"],
-          },
-        };
-      }
-    }
 
     // Add category to database
     const { status, message } = await AddCategory(
       categoryData.name,
       categoryData.code,
       categoryData.detailes,
-      imageName,
+      categoryData.img,
       language
     );
 
@@ -123,27 +105,11 @@ export async function UpdateCategoryAction(
       };
     }
 
-    const { img, ...categoryData } = result.data;
+    const { ...categoryData } = result.data;
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
 
     // Handle image upload if provided
-    let imageName = "";
-    if (img instanceof File && img.size > 0) {
-      try {
-        const bytes = await img.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        imageName = img.name.replace(/\s+/g, "");
-
-        await writeFile(`./public/${imageName}`, buffer);
-      } catch (error) {
-        return {
-          errors: {
-            img: ["Failed to upload image"],
-          },
-        };
-      }
-    }
 
     // Add category to database
     const { status, message } = await updateCategory({
@@ -151,7 +117,7 @@ export async function UpdateCategoryAction(
       name: categoryData.name,
       code: categoryData.code,
       detailes: categoryData.detailes,
-      img: imageName,
+      img: categoryData.img,
       lang: language,
     });
 

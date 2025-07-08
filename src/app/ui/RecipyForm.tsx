@@ -138,7 +138,9 @@ export default function RecipeForm({
               </button>
             </div>
 
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}

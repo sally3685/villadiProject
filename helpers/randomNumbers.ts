@@ -14,7 +14,6 @@ function generateRandomNumbers(
   while (numbers.length < count) {
     const randomNum = min + Math.random() * (max - min);
 
-    console.log(randomNum, "sdfs");
     const finalNum = integer ? Math.floor(randomNum) : randomNum;
 
     if (!unique || !numbers.includes(finalNum)) {

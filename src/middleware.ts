@@ -12,7 +12,6 @@ const protectedRoutes = ["/Control"];
 function getLocale(request: NextRequest): string {
   if (request.cookies.has(cookieName))
     return request.cookies.get(cookieName)!.value;
-  console.log(request.cookies.get(cookieName), "ccccc");
   const acceptLang = request.headers.get("Accept-Language");
   if (!acceptLang) return defaultLocale;
   const headers = { "accept-language": acceptLang };
@@ -23,6 +22,7 @@ const specialRoutes = ["FAQ", "ContactUs,PrivacyPolicy", "TermsConditions"];
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   if (path.startsWith("/_next")) return NextResponse.next();
+  if (path.startsWith("/api/uploadthing")) return NextResponse.next();
   for (const route of specialRoutes) {
     const normalizedPath = path.endsWith("/") ? path : `${path}/`;
     const normalizedReferer = req.headers.get("referer")?.endsWith("/")
@@ -64,7 +64,6 @@ export default async function middleware(req: NextRequest) {
 
   const locale = getLocale(req);
   req.nextUrl.pathname = `/${locale}${path}`;
-  console.log(req.nextUrl.pathname, path);
   const response = NextResponse.redirect(req.nextUrl);
   response.cookies.set(cookieName, locale);
 
@@ -74,5 +73,6 @@ export default async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|.*\\.(?:png|jpe?g|gif|svg|ico|webp|avif)$).*)",
+    "/api/:path",
   ],
 };

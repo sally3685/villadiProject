@@ -151,6 +151,7 @@ export default function VideoIframe({
 
   useGSAP(
     () => {
+      const main = document.getElementById("#main") as HTMLElement;
       if (
         !imgRef.current ||
         !containerRef.current ||
@@ -162,18 +163,18 @@ export default function VideoIframe({
       if (tlRef.current) {
         tlRef.current.kill();
       }
-      const mainElement = document.getElementById("section2");
+      // const mainElement = document.getElementById("section2");
 
-      if (mainElement) {
-        mainElement.setAttribute(
-          "data-bgcolor",
-          video ? video.product.color : "#ff832b"
-        );
-        mainElement.setAttribute(
-          "data-color",
-          video ? video.product.p_color : "#ffffff"
-        );
-      }
+      // if (mainElement) {
+      //   mainElement.setAttribute(
+      //     "data-bgcolor",
+      //     video ? video.product.color : "#ff832b"
+      //   );
+      //   mainElement.setAttribute(
+      //     "data-color",
+      //     video ? video.product.p_color : "#ffffff"
+      //   );
+      // }
 
       tlRef.current = gsap.timeline({
         scrollTrigger: {
@@ -182,7 +183,17 @@ export default function VideoIframe({
           end: "bottom center",
         },
       });
+      if (main)
+        tlRef.current.to(main, {
+          backgroundColor:
+            video && video.product ? video.product.color : "#000000",
+          duration: 0.5,
+          ease: "power2.inOut",
+          "--colorArrow":
+            video && video.product ? video.product.p_color : "#ffffff",
+        });
       tlRef.current
+
         .fromTo(
           containerRef.current,
           {
@@ -190,7 +201,8 @@ export default function VideoIframe({
           },
           {
             scale: 1,
-          }
+          },
+          "<"
         )
         .fromTo(
           box2Ref.current,
@@ -226,7 +238,7 @@ export default function VideoIframe({
         >
           <Image
             ref={imgRef}
-            src={`/${video.coverImg}`}
+            src={`${video.coverImg}`}
             alt={`Cover for ${video.name}`}
             fill
             className="object-cover rounded-3xl"

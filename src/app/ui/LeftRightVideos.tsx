@@ -229,7 +229,7 @@ export default function LeftRightMenuVideos({
                     aria-label={`Play video ${video.name}`}
                   >
                     <Image
-                      src={`/${video.coverImg}`}
+                      src={`${video.coverImg}`}
                       alt={`Cover for ${video.name}`}
                       fill
                       className="object-cover rounded-3xl"

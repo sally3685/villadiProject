@@ -49,16 +49,9 @@ export async function AddFlavorAction(
     const language = formData.get("language")?.toString() || "en";
 
     // Handle image uploads
-    let imageName = "";
-    if (img instanceof File && img.size > 0) {
-      const bytes = await img.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      imageName = img.name.replace(/\s+/g, "");
-      await writeFile(`./public/${imageName}`, buffer);
-    }
 
     // Add flavor to database
-    const { status, message } = await AddFlavor(name, imageName, language);
+    const { status, message } = await AddFlavor(name, img, language);
 
     if (status === 409) {
       return { errors: { name: [message] } };
@@ -110,28 +103,12 @@ export async function UpdateFlavorAction(
     const id = formData.get("id") as string;
 
     // Handle image uploads
-    let primaryImageName = "";
-
-    try {
-      // Upload primary image
-      const primaryBytes = await img.arrayBuffer();
-      const primaryBuffer = Buffer.from(primaryBytes);
-      primaryImageName = img.name.replace(/\s+/g, "");
-      await writeFile(`./public/${primaryImageName}`, primaryBuffer);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      return {
-        errors: {
-          img: ["Failed to upload images"],
-        },
-      };
-    }
 
     // Add category to database
     const { status, message } = await updateFlavor({
       id: id,
       name: name,
-      primaryImg: primaryImageName,
+      primaryImg: img,
       lang: language,
     });
 

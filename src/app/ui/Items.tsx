@@ -146,7 +146,7 @@ export default function Items({
         <>
           <div
             ref={containerRef}
-            className="absolute w-full h-full z-[0] grid justify-center items-center"
+            className="absolute w-full h-full z-[0] grid justify-center items-center overflow-x-hidden"
             style={{
               gridTemplateAreas: `
           "top-left . top-right"
@@ -165,7 +165,7 @@ export default function Items({
             >
               <Image
                 ref={img1Ref}
-                src={img ? `/${img}` : "/star.png"}
+                src={img ? `${img}` : "/star.png"}
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}
@@ -182,7 +182,7 @@ export default function Items({
               >
                 <Image
                   ref={img2Ref}
-                  src={img ? `/${img2}` : "/star.png"}
+                  src={img ? `${img2}` : "/star.png"}
                   alt={`Cover for ${img2}`}
                   width={100}
                   height={100}
@@ -199,7 +199,7 @@ export default function Items({
             >
               <Image
                 ref={img3Ref}
-                src={img ? `/${img}` : "/star.png"}
+                src={img ? `${img}` : "/star.png"}
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}
@@ -216,7 +216,7 @@ export default function Items({
               >
                 <Image
                   ref={img4Ref}
-                  src={img ? `/${img2}` : "/star.png"}
+                  src={img ? `${img2}` : "/star.png"}
                   alt={`Cover for ${img2}`}
                   width={100}
                   height={100}
@@ -233,7 +233,7 @@ export default function Items({
             >
               <Image
                 ref={img5Ref}
-                src={img ? `/${img}` : "/star.png"}
+                src={img ? `${img}` : "/star.png"}
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}

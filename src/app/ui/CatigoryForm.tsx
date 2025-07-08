@@ -19,14 +19,15 @@ interface CategoryFormProps {
   lang: string;
   user: User;
 }
-
 export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
   const [formDataf, setFormDataf] = useState({
     name: "",
     code: "",
     detailes: "",
     img: "",
+    key: "",
   });
+  const [imgAction, setAction] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
 
@@ -51,6 +52,7 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
           code: "",
           detailes: "",
           img: "",
+          key: "",
         });
       } else if (state.general) {
         toast.error(state.general);
@@ -62,6 +64,7 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
 
   const handleSubmit = (formData: FormData) => {
     formData.append("language", tempLang);
+    formData.append("img", formDataf.img);
     action(formData);
   };
 
@@ -72,6 +75,7 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
       code: "",
       detailes: "",
       img: "",
+      key: "",
     });
   };
 
@@ -106,7 +110,9 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
               </button>
             </div>
 
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}
@@ -154,45 +160,57 @@ export default function CategoryForm({ t, lang, user }: CategoryFormProps) {
               }
               error={state?.errors?.detailes}
             />
-
             <FormFileInput
-              id="img"
               label={
                 isOppositeLanguage
                   ? t.addCategoryForm.oppImg
                   : t.addCategoryForm.img
               }
-              addText={t.addCategoryForm.addimg}
-              selectedText={t.addCategoryForm.imgselected}
-              detailsText={t.addCategoryForm.imgdetailes}
-              value={formDataf.img}
-              onChange={(value) => setFormDataf({ ...formDataf, img: value })}
               error={state?.errors?.img}
-              showLanguageInput
+              imgName={formDataf.img}
+              onAction={setAction}
+              toast={toast}
+              setFormDataf={setFormDataf}
+              formDataf={formDataf}
               lang={lang}
-              tempLang={tempLang}
+              alt={lang === "en" ? "category img" : "صورة الصنف"}
             />
           </div>
         </div>
       </div>
-
-      <SubmitButton t={t} />
+      <SubmitButton t={t} imgAction={imgAction} lang={lang} />
     </form>
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  lang,
+  imgAction,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
-      className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+      disabled={pending || imgAction}
+      className={`py-3 px-2 text-sm rounded lg:text-lg text-white ${
+        pending || imgAction
+          ? "bg-neutral-300 cursor-not-allowed"
+          : "bg-[#7abc43] hover:bg-[#6aab3a]  cursor-pointer"
       }`}
       type="submit"
     >
-      {pending ? t.addCategoryForm.waitSubmit : t.addCategoryForm.submit}
+      {pending
+        ? t.addCategoryForm.waitSubmit
+        : imgAction && lang === "en"
+          ? "proccessing"
+          : imgAction && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addCategoryForm.submit}
     </button>
   );
 }

@@ -4,6 +4,8 @@ import prisma from "../lib/db";
 import { cache } from "react";
 import { Product } from "../../../prisma/generated/prisma";
 import { getSession } from "../lib/session";
+import { getAllVideossWithoutLang } from "./videoDAL";
+import { deleteUTFiles } from "./uploadthingDAL";
 
 export const AddProduct = async (
   name: string,
@@ -271,6 +273,20 @@ export const deleteProduct = async (
     }
     let item;
     if (deleteAll) {
+      const resVideos = await getAllVideossWithoutLang();
+      const resProduct = await getAllProductsWithoutLang();
+      if (resVideos.status === 500 || resProduct.status === 500) {
+        return {
+          status: 500,
+        };
+      }
+      resVideos.videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg.split("/").pop() as string);
+      });
+      resProduct.products.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+        await deleteUTFiles(item.secondryImg.split("/").pop() as string);
+      });
       item = await prisma.$transaction([
         prisma.video.deleteMany(),
         prisma.product.deleteMany(),
@@ -291,6 +307,18 @@ export const deleteProduct = async (
         };
       }
 
+      await deleteUTFiles(existingProduct.img.split("/").pop() as string);
+      await deleteUTFiles(
+        existingProduct.secondryImg.split("/").pop() as string
+      );
+      const videos = await prisma.video.findMany({
+        where: {
+          productId: product.id,
+        },
+      });
+      videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg.split("/").pop() as string);
+      });
       item = await prisma.$transaction([
         prisma.video.deleteMany({ where: { productId: product.id } }),
 

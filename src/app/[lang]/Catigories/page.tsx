@@ -21,7 +21,7 @@ export default async function Catigory({
   return (
     <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[linear-gradient(to_left_bottom,#fc5e5e,#fdff00)] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-white ">
       {/* bg-[#ffd597] */}
-      <Items img={"mayo.png"} img2={"mayo1.png"} lang={lang}></Items>
+      <Items img={"/mayo.png"} img2={"/mayo1.png"} lang={lang}></Items>
       <LeftRightMenu
         items={categories}
         t={t}

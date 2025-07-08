@@ -56,7 +56,7 @@ const xsmallR = {
 
 const xsmallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.8)",
@@ -67,7 +67,7 @@ const xsmallLM = {
 };
 const smallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.9)",
@@ -77,7 +77,7 @@ const smallLM = {
   marginBottom: "49px ",
 };
 const largeM = {
-  width: "310px",
+  width: "300px",
   height: "380px",
   transition: "all 0.3s ease",
   transform: "scale(1) ",
@@ -319,7 +319,7 @@ export default function CarousalProducts({
               {title}
             </h1>
             <div
-              className={`flex items-center  flex-col sm:flex-row justify-center sm:justify- h-auto  w-full ${
+              className={`flex items-center  flex-col h-[400px] sm:flex-row justify-center sm:justify- sm:h-auto  w-full ${
                 items.length < (isMobile ? 3 : 5) ? "gap-8 flex-wrap" : ""
               }`}
             >
@@ -344,15 +344,15 @@ export default function CarousalProducts({
                     ></div>
 
                     <Image
-                      src={`/${product.img}`}
+                      src={`${product.img}`}
                       alt="product image"
                       className="w-[80%] h-[250px] object-contain z-[1] hover:scale-[1.2] transition-all duration-75"
                       width={200}
                       height={200}
                     />
                     <Image
-                      src={`/${product.flavor.primaryImg}`}
-                      alt="product image"
+                      src={`${product.flavor.primaryImg}`}
+                      alt="flavor image"
                       className=" absolute z-[0] w-[150px] h-[200px] object-contain top-[10%] left-[6%] sm:left-[11%]"
                       width={200}
                       height={200}

@@ -1,6 +1,6 @@
 "use client";
-import { TriangleAlert } from "lucide-react";
-import { AddMapAction, AddMapImageAction } from "../actions/mapAtion";
+import { Key, TriangleAlert } from "lucide-react";
+import { AddMapAction } from "../actions/mapAtion";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
@@ -27,39 +27,21 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
   const [formDataf, setFormDataf] = useState({
     name: "",
     details: "",
-    image: "",
+    img: "",
+    key: "",
     markers: [] as Array<{ top: number; left: number; id: string }>,
   });
+  const [imgAction, setAction] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
-  const [imageUploaded, setImageUploaded] = useState(false);
 
   // Separate states for each form's submission
-  const [imageState, imageAction] = useActionState(
-    AddMapImageAction,
-    undefined
-  );
+
   const [finalState, finalAction] = useActionState(AddMapAction, undefined);
 
   useEffect(() => {
     nameRef.current?.focus();
   }, []);
-
-  // Handle image upload response
-  useEffect(() => {
-    if (imageState) {
-      if (imageState.success) {
-        setImageUploaded(true);
-        toast.success(t.addMapForm.imageUploadSuccess, {
-          position: "top-right",
-        });
-      } else if (imageState.errors) {
-        toast.error(t.addMapForm.validationError);
-      } else if (imageState.general) {
-        toast.error(imageState.general);
-      }
-    }
-  }, [imageState, t]);
 
   // Handle final submission response
   useEffect(() => {
@@ -73,15 +55,14 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
         setFormDataf({
           name: "",
           details: "",
-          image: "",
+          img: "",
+          key: "",
           markers: [] as Array<{ top: number; left: number; id: string }>,
         });
-        setImageUploaded(false);
         setStep(0);
       } else if (finalState.general) {
         toast.error(finalState.general);
       } else if (finalState.errors) {
-        console.log(finalState.errors);
         toast.error(t.addMapForm.validationError);
       }
     }
@@ -106,7 +87,7 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
   // };
 
   const handleNextStep = () => {
-    if (!imageUploaded) {
+    if (!formDataf.img) {
       toast.warning(
         lang === "en" ? "Please upload an image first" : "الرجاء رفع صورة أولاً"
       );
@@ -150,7 +131,9 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
                   : t.addMapForm.opplangButton}
               </button>
             </div>
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}
@@ -162,51 +145,20 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
 
             {/* Step 0: Image Upload Form */}
             {step === 0 && (
-              <form
-                action={imageAction}
-                className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-6 lg:col-span-2"
-              >
-                <div className="lg:col-span-6">
-                  <FormFileInput
-                    id="img"
-                    label={
-                      isOppositeLanguage
-                        ? t.addMapForm.oppImg
-                        : t.addMapForm.img
-                    }
-                    addText={t.addMapForm.addimg}
-                    selectedText={t.addMapForm.imgselected}
-                    detailsText={t.addMapForm.imgdetailes}
-                    value={formDataf.image}
-                    onChange={(value) =>
-                      setFormDataf({ ...formDataf, image: value })
-                    }
-                    error={imageState?.errors?.img}
-                    showLanguageInput
-                    lang={lang}
-                    tempLang={tempLang}
-                    required
-                  />
-                </div>
-
-                {!imageUploaded ? (
-                  <div className="flex justify-end lg:col-span-6">
-                    <button
-                      type="submit"
-                      disabled={!formDataf.image}
-                      className={`px-4 py-2  rounded text-white hover:bg-blue-800 ${
-                        !formDataf.image
-                          ? "cursor-not-allowed! bg-blue-400!"
-                          : "cursor-pointer bg-blue-700"
-                      }`}
-                    >
-                      {t.addMapForm.upload}
-                    </button>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </form>
+              <FormFileInput
+                className={"bg-[#6aab3a] rounded-2xl text-center text-white"}
+                label={
+                  isOppositeLanguage ? t.addMapForm.oppImg : t.addMapForm.img
+                }
+                error={finalState?.errors?.img}
+                imgName={formDataf.img}
+                onAction={setAction}
+                toast={toast}
+                setFormDataf={setFormDataf}
+                formDataf={formDataf}
+                lang={lang}
+                alt={lang === "en" ? "map img" : "صورة الخريطة"}
+              />
             )}
 
             {/* Step 1: Details and Marker Form */}
@@ -232,7 +184,7 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
                     // Append other fields
                     formData.append("name", formDataf.name);
                     formData.append("details", formDataf.details);
-                    formData.append("img", formDataf.image);
+                    formData.append("img", formDataf.img);
                     formData.append("language", tempLang);
 
                     finalAction(formData);
@@ -273,7 +225,7 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
 
                   <div className="lg:col-span-6">
                     <InteractiveImageMarker
-                      imageUrl={formDataf.image}
+                      imageUrl={formDataf.img}
                       markers={formDataf.markers}
                       setMarkers={(markers) =>
                         setFormDataf({ ...formDataf, markers })
@@ -303,14 +255,23 @@ export default function MapForm({ t, lang, user }: MapFormProps) {
             )}
 
             {/* Next button (shown only after successful image upload) */}
-            {step === 0 && imageUploaded && (
+            {step === 0 && formDataf.img && (
               <div className="flex justify-end mt-4">
                 <button
+                  disabled={imgAction}
                   type="button"
                   onClick={handleNextStep}
-                  className="px-4 py-2 bg-green-600 rounded text-white hover:bg-green-700"
+                  className={`px-4 py-2  rounded text-white  ${
+                    imgAction
+                      ? "bg-neutral-300 cursor-not-allowed"
+                      : "bg-[#7abc43] hover:bg-[#6aab3a]  cursor-pointer"
+                  }`}
                 >
-                  {t.addMapForm.next}
+                  {imgAction && lang === "en"
+                    ? "proccessing"
+                    : imgAction && lang === "ar"
+                      ? "يتم المعالجة"
+                      : t.addMapForm.next}
                 </button>
               </div>
             )}

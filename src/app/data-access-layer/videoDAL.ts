@@ -4,6 +4,7 @@ import { cache } from "react";
 import { social, Video } from "../../../prisma/generated/prisma";
 import { revalidatePath } from "next/cache";
 import { getSession } from "../lib/session";
+import { deleteUTFiles } from "./uploadthingDAL";
 
 export const AddVideo = async (
   name: string,
@@ -28,7 +29,6 @@ export const AddVideo = async (
         embededLink: embededLink,
       },
     });
-    console.log(existingVideo);
     if (existingVideo) {
       return {
         status: 409,
@@ -152,7 +152,6 @@ export const updateVideo = async (video: Video) => {
     const existingVideo = await prisma.video.findFirst({
       where: { id: video.id },
     });
-    console.log(existingVideo);
     if (!existingVideo) {
       return {
         status: 404,
@@ -256,6 +255,14 @@ export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
     }
     let item;
     if (deleteAll) {
+      const videoss = await getAllVideossWithoutLang();
+      if (videoss.status !== 200)
+        return {
+          status: 500,
+        };
+      videoss.videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg);
+      });
       item = await prisma.video.deleteMany();
     } else {
       if (!video) {
@@ -272,6 +279,7 @@ export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
           status: 404,
         };
       }
+      const res = await deleteUTFiles(existingVideo.coverImg);
       item = await prisma.$transaction([
         prisma.video.delete({
           where: { id: video.id },

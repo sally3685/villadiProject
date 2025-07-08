@@ -4,6 +4,9 @@ import prisma from "../lib/db";
 import { cache } from "react";
 import { Category } from "../../../prisma/generated/prisma";
 import { getSession } from "../lib/session";
+import { getAllVideossWithoutLang } from "./videoDAL";
+import { getAllProductsWithoutLang } from "./productDAL";
+import { deleteUTFiles } from "./uploadthingDAL";
 
 export const AddCategory = async (
   name: string,
@@ -64,8 +67,8 @@ export const AddCategory = async (
     }
 
     // Revalidate relevant paths
-    revalidatePath(`/[lang]/Categories`, "page");
-    revalidatePath(`/[lang]`, "page");
+    revalidatePath(`/${language}/Categories`, "page");
+    revalidatePath(`/${language}`, "page");
 
     return {
       status: 201,
@@ -158,7 +161,6 @@ export const updateCategory = async (category: Category) => {
     const existingCategory = await prisma.category.findFirst({
       where: { id: category.id },
     });
-    console.log(existingCategory);
 
     if (!existingCategory) {
       return {
@@ -176,7 +178,6 @@ export const updateCategory = async (category: Category) => {
         detailes: category.detailes,
       },
     });
-    console.log(item);
 
     if (!item) {
       return {
@@ -215,6 +216,23 @@ export const deleteCategory = async (
     }
     let item;
     if (deleteAll) {
+      const resVideos = await getAllVideossWithoutLang();
+      const resProduct = await getAllProductsWithoutLang();
+      const resCat = await getAllCategoriesWithoutLang();
+      if (resVideos.status === 500 || resProduct.status === 500)
+        return {
+          status: 500,
+        };
+      resVideos.videos.map(async (item) => {
+        await deleteUTFiles(item.coverImg.split("/").pop() as string);
+      });
+      resProduct.products.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+        await deleteUTFiles(item.secondryImg.split("/").pop() as string);
+      });
+      resCat.categories.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+      });
       item = await prisma.$transaction([
         prisma.video.deleteMany(),
         prisma.product.deleteMany(),
@@ -236,11 +254,22 @@ export const deleteCategory = async (
           status: 404,
         };
       }
+
+      await deleteUTFiles(existingCategory.img.split("/").pop() as string);
       const products = await prisma.product.findMany({
         where: { categoryId: category.id },
-        select: { id: true },
+        include: {
+          videos: true,
+        },
       });
 
+      products.map(async (item) => {
+        await deleteUTFiles(item.img.split("/").pop() as string);
+        await deleteUTFiles(item.secondryImg.split("/").pop() as string);
+        item.videos.map(async (item1) => {
+          await deleteUTFiles(item1.coverImg.split("/").pop() as string);
+        });
+      });
       const productIds = products.map((p) => p.id);
 
       item = await prisma.$transaction([

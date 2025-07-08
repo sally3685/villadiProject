@@ -57,7 +57,7 @@ const xsmallR = {
 
 const xsmallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.8)",
@@ -68,7 +68,7 @@ const xsmallLM = {
 };
 const smallLM = {
   position: "absolute",
-  width: "310px",
+  width: "300px",
   height: "380px",
   transformOrigin: "top",
   transform: "scale(0.9)",
@@ -78,7 +78,7 @@ const smallLM = {
   marginBottom: "49px ",
 };
 const largeM = {
-  width: "310px",
+  width: "300px",
   height: "380px",
   transition: "all 0.3s ease",
   transform: "scale(1) ",
@@ -320,7 +320,7 @@ export default function Carousal3D({
 
                     <Image
                       className="relative w-[90%] h-[200px] object-contain"
-                      src={`/${item ? item.img : lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}
+                      src={`${item ? item.img : lang === "en" ? "/villadiLogo.svg" : "/villadiLogoAr.svg"}`}
                       alt="category image"
                       width={300}
                       height={400}

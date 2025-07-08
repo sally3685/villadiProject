@@ -66,20 +66,14 @@ export const CategoryFormSchema = z.object({
   code: z
     .string()
     .nonempty({ message: "should have at least one letter" })
+
     .trim(),
   detailes: z
     .string()
     .nonempty({ message: "should give some words about it" })
     .trim()
     .max(250, { message: "Cannot exceed 250 characters" }),
-  img: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
+  img: z.string().nonempty({ message: "should have at least one letter" }),
 });
 export const ProductFormSchema = z.object({
   name: z
@@ -124,22 +118,9 @@ export const ProductFormSchema = z.object({
       message: "should be hex color.",
     })
     .trim(),
-  img: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
-  img2: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
+
+  img: z.string().nonempty({ message: "should have at least one letter" }),
+  img2: z.string().nonempty({ message: "should have at least one letter" }),
 });
 export const MapFormSchema = z.object({
   name: z
@@ -151,10 +132,8 @@ export const MapFormSchema = z.object({
     .string()
     .nonempty({ message: "should give some words about it" })
     .trim(),
-  img: z
-    .string()
-    .nonempty({ message: "should have at least one letter" })
-    .trim(),
+
+  img: z.string().nonempty({ message: "should have at least one letter" }),
 });
 export const MapLSchema = z.object({
   left: z
@@ -188,14 +167,7 @@ export const VideoFormSchema = z.object({
       "must be youtube link"
     )
     .trim(),
-  coverImg: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
+  coverImg: z.string().nonempty({ message: "should have at least one letter" }),
 });
 export const RecipeFormSchema = z.object({
   name: z
@@ -215,14 +187,7 @@ export const CommentFormSchema = z.object({
     .max(250, { message: "Details cannot exceed 250 characters" }),
 });
 export const MapImgFormSchema = z.object({
-  img: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
+  img: z.string().nonempty({ message: "should have at least one letter" }),
 });
 export const FlavorFormSchema = z.object({
   name: z
@@ -230,14 +195,8 @@ export const FlavorFormSchema = z.object({
     .nonempty({ message: "should have at least one letter" })
     .max(25, { message: "Name cannot exceed 25 characters" })
     .trim(),
-  img: z
-    .instanceof(File)
-    .refine((file) => ["image/png"].includes(file.type), {
-      message: "Invalid image file type",
-    })
-    .refine((file) => file.size <= fileSizeLimit, {
-      message: "File size should not exceed 3MB",
-    }),
+
+  img: z.string().nonempty({ message: "should have at least one letter" }),
 });
 
 export const SocailFormSchema = z.object({
@@ -390,6 +349,7 @@ export type FormMapState =
         details?: string[];
         left?: string[];
         top?: string[];
+        img?: string[];
       };
       general?: string;
       success?: boolean;

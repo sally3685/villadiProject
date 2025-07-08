@@ -40,9 +40,9 @@ export default function VideoForm({
     name: "",
     embededLink: "",
     productId: "",
-    coverImg: "",
+    img: "",
+    key: "",
   });
-  const [coverImgFile, setCoverImgFile] = useState<File | null>(null); // New state for file object
   const nameRef = useRef<HTMLInputElement>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(
     null
@@ -50,6 +50,7 @@ export default function VideoForm({
   const [tempLang, setTempLang] = useState<string>(lang);
 
   const [state, action] = useActionState(AddVideoAction, undefined);
+  const [imgAction, setAction] = useState(false);
 
   useEffect(() => {
     nameRef.current?.focus();
@@ -66,22 +67,21 @@ export default function VideoForm({
           name: "",
           embededLink: "",
           productId: "",
-          coverImg: "",
+          img: "",
+          key: "",
         });
-        setCoverImgFile(null); // Clear file object on success
         setStep(0);
         setSelectedProduct(null);
       } else if (state.general) {
         toast.error(state.general);
       } else if (state.errors) {
-        console.log(state.errors);
         toast.error(t.addVideoForm.validationError);
       }
     }
   }, [state, t]);
 
   const handleSubmit = (formData: FormData) => {
-    if (!selectedProduct || !coverImgFile) {
+    if (!selectedProduct || !formDataf.img) {
       toast.warning(
         lang === "en"
           ? "Please select a product and a cover image to continue"
@@ -90,10 +90,8 @@ export default function VideoForm({
       return;
     }
 
-    // Append the actual file object
-    if (coverImgFile) {
-      formData.append("coverImg", coverImgFile);
-    }
+    formData.append("coverImg", formDataf.img);
+
     formData.append("selectedProduct", selectedProduct.id);
     formData.append("language", tempLang);
     formData.append("name", formDataf.name);
@@ -108,15 +106,15 @@ export default function VideoForm({
       name: "",
       embededLink: "",
       productId: "",
-      coverImg: "",
+      img: "",
+      key: "",
     });
-    setCoverImgFile(null);
     setStep(0);
     setSelectedProduct(null);
   };
 
   const handleNextStep = () => {
-    if (step === 0 && !selectedProduct && !formDataf.coverImg) {
+    if (step === 0 && !selectedProduct && !formDataf.img) {
       toast.warning(t.addVideoForm.productRequired);
       return;
     }
@@ -159,7 +157,9 @@ export default function VideoForm({
               </button>
             </div>
 
-            <hr className="bg-[#7abc43] h-[2px] lg:rotate-90 lg:left-[50%] relative lg:top-[-20%]" />
+            <hr
+              className={`bg-[#7abc43] h-[2px] lg:rotate-90 ${lang === "en" ? "lg:left-[50%]" : "right-[50%]"} relative lg:top-[-20%]`}
+            />
           </div>
 
           {/* Main Form Content */}
@@ -185,30 +185,19 @@ export default function VideoForm({
                   onSelect={setSelectedProduct}
                 />
                 <FormFileInput
-                  id="coverImg"
                   label={
                     isOppositeLanguage
                       ? t.addVideoForm.oppImg
                       : t.addVideoForm.img
                   }
-                  addText={t.addVideoForm.addimg}
-                  selectedText={t.addVideoForm.imgselected}
-                  detailsText={t.addVideoForm.imgdetailes}
-                  value={formDataf.coverImg}
-                  onChange={(value) => {
-                    setFormDataf({ ...formDataf, coverImg: value });
-                    // Capture the File object when it changes
-                    const fileInput = document.getElementById(
-                      "coverImg"
-                    ) as HTMLInputElement;
-                    if (fileInput?.files?.[0]) {
-                      setCoverImgFile(fileInput.files[0]);
-                    }
-                  }}
                   error={state?.errors?.coverImg}
-                  showLanguageInput
+                  imgName={formDataf.img}
+                  onAction={setAction}
+                  toast={toast}
+                  setFormDataf={setFormDataf}
+                  formDataf={formDataf}
                   lang={lang}
-                  tempLang={tempLang}
+                  alt={lang === "en" ? "flavor img" : "صورة النكهة"}
                 />
               </div>
             )}
@@ -269,9 +258,9 @@ export default function VideoForm({
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  disabled={!selectedProduct || !formDataf.coverImg}
+                  disabled={!selectedProduct || !formDataf.img || imgAction}
                   className={`px-4 py-2 bg-blue-700 rounded text-white ${
-                    !selectedProduct || !formDataf.coverImg
+                    !selectedProduct || !formDataf.img || imgAction
                       ? "opacity-50 cursor-not-allowed"
                       : "hover:bg-blue-800"
                   }`}

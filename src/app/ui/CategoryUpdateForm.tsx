@@ -9,7 +9,8 @@ import { FormFileInput } from "./FormFileInput";
 import SearchableSelect from "./SelectMenu";
 import Stepper from "./Stepper";
 import { Category } from "../../../prisma/generated/prisma";
-
+import { deleteUTFiles } from "../data-access-layer/uploadthingDAL";
+import Image from "next/image";
 interface CategoryFormProps {
   t: any;
   lang: string;
@@ -26,7 +27,10 @@ export default function CategoryUpdateForm({
     code: "",
     detailes: "",
     img: "",
+    key: "",
   });
+  const [imgDelete, setImgDelete] = useState(false);
+  const [imgAction, setAction] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const [tempLang, setTempLang] = useState<string>(lang);
   const [step, setStep] = useState(0);
@@ -41,7 +45,6 @@ export default function CategoryUpdateForm({
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       nameRef.current?.focus();
 
@@ -63,6 +66,7 @@ export default function CategoryUpdateForm({
           code: "",
           detailes: "",
           img: "",
+          key: "",
         });
       } else if (state.general) {
         toast.error(state.general);
@@ -79,6 +83,7 @@ export default function CategoryUpdateForm({
     }
     formData.append("language", selectedCategory?.lang);
     formData.append("id", selectedCategory?.id);
+    formData.append("img", formDataf?.img);
     action(formData);
   };
 
@@ -96,6 +101,7 @@ export default function CategoryUpdateForm({
       code: selectedCategory?.code,
       detailes: selectedCategory?.detailes,
       img: selectedCategory?.img,
+      key: "",
     });
     setStep(1);
   };
@@ -174,22 +180,60 @@ export default function CategoryUpdateForm({
                   }
                   error={state?.errors?.detailes}
                 />
-
-                <FormFileInput
-                  id="img"
-                  label={t.addCategoryForm.img}
-                  addText={t.addCategoryForm.addimg}
-                  selectedText={t.addCategoryForm.imgselected}
-                  detailsText={t.addCategoryForm.imgdetailes}
-                  value={formDataf.img}
-                  onChange={(value) =>
-                    setFormDataf({ ...formDataf, img: value })
-                  }
-                  error={state?.errors?.img}
-                  showLanguageInput
-                  lang={lang}
-                  tempLang={tempLang}
-                />
+                {!imgDelete && formDataf.img && (
+                  <div className="flex flex-col gap-2 col-span-full">
+                    <p className="text:sm lg:text-lg font-semibold">
+                      {lang === "en"
+                        ? "click on the image to delete and reupload"
+                        : "اضغط على الصورة لحذفها وإعادة الادخال"}
+                    </p>
+                    <p className="text:xs lg:text-sm ">
+                      {lang === "en"
+                        ? "if image is not here it is a network error . you can still click and delete it "
+                        : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
+                    </p>
+                    <Image
+                      src={formDataf.img}
+                      width={500}
+                      height={200}
+                      alt="category img"
+                      className="object-contain cursor-pointer h-[200px]"
+                      onClick={async () => {
+                        setAction(true);
+                        const key = formDataf.img.split("/").pop();
+                        const res = await deleteUTFiles(key as string);
+                        if (res.status === 200) {
+                          toast.success(
+                            lang === "en" ? "image deleted" : "تم حذف الصورة"
+                          );
+                          setFormDataf({ ...formDataf, img: "", key: "" });
+                          setImgDelete(true);
+                        } else
+                          toast.error(
+                            lang === "en" ? "deletion failed" : "فشل الحذف"
+                          );
+                        if (res) setAction(false);
+                      }}
+                    ></Image>
+                  </div>
+                )}
+                {imgDelete && (
+                  <FormFileInput
+                    label={
+                      isOppositeLanguage
+                        ? t.addCategoryForm.oppImg
+                        : t.addCategoryForm.img
+                    }
+                    error={state?.errors?.img}
+                    imgName={formDataf.img}
+                    onAction={setAction}
+                    toast={toast}
+                    setFormDataf={setFormDataf}
+                    formDataf={formDataf}
+                    lang={lang}
+                    alt={lang === "en" ? "category img" : "صورة الصنف"}
+                  />
+                )}
               </div>
             )}
 
@@ -222,7 +266,7 @@ export default function CategoryUpdateForm({
                   {t.addCategoryForm.next}
                 </button>
               ) : (
-                <SubmitButton t={t} />
+                <SubmitButton t={t} lang={lang} imgAction={imgAction} />
               )}
             </div>
           </div>
@@ -232,18 +276,34 @@ export default function CategoryUpdateForm({
   );
 }
 
-function SubmitButton({ t }: { t: any }) {
+function SubmitButton({
+  t,
+  imgAction,
+  lang,
+}: {
+  t: any;
+  lang: string;
+  imgAction: boolean;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      disabled={pending}
-      className={`py-3 px-2 text-sm rounded cursor-pointer lg:text-lg text-white ${
-        pending ? "bg-neutral-300" : "bg-[#7abc43] hover:bg-[#6aab3a]"
+      disabled={pending || imgAction}
+      className={`py-3 px-2 text-sm rounded lg:text-lg text-white ${
+        pending || imgAction
+          ? "bg-neutral-300 cursor-not-allowed"
+          : "bg-[#7abc43] hover:bg-[#6aab3a]  cursor-pointer"
       }`}
       type="submit"
     >
-      {pending ? t.addCategoryForm.waitSubmit : t.addCategoryForm.submit}
+      {pending
+        ? t.addCategoryForm.waitSubmit
+        : imgAction && lang === "en"
+          ? "proccessing"
+          : imgAction && lang === "ar"
+            ? "يتم المعالجة"
+            : t.addCategoryForm.submit}
     </button>
   );
 }

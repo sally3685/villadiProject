@@ -56,28 +56,11 @@ export async function AddVideoAction(
     const selectedProduct = formData.get("selectedProduct") as string;
 
     // Handle image upload if provided
-    let imageName = "";
-    if (videoData.coverImg instanceof File && videoData.coverImg.size > 0) {
-      try {
-        const bytes = await videoData.coverImg.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        imageName = videoData.coverImg.name.replace(/\s+/g, "");
-
-        await writeFile(`./public/${imageName}`, buffer);
-      } catch (error) {
-        return {
-          errors: {
-            coverImg: ["Failed to upload image"],
-          },
-        };
-      }
-    }
 
     // Add category to database
-    const name = videoData.coverImg.name.replace(/\s+/g, "");
     const { status, message } = await AddVideo(
       videoData.name,
-      name,
+      videoData.coverImg,
       videoData.embededLink,
       selectedProduct,
       language
@@ -141,29 +124,12 @@ export async function UpdateVideoAction(
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
 
-    let imageName = "";
-    const coverImg = formData.get("coverImg");
-    if (coverImg instanceof File && coverImg.size > 0) {
-      try {
-        const bytes = await coverImg.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        imageName = coverImg.name.replace(/\s+/g, "");
-
-        await writeFile(`./public/${imageName}`, buffer);
-      } catch (error) {
-        return {
-          errors: {
-            coverImg: ["Failed to upload image"],
-          },
-        };
-      }
-    }
     const selectedProduct = formData.get("selectedProduct") as string;
     const { status, message } = await updateVideo({
       id: id,
       name: videoData.name,
       embededLink: videoData.embededLink,
-      coverImg: imageName,
+      coverImg: videoData.coverImg,
       productId: selectedProduct,
       lang: language,
     });

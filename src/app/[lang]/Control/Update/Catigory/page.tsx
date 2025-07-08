@@ -1,8 +1,7 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
-import { getSession } from "@/app/lib/session";
+
 import CategoryUpdateForm from "@/app/ui/CategoryUpdateForm";
 import { getAllCategoriesWithoutLang } from "@/app/data-access-layer/catigoryDAL";
-import { redirect } from "next/navigation";
 import ErrorPage from "@/app/[lang]/error";
 export default async function Catigory({
   params,

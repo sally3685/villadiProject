@@ -213,14 +213,14 @@ export default function LeftRightMenu({
                 </Link>
               </div>
 
-              <div className="bg-[#46260f87] rounded-2xl w-[320px] h-80 md:w-[450px] md:h-80 flex justify-evenly items-center p-4 relative flex-col overflow-hidden">
+              <div className="bg-[#46260f87] rounded-2xl w-full h-80 md:w-[450px] md:h-80 flex justify-evenly items-center p-4 relative flex-col overflow-hidden">
                 <div
                   className="absolute w-full h-full before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
              after:absolute after:content-[''] after:w-1/3 after:h-1/2 after:bg-[#ffffff66] after:bottom-[-10px] after:blur-2xl after:right-[15%] after:opacity-50 z-[0]"
                 ></div>
                 <Image
                   className="absolute bottom-0 w-full h-72 object-contain"
-                  src={`/${item ? item.img : lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}
+                  src={`${item ? item.img : lang === "en" ? "/villadiLogo.svg" : "/villadiLogoAr.svg"}`}
                   alt="category image"
                   width={300}
                   height={400}

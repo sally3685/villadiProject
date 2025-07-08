@@ -17,11 +17,9 @@ export default async function Product({
   const { lang } = await params;
   const t = await getDictionary(lang);
   const product = await getProdsWithFlavs(lang);
-  console.log(product, "d,mn,mmn,");
   if (product.status === 500) {
     return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
   }
-  console.log(product, "lknlkn");
   return (
     <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c4d] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
       <div className="flex flex-col w-full gap-12 px-2 py-12 sm:py-40 max-w-7xl z-[0]">

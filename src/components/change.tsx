@@ -55,7 +55,7 @@ const Change = ({
     array?.length ? array[step].secondryImg : "nothing.png",
   ]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLImageElement>(null);
   const tomato1Ref = useRef<HTMLImageElement>(null);
   const tomato2Ref = useRef<HTMLImageElement>(null);
   const stickRef = useRef<HTMLImageElement>(null);
@@ -100,6 +100,7 @@ const Change = ({
 
       setStep((prev) => {
         if (prev >= array.length - 1) return 0; // Loop to start
+
         return prev + 1;
       });
     };
@@ -166,18 +167,18 @@ const Change = ({
     }
   };
   useEffect(() => {
-    const mainElement = document.getElementById("section1");
+    // const mainElement = document.getElementById("section1");
 
-    if (mainElement) {
-      mainElement.setAttribute(
-        "data-bgcolor",
-        array?.length ? array[step].color : "#a7edff"
-      );
-      mainElement.setAttribute(
-        "data-color",
-        array?.length ? array[step].p_color : "#ffffff"
-      );
-    }
+    // if (mainElement) {
+    //   mainElement.setAttribute(
+    //     "data-bgcolor",
+    //     array?.length ? array[step].color : "#a7edff"
+    //   );
+    //   mainElement.setAttribute(
+    //     "data-color",
+    //     array?.length ? array[step].p_color : "#ffffff"
+    //   );
+    // }
     setSrcImage([
       array?.length
         ? array[step].img
@@ -192,6 +193,7 @@ const Change = ({
 
   useGSAP(
     () => {
+      const main = document.querySelector("main") as HTMLElement;
       // Only animate if all refs are available
       if (
         !tomato1Ref.current ||
@@ -206,7 +208,8 @@ const Change = ({
         !boxRef.current ||
         !box2Ref.current ||
         !textRef.current ||
-        !containerRef.current
+        !containerRef.current ||
+        !main
       )
         return;
 
@@ -218,18 +221,6 @@ const Change = ({
 
       // Create new timeline
       tlRef.current = gsap.timeline();
-      const mainElement = document.getElementById("section1");
-
-      if (mainElement) {
-        mainElement.setAttribute(
-          "data-bgcolor",
-          array?.length ? array[step].color : "#000000"
-        );
-        mainElement.setAttribute(
-          "data-color",
-          array?.length ? array[step].p_color : "#ffffff"
-        );
-      }
 
       // Set initial states
       tlRef.current.set(
@@ -257,9 +248,16 @@ const Change = ({
         borderLeftWidth: 0,
         borderTopWidth: 0,
       });
-
-      // Build the animation timeline
+      if (isVisible)
+        tlRef.current.to(main, {
+          backgroundColor: array && array[step] ? array[step].color : "#000000",
+          duration: 0.5,
+          ease: "power2.inOut",
+          "--colorArrow":
+            array && array[step] ? array[step].p_color : "#ffffff",
+        });
       tlRef.current
+
         .fromTo(
           containerRef.current,
           { y: -250 },
@@ -268,8 +266,10 @@ const Change = ({
             duration: 1,
             rotate: -4,
             ease: "bounce",
-          }
+          },
+          "<"
         )
+
         .fromTo(
           tomato1Ref.current,
           { x: 0, y: 0 },
@@ -383,9 +383,9 @@ const Change = ({
         }
       };
     },
-    { scope: containerRef, dependencies: [srcImage, step] } // Added step to dependencies
+    { scope: containerRef, dependencies: [srcImage, step, isVisible] } // Added step to dependencies
   );
-
+  useEffect(() => {}, [srcImage]);
   return (
     <div className="w-full h-full flex justify-center items-end p-8 relative ">
       {!array || array?.length === 0 ? (
@@ -409,58 +409,73 @@ const Change = ({
           ></div>
           <div
             ref={containerRef}
-            className="chips  w-full h-full bg-center bg-no-repeat bg-contain relative flex justify-center items-center max-w-[440px] max-h-[500px] scale-[0.7] sm:scale-[0.8] lg:scale-[0.9] xl:scale-[1] min-w-[320px]"
+            className="  w-full h-full bg-center bg-no-repeat bg-contain relative flex justify-center items-center max-w-[440px] max-h-[500px] scale-[0.7] sm:scale-[0.8] lg:scale-[0.9] xl:scale-[1] min-w-[320px]"
             style={{
               backgroundImage: `url(${srcImage[0]})`,
             }}
           >
+            {/* <Image
+              // ref={containerRef}
+              className="chips absolute w-full h-full object-contain "
+              src={`${srcImage[0]}`}
+              width={80}
+              height={90}
+              alt="bag"
+              priority={true}
+            ></Image> */}
             <Image
               ref={tomato1Ref}
               className="z-[0] tomato1 absolute w-auto max-w-[150px] object-contain max-h-[160px] "
-              src={`/${srcImage[1]}`}
+              src={`${srcImage[1]}`}
               width={80}
-              height={100}
-              alt="tomato"
+              height={90}
+              alt="flavor"
+              priority={true}
             />
             <Image
               ref={tomato2Ref}
               className="z-[0] tomato2 absolute w-auto max-w-[150px] object-contain max-h-[160px]"
-              src={`/${srcImage[1]}`}
+              src={`${srcImage[1]}`}
               width={80}
-              height={100}
-              alt="tomato"
+              height={90}
+              alt="flavor"
+              priority={true}
             />
             <Image
               ref={stickRef}
-              className="z-[0] stick absolute max-w-[100px] object-contain max-h-[160px]"
-              src={`/${srcImage[2]}`}
+              className="z-[0] stick absolute w-auto max-w-[100px] object-contain max-h-[160px]"
+              src={`${srcImage[2]}`}
               width={80}
               height={80}
-              alt="stick"
+              alt="piece"
+              priority={true}
             />
             <Image
               ref={stick2Ref}
-              className="z-[0] stick2 absolute max-w-[100px] object-contain max-h-[160px]"
-              src={`/${srcImage[2]}`}
+              className="z-[0] stick2 absolute w-auto max-w-[100px] object-contain max-h-[160px]"
+              src={`${srcImage[2]}`}
               width={80}
               height={100}
-              alt="stick"
+              alt="piece"
+              priority={true}
             />
             <Image
               ref={stick3Ref}
-              className="z-[0] stick3 absolute max-w-[100px] object-contain max-h-[160px]"
-              src={`/${srcImage[2]}`}
+              className="z-[0] stick3 absolute w-auto max-w-[100px] object-contain max-h-[160px]"
+              src={`${srcImage[2]}`}
               width={80}
               height={100}
-              alt="stick"
+              alt="piece"
+              priority={true}
             />
             <Image
               ref={stick4Ref}
-              className="z-[0] stick4 absolute max-w-[100px] object-contain max-h-[160px]"
-              src={`/${srcImage[2]}`}
+              className="z-[0] stick4 absolute w-auto max-w-[100px] object-contain max-h-[160px]"
+              src={`${srcImage[2]}`}
               width={80}
               height={100}
-              alt="stick"
+              alt="piece"
+              priority={true}
             />
             <div className="absolute w-full h-full">
               <div
@@ -517,6 +532,7 @@ const Change = ({
               </div>
             </div>
           </div>
+
           <ArrowRightCircleIcon
             size={40}
             className={`absolute w-[50%] right-[0%] top-[90%] sm:top-[50%] ${

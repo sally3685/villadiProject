@@ -27,7 +27,6 @@ export function ResetPasswordForm({ t, lang }: { t: any; lang: string }) {
     emailRef.current?.focus();
   }, []);
   const router = useRouter();
-  console.log(state);
   if (state?.general)
     return <ErrorPage error={new Error(state.general)}></ErrorPage>;
   return (

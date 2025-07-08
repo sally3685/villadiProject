@@ -55,7 +55,6 @@ export default function RecipeUpdateForm({
   }, []);
 
   useEffect(() => {
-    console.log(state);
     if (state) {
       nameRef.current?.focus();
 

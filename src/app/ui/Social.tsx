@@ -159,7 +159,6 @@ export default function Social({
   //     Object.values(instagram_embed).length > 0
   // ) {
   //     Object.values(instagram_embed).map((emb) => {
-  //         console.log(emb.textContent);
   //         const url = emb?.textContent;
   //         if (url.startsWith("https")) {
   //             const newComponent = (

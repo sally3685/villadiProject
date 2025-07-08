@@ -80,7 +80,6 @@ export const sessionExist = async () => {
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session");
   // const payload = await decrypt(session?.value);
-  // console.log('update', session?.value, payload);
   if (!session || session === undefined) {
     return null;
   }

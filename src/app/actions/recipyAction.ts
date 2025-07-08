@@ -90,7 +90,6 @@ export async function UpdateRecipeAction(
     const requiredFields = ["id", "name", "detailes", "language", "selectedF"];
     for (const field of requiredFields) {
       if (!formData.get(field)) {
-        console.log(field, "lknlknl");
         return {
           errors: {
             [field]: ["This field is required"],

@@ -50,7 +50,7 @@ export default async function Recipes({
         </>
       ) : (
         <>
-          <div className="flex flex-col w-full items-center justify-center gap-12 px-2 py-[100px] sm:py-40 max-w-7xl z-[0]">
+          <div className="flex flex-col w-full items-center justify-center gap-[100px] sm:gap-[calc(var(--spacing)_*_40)] px-2 py-[100px] sm:py-40 max-w-7xl z-[0] overflow-x-hidden">
             <RecipeDetails recipe={recipe.recipie} lang={lang} />
             <Carousal3DRec
               user={result}
