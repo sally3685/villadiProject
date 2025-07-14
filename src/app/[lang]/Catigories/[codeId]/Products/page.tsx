@@ -8,6 +8,7 @@ import Carousel from "@/app/ui/Carousel/Carousel";
 import { EmptyState } from "@/app/ui/EmptyState";
 import { CatsProdsDictionary } from "../../types";
 import { ProductsGrid } from "@/app/ui/ProductGrid/ProductGrid";
+import { carouselDictionary } from "@/app/ui/Carousel/carouselTypes";
 export default async function ProdCode({
   params,
 }: {
@@ -15,6 +16,7 @@ export default async function ProdCode({
 }) {
   const { codeId, lang } = await params;
   const t = (await getDictionary(lang)) as CatsProdsDictionary;
+  const t1 = await getDictionary(lang);
   const catsProds = await getAllCodeCategory(lang, codeId);
   const cats = await getAllCategory(lang);
   if (cats.status === 500) {
@@ -58,7 +60,7 @@ export default async function ProdCode({
               all={t.catigoriesWrapper.view}
               noItems={t.catigoriesWrapper.noCats}
               lang={lang}
-              t={t}
+              t={t1 as carouselDictionary}
               type="categories"
               linkPrefix={`/${lang}/Catigories`}
               linkText={t.catigoriesWrapper.link}
