@@ -12,32 +12,34 @@ export const AddMap = async (
   img: string,
   top: string[],
   left: string[],
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to add a map 😔 / يجب أن تكون مشرف حتى تستطيع إضافة خريطة 😔 ",
       };
     }
-    // Validate flavor exists
     const map = await prisma.map.findFirst({
       where: { name: name, lang: language },
     });
 
     if (map) {
       return {
-        status: 404,
-        message: "map not found for the selected language",
+        status: 409,
+        message:
+          "Map with this name already exists / يوجد بالفعل خريطة بهذا الاسم ",
       };
     }
 
-    // Create new recipe
     const newMap = await prisma.map.create({
       data: {
         name,
@@ -52,23 +54,20 @@ export const AddMap = async (
     if (!newMap) {
       return {
         status: 500,
-        message: "Failed to create recipe",
+        message: "Failed to create a map / فشل إضافة خريطة",
       };
     }
-
-    // Revalidate relevant paths
-    // revalidatePath(`/[lang]/recipes`, "page");
-    // revalidatePath(`/[lang]/flavors`, "page");
+    revalidatePath(`/en/Maps`, "page");
+    revalidatePath(`/ar/Maps`, "page");
 
     return {
       status: 201,
-      message: "Map created successfully",
+      message: "Map created successfully ♡ / تم إنشاء الخريطة بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddMap:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
@@ -79,21 +78,23 @@ export const getAllMapWithoutLang = cache(async () => {
     if (!maps || maps.length === 0) {
       return {
         status: 404,
-        message: "No maps found",
+        messageEn: "No maps found 😔",
+        messageAr: "لم يتم إيجاد أي خريطة 😔",
         maps: [],
       };
     }
 
     return {
       status: 200,
-      message: "maps retrieved successfully",
+      messageEn: "Maps retrieved successfully ♡",
+      messageAr: "تم إحضار الخرائط بنجاح ♡",
       maps,
     };
   } catch (error) {
-    console.error("Error in getAllmaps:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       maps: [],
     };
   }
@@ -105,35 +106,40 @@ export const getAllMaps = cache(async (lang: string) => {
     if (!maps || maps.length === 0) {
       return {
         status: 404,
-        message: "No maps found",
+        messageEn: "No maps found 😔",
+        messageAr: "لم يتم إيجاد أي خريطة 😔",
         maps: [],
       };
     }
 
     return {
       status: 200,
-      message: "maps retrieved successfully",
+      messageEn: "Maps retrieved successfully ♡",
+      messageAr: "تم إحضار الخرائط بنجاح ♡",
       maps,
     };
   } catch (error) {
-    console.error("Error in getAllmaps:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       maps: [],
     };
   }
 });
 export const updateMap = async (map: Map) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to update a map 😔 / يجب أن تكون مشرف حتى تستطيع تعديل خريطة 😔 ",
       };
     }
     const existingMap = await prisma.map.findFirst({
@@ -143,7 +149,8 @@ export const updateMap = async (map: Map) => {
     if (!existingMap) {
       return {
         status: 404,
-        message: "No Maps found",
+        message:
+          "map Not found choose the map again / لم يتم إيجاد الخريطة أعد اختيار الخريطة",
       };
     }
 
@@ -162,27 +169,26 @@ export const updateMap = async (map: Map) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update map / فشل في تعديل الخريطة",
       };
     }
     revalidatePath("/en/Control/Update/Map");
     revalidatePath("/ar/Control/Update/Map");
     return {
       status: 200,
-      message: "Map updated successfully",
+      message: "Map updated successfully ♡ / تم تعديل الخريطة بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in update Map:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
 export const deleteMap = async (deleteAll: boolean, map: Map | null) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -194,10 +200,7 @@ export const deleteMap = async (deleteAll: boolean, map: Map | null) => {
     let item;
     if (deleteAll) {
       const maps = await getAllMapWithoutLang();
-      if (maps.status !== 200)
-        return {
-          status: 500,
-        };
+
       maps.maps.map(async (item) => {
         await deleteUTFiles(item.img);
       });

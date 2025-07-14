@@ -13,22 +13,22 @@ export const AddCategory = async (
   code: string,
   detailes: string,
   img: string,
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
-        message: "internal server error",
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
-        message: "Un Authorized to add category",
+        message:
+          "You should be Admin to add a category 😔 / يجب أن تكون مشرف حتى تستطيع إضافة صنف 😔 ",
       };
     }
-    // Check if category with same code already exists
     const existingCategory = await prisma.category.findFirst({
       where: {
         OR: [
@@ -43,12 +43,11 @@ export const AddCategory = async (
         status: 409,
         message:
           existingCategory.code === code
-            ? "Category with this code already exists"
-            : "Category with this name already exists",
+            ? "Category with this code already exists / هذا الكود عائد لصنف موجود مسبقا"
+            : "Category with this name already exists / هذا الاسم عائد لصنف موجود مسبقا",
       };
     }
 
-    // Create new category
     const newCategory = await prisma.category.create({
       data: {
         name,
@@ -62,27 +61,86 @@ export const AddCategory = async (
     if (!newCategory) {
       return {
         status: 500,
-        message: "Failed to create category",
+        message: "Failed to create category / فشل إضافة صنف ",
       };
     }
 
-    // Revalidate relevant paths
     revalidatePath(`/${language}/Categories`, "page");
     revalidatePath(`/${language}`, "page");
+    revalidatePath(`/${language}/Control/Add/Catigory`, "page");
+    revalidatePath(`/${language}/Control/Update/Catigory`, "page");
+    revalidatePath(`/${language}/Control/Delete/Catigory`, "page");
 
     return {
       status: 201,
-      message: "Category created successfully",
+      message: "Category created successfully ♡ / تم إنشاء الصنف بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddCategory:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
+export const updateCategory = async (category: Category) => {
+  try {
+    const session = await getSession();
+    if (session.status !== 200) {
+      return {
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
+      };
+    } else if (session.user?.role !== "Admin") {
+      return {
+        status: 403,
+        message:
+          "You should be Admin to update a category 😔 / يجب أن تكون مشرف حتى تستطيع تعديل صنف 😔 ",
+      };
+    }
+    const existingCategory = await prisma.category.findFirst({
+      where: { id: category.id },
+    });
 
+    if (!existingCategory) {
+      return {
+        status: 404,
+        message:
+          "Category not found, choose the category again to update / لم يتم إيجاد الصنف أعد اختيار الصنف للتعديل",
+      };
+    }
+    const item = await prisma.category.update({
+      where: { id: category.id },
+      data: {
+        lang: category.lang,
+        name: category.name,
+        img: category.img,
+        code: category.code,
+        detailes: category.detailes,
+      },
+    });
+
+    if (!item) {
+      return {
+        status: 500,
+        message: "Failed to update category / فشل تعديل الصنف ",
+      };
+    }
+    revalidatePath(`/en/Categories`, "page");
+    revalidatePath(`/ar`, "page");
+    revalidatePath("/en/Control/Update/Catigory");
+    revalidatePath("/ar/Control/Update/Catigory");
+    revalidatePath("/ar/Control/Delete/Catigory");
+    return {
+      status: 200,
+      message: "Category updated successfully ♡ / تم تعديل الصنف بنجاح ♡",
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "Internal server error / خطأ في المخدم الداخلي",
+    };
+  }
+};
 export const getAllCategoriesWithoutLang = cache(async () => {
   try {
     const items = await prisma.category.findMany();
@@ -90,21 +148,23 @@ export const getAllCategoriesWithoutLang = cache(async () => {
     if (!items || items.length === 0) {
       return {
         status: 404,
-        message: "No categories found",
+        messageEn: "No categories found 😔",
+        messageAr: "لم يتم إيجاد أي صنف 😔",
         categories: [],
       };
     }
 
     return {
       status: 200,
-      message: "Categories retrieved successfully",
+      messageEn: "Categories retrieved successfully ♡",
+      messageAr: "تم إحضار الأصناف بنجاح ♡",
       categories: items,
     };
   } catch (error) {
-    console.error("Error in getAllCategory:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       categories: [],
     };
   }
@@ -125,87 +185,78 @@ export const getAllCategory = cache(async (language: string) => {
     if (!items || items.length === 0) {
       return {
         status: 404,
-        message: "No categories found",
+        messageEn: "No categories found 😔",
+        messageAr: "لم يتم إيجاد أي صنف 😔",
         categories: [],
       };
     }
 
     return {
       status: 200,
-      message: "Categories retrieved successfully",
+      messageEn: "Categories retrieved successfully ♡",
+      messageAr: "تم إحضار الأصناف بنجاح ♡",
       categories: items,
     };
   } catch (error) {
-    console.error("Error in getAllCategory:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       categories: [],
     };
   }
 });
-export const updateCategory = async (category: Category) => {
-  try {
-    const result = await getSession();
-    if (result.success === false) {
+export const getAllCodeCategory = cache(
+  async (language: string, code: string) => {
+    try {
+      const items = await prisma.category.findFirst({
+        where: { lang: language, code: code },
+        include: {
+          products: {
+            include: {
+              flavor: {
+                select: {
+                  primaryImg: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!items) {
+        return {
+          status: 404,
+          messageEn: "No categories found 😔",
+          messageAr: "لم يتم إيجاد أي صنف 😔",
+          categories: null,
+        };
+      }
+
+      return {
+        status: 200,
+        messageEn: "Categories retrieved successfully ♡",
+        messageAr: "تم إحضار الأصناف بنجاح ♡",
+        categories: items,
+      };
+    } catch (error) {
       return {
         status: 500,
-        message: "internal server error",
-      };
-    } else if (result.user?.role !== "Admin") {
-      return {
-        status: 403,
-        message: "Un Authorized to update flavor",
+        messageEn: "Internal server error 😔",
+        messageAr: "خطأ في المخدم الدخلي 😔",
+        categories: null,
       };
     }
-    const existingCategory = await prisma.category.findFirst({
-      where: { id: category.id },
-    });
+  },
+);
 
-    if (!existingCategory) {
-      return {
-        status: 404,
-        message: "No categories found",
-      };
-    }
-    const item = await prisma.category.update({
-      where: { id: category.id },
-      data: {
-        lang: category.lang,
-        name: category.name,
-        img: category.img,
-        code: category.code,
-        detailes: category.detailes,
-      },
-    });
-
-    if (!item) {
-      return {
-        status: 500,
-        message: "couldnt update",
-      };
-    }
-    revalidatePath("/en/Control/Update/Catigory");
-    revalidatePath("/ar/Control/Update/Catigory");
-    return {
-      status: 200,
-      message: "Category updated successfully",
-    };
-  } catch (error) {
-    console.error("Error in update category:", error);
-    return {
-      status: 500,
-      message: "Internal server error",
-    };
-  }
-};
 export const deleteCategory = async (
   deleteAll: boolean,
-  category: Category | null
+  category: Category | null,
 ) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -238,6 +289,11 @@ export const deleteCategory = async (
         prisma.product.deleteMany(),
         prisma.category.deleteMany(),
       ]);
+      revalidatePath(`/en/Categories`, "page");
+      revalidatePath(`/ar`, "page");
+      revalidatePath("/en/Control/Update/Catigory");
+      revalidatePath("/ar/Control/Update/Catigory");
+      revalidatePath("/ar/Control/Delete/Catigory");
     } else {
       if (!category) {
         return {
@@ -286,7 +342,10 @@ export const deleteCategory = async (
         };
       }
     }
-    revalidatePath("/en/Control/Delete/Catigory");
+    revalidatePath(`/en/Categories`, "page");
+    revalidatePath(`/ar`, "page");
+    revalidatePath("/en/Control/Update/Catigory");
+    revalidatePath("/ar/Control/Update/Catigory");
     revalidatePath("/ar/Control/Delete/Catigory");
     return {
       status: 200,
@@ -297,45 +356,3 @@ export const deleteCategory = async (
     };
   }
 };
-
-export const getAllCodeCategory = cache(
-  async (language: string, code: string) => {
-    try {
-      const items = await prisma.category.findFirst({
-        where: { lang: language, code: code },
-        include: {
-          products: {
-            include: {
-              flavor: {
-                select: {
-                  primaryImg: true,
-                },
-              },
-            },
-          },
-        },
-      });
-
-      if (!items) {
-        return {
-          status: 404,
-          message: "No categories found",
-          categories: null,
-        };
-      }
-
-      return {
-        status: 200,
-        message: "Categories retrieved successfully",
-        categories: items,
-      };
-    } catch (error) {
-      console.error("Error in getAllCategory:", error);
-      return {
-        status: 500,
-        message: "Internal server error",
-        categories: null,
-      };
-    }
-  }
-);

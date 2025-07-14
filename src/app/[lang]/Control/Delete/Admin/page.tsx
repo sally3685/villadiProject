@@ -1,55 +1,46 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
+import ErrorPage from "@/app/[lang]/error";
 import { getAllUsers } from "@/app/data-access-layer/user";
 import { getSession } from "@/app/lib/session";
-import DeleteForm from "@/app/ui/DeleteForm";
+import DeleteForm from "@/app/ui/ControlForms/Delete/DeleteForm";
+import { deleteType } from "@/app/ui/ControlForms/types";
 export default async function Admin({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const t = await getDictionary(lang);
-  const result = await getSession();
-  const users = await getAllUsers("Admin");
-  if (!users.success) {
-    //   <ErrorPage
-    //     error={new Error(state.general)}
-    //     reset={() => {
-    //       router.refresh();
-    //     }}
-    //   ></ErrorPage>
-    // );
+  const t = (await getDictionary(lang)) as deleteType;
+  const session = await getSession();
+  if (session.status === 500) {
+    <ErrorPage
+      error={new Error(lang === "en" ? session.messageEn : session.messageAr)}
+    />;
   }
-
+  const users = await getAllUsers("Admin");
+  if (users.status === 500) {
+    <ErrorPage
+      error={new Error(lang === "en" ? users.messageEn : users.messageAr)}
+    />;
+  }
   return (
     <>
-      {" "}
       <h1
-        className={`text-black font-bold z-[1] text-2xl lg:text-3xl pt-3 w-[90%] pb-3 ${
+        className={`z-[1] w-[90%] pt-3 pb-3 text-2xl font-bold text-black lg:text-3xl ${
           lang === "en" ? "pl-12" : "pr-12"
         }`}
       >
-        {lang === "en" ? "Remove admin permission" : "إزالة صلاحية الأدمن"}
+        {t.addVideoForm.deleteLabel}
       </h1>
       <DeleteForm
         t={t}
         lang={lang}
         type="admin"
-        user={result.success && result.user ? result.user : undefined}
+        user={session.user}
         options={users.users}
-        label={
-          lang === "en" ? "Remove admin permission" : "إزالة صلاحية الأدمن"
-        }
+        label={t.addVideoForm.deleteLabel}
         deleteAllLabel={t.addVideoForm.deleteAll}
         warning={t.addVideoForm.deleteWarning}
-        noPermissionText={{
-          en: "You don't have permission to remove admin",
-          ar: "ليس لديك إذن لازالة الادمن",
-        }}
-        noSelectionText={{
-          en: "Please select a user to delete",
-          ar: "الرجاء تحديد ادمن للحذف",
-        }}
       />
     </>
   );

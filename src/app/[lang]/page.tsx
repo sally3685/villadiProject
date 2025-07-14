@@ -1,8 +1,7 @@
-import Change from "@/components/change";
+import Main from "@/app/ui/mainPage/Main";
 import { getProdsWithFlavs } from "../data-access-layer/productDAL";
 import ErrorPage from "./error";
 import { getAllRecipies } from "../data-access-layer/recipyDAL";
-import Carousal3D from "../ui/Carousal3D";
 import { getAllCategory } from "../data-access-layer/catigoryDAL";
 import { getDictionary } from "./dictionaries";
 import {
@@ -10,10 +9,11 @@ import {
   getAllVideosWithProd,
 } from "../data-access-layer/videoDAL";
 import VideoWrapper from "../ui/videoWrapper";
-import Carousal3DRec from "../ui/Carousal3DRec";
 import { getSession } from "../lib/session";
 import Social from "../ui/Social";
 import localFont from "next/font/local";
+import Carousel from "../ui/Carousel/Carousel";
+import { carouselDictionary } from "../ui/Carousel/carouselTypes";
 const myFont3 = localFont({
   src: "./fonts/StanHand.ttf",
 });
@@ -24,45 +24,72 @@ export default async function Home({
 }) {
   const result = await getSession();
   const { lang } = await params;
-  const t = await getDictionary(lang);
-  const { status, message, products } = await getProdsWithFlavs(lang);
-  const video = await getAllVideosWithProd(lang);
-  const recipe = await getAllRecipies(lang);
-  const socials = await getAllSocialWithoutLang();
-
-  const category = await getAllCategory(lang);
-  if (
-    status === 500 ||
-    category.status === 500 ||
-    video.status === 500 ||
-    recipe.status === 500 ||
-    socials.status === 500
-  ) {
-    return <ErrorPage error={new Error(message)}></ErrorPage>;
+  const t = (await getDictionary(lang)) as carouselDictionary;
+  const products = await getProdsWithFlavs(lang);
+  if (products.status === 500) {
+    return (
+      <ErrorPage
+        error={
+          new Error(lang === "en" ? products.messageEn : products.messageAr)
+        }
+      ></ErrorPage>
+    );
   }
-
+  const category = await getAllCategory(lang);
+  if (category.status === 500) {
+    return (
+      <ErrorPage
+        error={
+          new Error(lang === "en" ? category.messageEn : category.messageAr)
+        }
+      ></ErrorPage>
+    );
+  }
+  const video = await getAllVideosWithProd(lang);
+  if (video.status === 500) {
+    return (
+      <ErrorPage
+        error={new Error(lang === "en" ? video.messageEn : video.messageAr)}
+      ></ErrorPage>
+    );
+  }
+  const recipe = await getAllRecipies(lang);
+  if (recipe.status === 500) {
+    return (
+      <ErrorPage
+        error={new Error(lang === "en" ? recipe.messageEn : recipe.messageAr)}
+      ></ErrorPage>
+    );
+  }
+  const socials = await getAllSocialWithoutLang();
+  if (socials.status === 500) {
+    return (
+      <ErrorPage
+        error={new Error(lang === "en" ? socials.messageEn : socials.messageAr)}
+      ></ErrorPage>
+    );
+  }
   return (
     <main
       id="main"
-      className="h-full w-full flex justify-center items-center flex-col max-w-8xl relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[var(--colorArrow)] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[white] overflow-hidden "
-      // style={{ "&::before": { mask: "url(/pattern.svg) center / cover" } }}
-      // mask: url(/pattern.svg) center center / cover;
+      className="max-w-8xl relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-[white] before:absolute before:top-0 before:block before:h-full before:w-full before:bg-[var(--colorArrow)] before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-['']"
     >
       <section
         id="section1"
-        className="w-full flex justify-center items-center h-[100dvh]  section "
-        data-bgcolor="#8e191c"
-        data-color="#cd6628"
+        className="section flex h-[100dvh] w-full items-center justify-center"
+        data-bgcolor="#d9d9d9"
+        data-color="#ffffff"
       >
-        <Change
-          array={products ? products : null}
-          message={message}
+        <Main
+          array={products.products ? products.products : null}
+          messageEn={products.messageEn}
+          messageAr={products.messageAr}
           lang={lang}
         />
       </section>
       <section
         id="section2"
-        className="w-full relative h-[100vh] flex justify-center items-center flex-col  section"
+        className="section relative flex h-[100vh] w-full flex-col items-center justify-center lg:min-h-[760px]"
         data-bgcolor="#ff832b"
         data-color="#ffffff"
       >
@@ -70,38 +97,45 @@ export default async function Home({
       </section>
       <section
         id="section3"
-        className="w-full h-auto min-h-dvh section flex justify-center items-center"
+        className="section flex h-auto min-h-dvh w-full items-center justify-center"
         data-bgcolor="#7ABC43"
         data-color="#ffffff"
       >
-        <Carousal3D
+        <Carousel
           items={category.categories}
-          title={t.catigoriesWrapper.have}
-          noCats={t.catigoriesWrapper.noCats}
+          title={t.catigoriesWrapper.title}
           all={t.catigoriesWrapper.view}
+          noItems={t.catigoriesWrapper.noCats}
           lang={lang}
-          color="#34351A"
+          t={t}
+          type="categories"
+          linkPrefix={`/${lang}/Catigories`}
+          linkText={lang === "en" ? "Category's products" : "منتجات الصنف"}
         />
       </section>
       <section
         id="section4"
-        className="w-full h-auto min-h-dvh section flex justify-center items-center"
+        className="section flex h-auto min-h-dvh w-full items-center justify-center lg:min-h-[760px]"
         data-bgcolor="#DA9A40"
         data-color="#ffffff"
       >
-        <Carousal3DRec
-          user={result}
+        <Carousel
           items={recipe.recipies}
-          title={t.recipesWrapper.Recs}
-          noCats={t.recipesWrapper.noRecs}
+          user={result}
+          title={t.recipesWrapper.title}
           all={t.recipesWrapper.view}
+          noItems={t.recipesWrapper.noRecs}
           lang={lang}
-          color="#6b3f01"
+          t={t}
+          type="recipes"
+          linkPrefix={`/${lang}/Recipes`}
+          linkText={t.recipesWrapper.link}
+          showVotes={true}
         />
       </section>
       <section
         id="section5"
-        className="w-full h-auto lg:h-[100vh] section flex justify-center items-center"
+        className="section flex h-auto w-full items-center justify-center lg:h-[100vh] lg:min-h-[760px]"
         data-bgcolor="#5F9FD6"
         data-color="#ffffff"
       >

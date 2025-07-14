@@ -1,9 +1,8 @@
 import React from "react";
 import { getAllVideosWithProd } from "@/app/data-access-layer/videoDAL";
 import ErrorPage from "../error";
-import LeftRightMenuVideos from "@/app/ui/LeftRightVideos";
 import { getDictionary } from "../dictionaries";
-import Items from "@/app/ui/Items";
+import LeftRightMenu from "@/app/ui/LeftRight/LeftRightMenu";
 export default async function Catigory({
   params,
 }: {
@@ -11,17 +10,24 @@ export default async function Catigory({
 }) {
   const { lang } = await params;
   const t = await getDictionary(lang);
-  const { status, message, videos } = await getAllVideosWithProd(lang);
-  if (status === 500) {
-    return <ErrorPage error={new Error(message)}></ErrorPage>;
+  const videos = await getAllVideosWithProd(lang);
+  if (videos.status === 500) {
+    return (
+      <ErrorPage
+        error={new Error(lang === "en" ? videos.messageEn : videos.messageAr)}
+      />
+    );
   }
   return (
-    <main className="min-h-screen w-full flex overflow-x-hidden justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#ffffff8f] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
-      <LeftRightMenuVideos
-        videos={videos}
-        t={t}
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-[#ffd597] before:absolute before:top-0 before:block before:h-full before:w-full before:bg-[#ffffff] before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-['']">
+      <LeftRightMenu
+        items={videos.videos}
         title={t.videoWrapper.name}
         lang={lang}
+        emptyStateText={t.videoWrapper.noVideos}
+        searchPlaceholder={t.videoWrapper.search}
+        type="videos"
+        linkText={t.videoWrapper.link}
       />
     </main>
   );

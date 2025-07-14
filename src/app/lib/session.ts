@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { SessionPayload } from "./definitions";
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getUserById } from "../data-access-layer/user";
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -22,26 +22,67 @@ export async function createSession(userId: string, userRole: string) {
     sameSite: "lax",
   });
 }
+
 export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
 }
 export async function getSession() {
-  try {
-    const cookieStore = await cookies();
-    const session = cookieStore.get("session")?.value;
-    if (!session) return { success: false };
-    const decryptedSession = await decrypt(session);
-    if (!decryptedSession) return { success: false };
-    const user = decryptedSession as { userId: string; userRole: string };
+  const cookieStore = await cookies();
+  const session = cookieStore.get("session")?.value;
+  if (!session) {
+    return {
+      status: 404,
+      messageEn: "Please sign in/up first ♡",
+      messageAr: "من فضلك سجل دخول أولا ♡",
+    };
+  }
 
-    if (!user) return { success: false };
+  const decryptedSession = await decrypt(session);
+  if (!decryptedSession.status) {
+    return {
+      status: 500,
+      messageEn: decryptedSession.messageEn,
+      messageAr: decryptedSession.messageAr,
+    };
+  }
+
+  const user = decryptedSession.payload as { userId: string; userRole: string };
+  if (!user) {
+    return {
+      status: 400,
+      messageEn: "User not found 😔",
+      messageAr: "المستخدم غير موجود 😔",
+    };
+  }
+
+  try {
     const res = await getUserById(user.userId);
-    if (res.success === true && res.userData)
-      return { success: true, user: res.userData };
-    else return { success: false };
-  } catch {
-    return { success: false };
+    if (res.status === 200 && res.userData) {
+      return {
+        status: res.status,
+        messageEn: res.messageEn,
+        messageAr: res.messageAr,
+        user: {
+          id: res.userData?.id,
+          name: res.userData?.name,
+          role: res.userData?.role,
+          email: res.userData?.email,
+        },
+      };
+    } else {
+      return {
+        status: res.status,
+        messageEn: res.messageEn,
+        messageAr: res.messageAr,
+      };
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في الخادم الداخلي 😔",
+    };
   }
 }
 export async function encrypt(payload: SessionPayload) {
@@ -51,24 +92,45 @@ export async function encrypt(payload: SessionPayload) {
     .setExpirationTime("7d")
     .sign(encodedKey);
 }
-// export async function getUsers
 export async function decrypt(session: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ["HS256"],
     });
-    return payload;
+
+    if (!payload) {
+      return {
+        status: false,
+        messageEn: "Invalid token content 😔",
+        messageAr: "محتويات الرمز غير صالحة 😔",
+      };
+    }
+
+    return {
+      status: true,
+      messageEn: "Token verified successfully ♡",
+      messageAr: "تم التحقق من الرمز بنجاح ♡",
+      payload,
+    };
   } catch (error) {
-    return;
+    await deleteSession();
+    return {
+      status: false,
+      messageEn: "Your session is expired please Sign in again 😔",
+      messageAr: " لقد انتهت صلاحية جلستك من فضلك سجل دخول مجددا 😔",
+    };
   }
 }
-export const verifySession = cache(async () => {
+export const verifySession = cache(async (lang: string) => {
   const cookie = (await cookies()).get("session")?.value;
-  const session = await decrypt(cookie);
+  const decryptedSession = await decrypt(cookie);
 
-  const user = session?.user as { userId: string; userRole: string };
+  const user = decryptedSession?.payload as {
+    userId: string;
+    userRole: string;
+  };
   if (!user?.userId) {
-    redirect("/signIn");
+    redirect(`${lang}/signIn}`);
   }
 
   return { isAuth: true, userId: user.userId };
@@ -76,10 +138,8 @@ export const verifySession = cache(async () => {
 export const sessionExist = async () => {
   return (await cookies()).get("session") ? true : false;
 };
-
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session");
-  // const payload = await decrypt(session?.value);
   if (!session || session === undefined) {
     return null;
   }

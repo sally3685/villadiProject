@@ -6,7 +6,6 @@ import Image from "next/image";
 import React, { useRef } from "react";
 // { t }: { t: any }
 const AboutUs = () => {
-  // Example dictionary structure
   const t = {
     aboutUs: {
       title: "About Our Company",
@@ -120,21 +119,21 @@ const AboutUs = () => {
         delay: 0.5,
       });
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return (
     <main
       ref={containerRef}
-      className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#395a50] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffffff] p-8"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center bg-[#ffffff] p-8 before:absolute before:top-0 before:block before:h-full before:w-full before:bg-[#395a50] before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-['']"
     >
-      <div className="w-full max-w-6xl mx-auto py-20 pt-40 z-[0] bg-white">
+      <div className="z-[0] mx-auto w-full max-w-6xl bg-white py-20 pt-40">
         {/* Hero Section */}
-        <div ref={heroRef} className="text-center mb-20">
-          <h1 className=" text-2xl sm:text-4xl xl:text-5xl font-bold text-black mb-4">
+        <div ref={heroRef} className="mb-20 text-center">
+          <h1 className="mb-4 text-2xl font-bold text-black sm:text-4xl xl:text-5xl">
             {t.aboutUs.title}
           </h1>
-          <p className="text:lg lg:text-xl black max-w-2xl mx-auto">
+          <p className="text:lg black mx-auto max-w-2xl lg:text-xl">
             {t.aboutUs.subtitle}
           </p>
         </div>
@@ -142,16 +141,16 @@ const AboutUs = () => {
         {/* Section 1: Who We Are */}
         <div
           ref={section1Ref}
-          className="flex flex-col md:flex-row gap-12 items-center mb-32  p-12 rounded-xl"
+          className="mb-32 flex flex-col items-center gap-12 rounded-xl p-12 md:flex-row"
         >
           <div className="md:w-1/2">
-            <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold text-black mb-6">
+            <h2 className="mb-6 text-xl font-bold text-black sm:text-3xl xl:text-4xl">
               {t.aboutUs.whoWeAre.title}
             </h2>
             <p className="black mb-4">{t.aboutUs.whoWeAre.content1}</p>
             <p className="black">{t.aboutUs.whoWeAre.content2}</p>
           </div>
-          <div className="md:w-1/2 w-full h-full">
+          <div className="h-full w-full md:w-1/2">
             <Image
               src="/about-identity.jpg"
               alt="Who We Are"
@@ -165,9 +164,9 @@ const AboutUs = () => {
         {/* Section 2: Our Story */}
         <div
           ref={section2Ref}
-          className="flex flex-col md:flex-row gap-12 items-center  p-12 mb-32"
+          className="mb-32 flex flex-col items-center gap-12 p-12 md:flex-row"
         >
-          <div className="md:w-1/2  w-full h-full">
+          <div className="h-full w-full md:w-1/2">
             <Image
               src="/about-story.jpg"
               alt="Our Story"
@@ -177,7 +176,7 @@ const AboutUs = () => {
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold text-black mb-6">
+            <h2 className="mb-6 text-xl font-bold text-black sm:text-3xl xl:text-4xl">
               {t.aboutUs.ourStory.title}
             </h2>
             <p className="black mb-4">{t.aboutUs.ourStory.content1}</p>
@@ -188,9 +187,9 @@ const AboutUs = () => {
         {/* Section 3: Our Mission */}
         <div
           ref={section3Ref}
-          className="flex flex-col md:flex-row-reverse gap-12  p-12 items-center mb-32"
+          className="mb-32 flex flex-col items-center gap-12 p-12 md:flex-row-reverse"
         >
-          <div className="md:w-1/2 w-full h-full">
+          <div className="h-full w-full md:w-1/2">
             <Image
               src="/about-mission.jpg"
               alt="Our Mission"
@@ -200,20 +199,20 @@ const AboutUs = () => {
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold text-black mb-6">
+            <h2 className="mb-6 text-xl font-bold text-black sm:text-3xl xl:text-4xl">
               {t.aboutUs.ourMission.title}
             </h2>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <span className="text-black mr-3">✓</span>
+                <span className="mr-3 text-black">✓</span>
                 <span className="black">{t.aboutUs.ourMission.point1}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-black mr-3">✓</span>
+                <span className="mr-3 text-black">✓</span>
                 <span className="black">{t.aboutUs.ourMission.point2}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-black mr-3">✓</span>
+                <span className="mr-3 text-black">✓</span>
                 <span className="black">{t.aboutUs.ourMission.point3}</span>
               </li>
             </ul>
@@ -223,9 +222,9 @@ const AboutUs = () => {
         {/* Section 4: Our Team */}
         <div
           ref={section4Ref}
-          className="flex flex-col md:flex-row gap-12  p-12 items-center"
+          className="flex flex-col items-center gap-12 p-12 md:flex-row"
         >
-          <div className="md:w-1/2 w-full h-full">
+          <div className="h-full w-full md:w-1/2">
             <Image
               src="/about-team.jpg"
               alt="Our Team"
@@ -235,24 +234,24 @@ const AboutUs = () => {
             />
           </div>
           <div className="md:w-1/2">
-            <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold text-black mb-6">
+            <h2 className="mb-6 text-xl font-bold text-black sm:text-3xl xl:text-4xl">
               {t.aboutUs.ourTeam.title}
             </h2>
             <p className="black mb-4">{t.aboutUs.ourTeam.content}</p>
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              <div className="bg-[#f8f8f8] p-4 rounded-lg">
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="rounded-lg bg-[#f8f8f8] p-4">
                 <h3 className="font-bold text-black">
                   {t.aboutUs.ourTeam.stat1}
                 </h3>
-                <p className="text-gray-500 text-sm">
+                <p className="text-sm text-gray-500">
                   {t.aboutUs.ourTeam.stat1Label}
                 </p>
               </div>
-              <div className="bg-[#f8f8f8] p-4 rounded-lg">
+              <div className="rounded-lg bg-[#f8f8f8] p-4">
                 <h3 className="font-bold text-black">
                   {t.aboutUs.ourTeam.stat2}
                 </h3>
-                <p className="text-gray-500 text-sm">
+                <p className="text-sm text-gray-500">
                   {t.aboutUs.ourTeam.stat2Label}
                 </p>
               </div>

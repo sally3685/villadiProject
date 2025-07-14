@@ -1,12 +1,12 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import {
   AddVideo,
   deleteVideo,
   updateSocial,
   updateVideo,
 } from "../data-access-layer/videoDAL";
-import { writeFile } from "fs/promises";
 import {
   VideoFormSchema,
   FormVideoState,
@@ -16,28 +16,9 @@ import {
 
 export async function AddVideoAction(
   state: FormVideoState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormVideoState> {
   try {
-    // Validate required fields]
-    const requiredFields = [
-      "name",
-      "embededLink",
-      "coverImg",
-      "selectedProduct",
-      "language",
-    ];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = VideoFormSchema.safeParse({
       name: formData.get("name"),
       embededLink: formData.get("embededLink"),
@@ -55,59 +36,47 @@ export async function AddVideoAction(
 
     const selectedProduct = formData.get("selectedProduct") as string;
 
-    // Handle image upload if provided
-
-    // Add category to database
     const { status, message } = await AddVideo(
       videoData.name,
       videoData.coverImg,
       videoData.embededLink,
       selectedProduct,
-      language
+      language,
     );
 
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
     if (status === 409) {
       return {
-        errors: { embededLink: [message ? message : "Failed to create video"] },
+        errors: {
+          embededLink: [
+            message
+              ? message
+              : "Video with this Link is already existed / يوجد بالفعل فيديو بهذا الرابط",
+          ],
+        },
       };
     }
 
     if (status !== 201) {
-      return { general: message || "Failed to create video" };
+      return {
+        general: message || "Failed to create video / فشل في إنشاء فيديو",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddVideoAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateVideoAction(
   state: FormVideoState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormVideoState> {
   try {
-    // Validate required fields
-    const requiredFields = [
-      "name",
-      "embededLink",
-      "coverImg",
-      "selectedProduct",
-      "language",
-    ];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = VideoFormSchema.safeParse({
       name: formData.get("name"),
       embededLink: formData.get("embededLink"),
@@ -133,22 +102,30 @@ export async function UpdateVideoAction(
       productId: selectedProduct,
       lang: language,
     });
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
 
-    if (status === 404) {
+    // if (status === 404) {
+    //   return {
+    //     errors: {
+    //       name: [
+    //         message ? message : "video was not found / لم يتم إيجاد الفيديو ",
+    //       ],
+    //     },
+    //   };
+    // }
+
+    if (status !== 200) {
       return {
-        errors: { name: [message ? message : "Failed to create video"] },
+        general: message || "Failed to update Video / فشل في إنشاء الفيديو",
       };
     }
 
-    if (status !== 200) {
-      return { general: message || "Failed to create Recipe" };
-    }
-
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddRecipeAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
@@ -157,7 +134,7 @@ export async function DeleteVideoAction(deleteAll: string, selectedField: any) {
     // Validate required fields
     const { status } = await deleteVideo(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };
@@ -171,22 +148,9 @@ export async function DeleteVideoAction(deleteAll: string, selectedField: any) {
 
 export async function UpdateSocialAction(
   state: FormSocialState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormSocialState> {
   try {
-    // Validate required fields
-    const requiredFields = ["name", "embededLink", "channelLink"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = SocailFormSchema.safeParse({
       embededLink: formData.get("embededLink"),
       channelLink: formData.get("channelLink"),
@@ -208,24 +172,34 @@ export async function UpdateSocialAction(
       embededlink: socialData.embededLink,
       channelLink: socialData.channelLink,
     });
+    const language = (formData.get("language") as string) || "en";
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
 
-    if (status === 404) {
+    // if (status === 404) {
+    //   return {
+    //     errors: {
+    //       embededLink: [
+    //         message
+    //           ? message
+    //           : "Failed to update social / فشل في تحديث روابط التواصل",
+    //       ],
+    //     },
+    //   };
+    // }
+
+    if (status !== 200) {
       return {
-        errors: {
-          embededLink: [message ? message : "Failed to create social"],
-        },
+        general:
+          message || "Failed to update social / فشل في تحديث روابط التواصل",
       };
     }
 
-    if (status !== 200) {
-      return { general: message || "Failed to create Recipe" };
-    }
-
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddRecipeAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }

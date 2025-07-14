@@ -6,7 +6,7 @@ interface FormInputProps {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
-  error?: string[] | undefined;
+  error?: string | undefined;
   required?: boolean;
   className?: string;
   ref?: ForwardedRef<HTMLInputElement>;
@@ -24,12 +24,12 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       required = true,
       className = "",
     },
-    ref
+    ref,
   ) => (
     <div className={`lg:col-span-4 ${className}`}>
       <label
         htmlFor={id}
-        className="block text-sm lg:text-lg font-medium text-black"
+        className="block text-sm font-medium text-black lg:text-lg"
       >
         {label}
       </label>
@@ -50,6 +50,6 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
         {error && <p className="mt-3 text-sm/6 text-red-600">{error}</p>}
       </div>
     </div>
-  )
+  ),
 );
 FormInput.displayName = "FormInput";

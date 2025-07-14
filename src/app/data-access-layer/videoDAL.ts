@@ -11,17 +11,20 @@ export const AddVideo = async (
   coverImg: string,
   embededLink: string,
   selectedProduct: string,
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to add a video 😔 / يجب أن تكون مشرف حتى تستطيع إضافة فيديو 😔 ",
       };
     }
     const existingVideo = await prisma.video.findFirst({
@@ -33,11 +36,10 @@ export const AddVideo = async (
       return {
         status: 409,
         message:
-          "Video with this embeded linke already exists for the selected video",
+          "Video with this embeded linke already exists for the selected video / يوجد بالفعل فيديو بنفس الرابط المضمن ",
       };
     }
 
-    // Create new recipe
     const newVideo = await prisma.video.create({
       data: {
         lang: language,
@@ -51,23 +53,21 @@ export const AddVideo = async (
     if (!newVideo) {
       return {
         status: 500,
-        message: "Failed to create video",
+        message: "Failed to create video / فشل في إنشاء الفيديو",
       };
     }
 
-    // Revalidate relevant paths
-    // revalidatePath(`/[lang]/recipes`, "page");
-    // revalidatePath(`/[lang]/flavors`, "page");
+    revalidatePath(`/en/Videos`, "page");
+    revalidatePath(`/ar/Videos`, "page");
 
     return {
       status: 201,
-      message: "Video created successfully",
+      message: "Video created successfully ♡ / تم إنشاء الفيديو بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddVideo:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
@@ -79,21 +79,23 @@ export const getAllVideossWithoutLang = cache(async () => {
     if (!videos || videos.length === 0) {
       return {
         status: 404,
-        message: "No videos found",
+        messageEn: "No videos found 😔",
+        messageAr: "لم يتم إيجاد أي فيديو 😔",
         videos: [],
       };
     }
 
     return {
       status: 200,
-      message: "videos retrieved successfully",
+      messageEn: "Videos retrieved successfully ♡",
+      messageAr: "تم إحضار الفيديوهات بنجاح ♡",
       videos,
     };
   } catch (error) {
-    console.error("Error in getAllvideos:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       videos: [],
     };
   }
@@ -118,35 +120,40 @@ export const getAllVideosWithProd = cache(async (lang: string) => {
     if (!videos || videos.length === 0) {
       return {
         status: 404,
-        message: "No videos found",
+        messageEn: "No videos found 😔",
+        messageAr: "لم يتم إيجاد أي فيديو 😔",
         videos: [],
       };
     }
 
     return {
       status: 200,
-      message: "videos retrieved successfully",
+      messageEn: "Videos retrieved successfully ♡",
+      messageAr: "تم إحضار الفيديوهات بنجاح ♡",
       videos,
     };
   } catch (error) {
-    console.error("Error in getAllvideos:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       videos: [],
     };
   }
 });
 export const updateVideo = async (video: Video) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to update a video 😔 / يجب أن تكون مشرف حتى تستطيع تعديل فيديو 😔 ",
       };
     }
     const existingVideo = await prisma.video.findFirst({
@@ -155,7 +162,8 @@ export const updateVideo = async (video: Video) => {
     if (!existingVideo) {
       return {
         status: 404,
-        message: "No videos found",
+        message:
+          "Video not found choose the video again  / لم يتم إيجاد الفيديو اختر الفيديو مجددا",
       };
     }
 
@@ -173,33 +181,37 @@ export const updateVideo = async (video: Video) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update video / فشل في تعديل الفيديو",
       };
     }
     revalidatePath("/en/Control/Update/Video");
     revalidatePath("/ar/Control/Update/Video");
+    revalidatePath("/en/Videos");
+    revalidatePath("/ar/Videos");
     return {
       status: 200,
-      message: "Video updated successfully",
+      message: "Video updated successfully ♡ / تم تعديل الفيديو بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in update Video:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
 export const updateSocial = async (itemSocial: social) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to update a social link 😔 / يجب أن تكون مشرف حتى تستطيع تعديل رابط قناة تواصل 😔 ",
       };
     }
     const existingSocial = await prisma.social.findFirst({
@@ -208,7 +220,8 @@ export const updateSocial = async (itemSocial: social) => {
     if (!existingSocial) {
       return {
         status: 404,
-        message: "No social found",
+        message:
+          "Social link not found choose the social again / لم يتم إيجاد رابط قناة التواصل اختر التطبيق مجددا",
       };
     }
 
@@ -224,27 +237,27 @@ export const updateSocial = async (itemSocial: social) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update social link / فشل في تعديل رابط الفيديو",
       };
     }
     revalidatePath("/en/Control/Update/Social");
     revalidatePath("/ar/Control/Update/Social");
     return {
       status: 200,
-      message: "Social updated successfully",
+      message:
+        "Social link updated successfully ♡ / تم تعديل روابط التواصل الاجتماعي بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in update Social:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
 export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -256,10 +269,6 @@ export const deleteVideo = async (deleteAll: boolean, video: Video | null) => {
     let item;
     if (deleteAll) {
       const videoss = await getAllVideossWithoutLang();
-      if (videoss.status !== 200)
-        return {
-          status: 500,
-        };
       videoss.videos.map(async (item) => {
         await deleteUTFiles(item.coverImg);
       });
@@ -311,21 +320,23 @@ export const getAllSocialWithoutLang = cache(async () => {
     if (!socials || socials.length === 0) {
       return {
         status: 404,
-        message: "No socials found",
+        messageEn: "No socials found 😔",
+        messageAr: "لم يتم إيجاد رابط تواصل 😔",
         socials: [],
       };
     }
 
     return {
       status: 200,
-      message: "socials retrieved successfully",
+      messageEn: "Sicials retrieved successfully ♡",
+      messageAr: "تم إحضار روابط التواصل الاجتماعي بنجاح ♡",
       socials,
     };
   } catch (error) {
-    console.error("Error in getAllsocials:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       socials: [],
     };
   }

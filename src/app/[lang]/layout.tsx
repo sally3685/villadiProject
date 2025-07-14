@@ -38,7 +38,7 @@ export default async function RootLayout({
   params: Promise<LangParams>;
   modal: React.ReactNode;
 }>) {
-  const result = await getSession();
+  const session = await getSession();
   const { lang } = await params;
   const t = await getDictionary(lang);
 
@@ -51,18 +51,15 @@ export default async function RootLayout({
     >
       <link rel="icon" href="/villadiLogo.svg" />
       <body
-        className={`overflow-x-hidden min-h-screen  w-full flex flex-col justify-center relative items-center `}
+        className={`relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden`}
       >
         <ToastContainer />
-        <Nav
-          t={t}
-          user={result.success && result.user ? result.user : null}
-        ></Nav>
+        <Nav t={t} user={session.user}></Nav>
         {modal}
         {children}
         <Link
           href={`/${lang}`}
-          className="fixed flex justify-center items-center w-[40px] bottom-[50px] right-[40px] z-[4] h-[40px] bg-black text-white rounded-2xl text-sm sm:text-lg shadow-[0px_0px_20px_9px]"
+          className="fixed right-[40px] bottom-[50px] z-[4] flex h-[40px] w-[40px] items-center justify-center rounded-2xl bg-black text-sm text-white shadow-[0px_0px_20px_9px] sm:text-lg"
         >
           <Home />
         </Link>

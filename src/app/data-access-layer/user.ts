@@ -1,3 +1,4 @@
+import "server-only";
 import { User } from "../../../prisma/generated/prisma";
 import prisma from "../lib/db";
 import { cache } from "react";
@@ -6,8 +7,6 @@ import {
   generateSalt,
   hashPassword,
 } from "../../../helpers/passwordHasher";
-import { date } from "zod/v4";
-import { verify } from "crypto";
 function getSignUpDTO(user: User) {
   return {
     id: user.id,
@@ -18,7 +17,7 @@ export const createUser = async (
   name: string,
   email: string,
   password: string,
-  salt: string
+  salt: string,
 ) => {
   try {
     const exsitedUser = await prisma.user.findFirst({
@@ -27,7 +26,8 @@ export const createUser = async (
     if (exsitedUser) {
       return {
         status: 409, //conflict
-        message: "email used , try sign in",
+        message:
+          "email used , try sign in / الايميل مستخدم الرجاء اختيار ايميل اخر",
       };
     }
 
@@ -43,13 +43,13 @@ export const createUser = async (
 
     return {
       status: 201, //created
-      message: "user created",
+      message: "user created / تم إنشاء الحساب",
       user: getSignUpDTO(newUser),
     };
   } catch (error) {
     return {
       status: 500,
-      message: "internal server error",
+      message: "internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
@@ -80,7 +80,14 @@ export const checkUser = cache(async (email: string, password: string) => {
     if (!data) {
       return {
         status: 404,
-        message: "email not found",
+        message: "email not found / لم يتم إيجاد البريد الالكتروني",
+      };
+    }
+    if (data.verified === false) {
+      return {
+        status: 400,
+        message:
+          "please verify your email first / من فضلك قم بتأكيد حسابك أولا",
       };
     }
     const correctPassword = await comparePasswords({
@@ -92,18 +99,18 @@ export const checkUser = cache(async (email: string, password: string) => {
     if (!correctPassword) {
       return {
         status: 401, //unauthorized
-        message: "wrong password",
+        message: "wrong password / كلمة السر خاطئة",
       };
     }
     return {
       status: 200,
-      message: "user signed in",
+      message: "user signed in / المستخدم سجل دخوله مسبقا",
       user: getSignUpDTO(data),
     };
   } catch (error) {
     return {
       status: 500,
-      message: "internal server error",
+      message: "internal server error / خطأ في المخدم الداخلي",
     };
   }
 });
@@ -118,7 +125,7 @@ export const updateUserPassword = cache(
       if (!data) {
         return {
           status: 404,
-          message: "email not found",
+          message: "email not found / لم يتم إيجاد المستخدم",
         };
       }
       const salt = generateSalt();
@@ -134,21 +141,21 @@ export const updateUserPassword = cache(
       if (!data1) {
         return {
           status: 404,
-          message: "email not found",
+          message: "email not found / لم يتم إيجاد المستخدم",
         };
       }
       return {
         status: 200,
-        message: "password reset successfully",
+        message: "password reset successfully / تم تغيير كلمة السر بنجاح",
         user: data1,
       };
     } catch (error) {
       return {
         status: 500,
-        message: "internal server error",
+        message: "internal server error / خطأ في المخدم الداخلي",
       };
     }
-  }
+  },
 );
 
 export const getUserById = cache(async (userId: string) => {
@@ -156,13 +163,27 @@ export const getUserById = cache(async (userId: string) => {
     const userData = await prisma.user.findFirst({
       where: { id: userId },
     });
+
+    if (!userData) {
+      return {
+        status: 404, // Not Found
+        messageEn: "User not found 😔",
+        messageAr: "المستخدم غير موجود 😔",
+      };
+    }
+
     return {
-      success: true,
+      status: 200, // OK
+      messageEn: "User retrieved successfully ♡",
+      messageAr: "تم استرجاع المستخدم بنجاح ♡",
       userData,
     };
   } catch (error) {
+    console.log(error);
     return {
-      success: false,
+      status: 500, // Internal Server Error
+      messageEn: "Failed to retrieve user 😔",
+      messageAr: "فشل في استرجاع المستخدم 😔",
     };
   }
 });
@@ -229,30 +250,26 @@ export const getAllUsers = async (role: string) => {
       },
     });
 
-    if (!users) {
-      return {
-        success: false,
-        message: "No regular users found",
-        users: [],
-      };
-    }
     if (!users || users.length === 0) {
       return {
-        success: true,
-        message: "No regular users found",
+        status: 404,
+        messageEn: "No users found with this role 😔",
+        messageAr: "لا يوجد مستخدمون بهذا الدور 😔",
         users: [],
       };
     }
+
     return {
-      success: true,
-      message: "Users retrieved successfully",
+      status: 200,
+      messageEn: "Users retrieved successfully ♡",
+      messageAr: "تم استرجاع المستخدمين بنجاح ♡",
       users,
     };
   } catch (error) {
-    console.error("Error in getAllUsers:", error);
     return {
-      success: false,
-      message: "Failed to retrieve users",
+      status: 500,
+      messageEn: "Failed to retrieve users 😔",
+      messageAr: "فشل في استرجاع المستخدمين 😔",
       users: [],
     };
   }
@@ -260,15 +277,14 @@ export const getAllUsers = async (role: string) => {
 
 export const grantAdminP = async (userId: string) => {
   try {
-    // Validate user ID
     if (!userId || typeof userId !== "string") {
       return {
         status: 400,
-        message: "Invalid user ID",
+        messageEn: "Invalid user ID 😔",
+        messageAr: "معرف المستخدم غير صالح 😔",
       };
     }
 
-    // Check if user exists
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -276,60 +292,53 @@ export const grantAdminP = async (userId: string) => {
     if (!user) {
       return {
         status: 404,
-        message: "User not found",
+        messageEn: "User not found 😔",
+        messageAr: "المستخدم غير موجود 😔",
       };
     }
 
-    // Check if user is already an admin
     if (user.role === "Admin") {
       return {
         status: 400,
-        message: "User is already an admin",
+        messageEn: "User is already an admin ♡",
+        messageAr: "المستخدم مدير بالفعل ♡",
       };
     }
 
-    // Update user role to Admin
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: {
-        role: "Admin",
-      },
+      data: { role: "Admin" },
     });
 
     if (!updatedUser) {
       return {
         status: 500,
-        message: "Failed to update user role",
+        messageEn: "Failed to update user role 😔",
+        messageAr: "فشل تحديث دور المستخدم 😔",
       };
     }
 
-    // Revalidate relevant paths
-    // revalidatePath("/admin/users");
-    // revalidatePath("/");
-
     return {
       status: 200,
-      message: "User promoted to admin successfully",
+      messageEn: "User promoted to admin successfully ♡",
+      messageAr: "تم ترقية المستخدم إلى مدير بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in grantAdminP:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في الخادم الداخلي 😔",
     };
   }
 };
 export const removeAdminP = async (userP: User) => {
   try {
-    // Validate user ID
     if (!userP.id || typeof userP.id !== "string") {
       return {
         status: 400,
         message: "Invalid user ID",
       };
     }
-
-    // Check if user exists
     const user = await prisma.user.findUnique({
       where: { id: userP.id },
     });
@@ -341,7 +350,6 @@ export const removeAdminP = async (userP: User) => {
       };
     }
 
-    // Check if user is already an admin
     if (user.role === "User") {
       return {
         status: 400,
@@ -357,7 +365,6 @@ export const removeAdminP = async (userP: User) => {
         message: "last admin cant be removed",
       };
     }
-    // Update user role to Admin
     const updatedUser = await prisma.user.update({
       where: { id: userP.id },
       data: {
@@ -371,10 +378,6 @@ export const removeAdminP = async (userP: User) => {
         message: "Failed to update user role",
       };
     }
-
-    // Revalidate relevant paths
-    // revalidatePath("/admin/users");
-    // revalidatePath("/");
 
     return {
       status: 200,

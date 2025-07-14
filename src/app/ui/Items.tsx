@@ -50,7 +50,7 @@ export default function Items({
           img4Ref.current,
           img5Ref.current,
         ],
-        { opacity: 0 }
+        { opacity: 0 },
       );
 
       // Build the animation timeline
@@ -63,7 +63,7 @@ export default function Items({
             img4Ref.current,
             img5Ref.current,
           ],
-          { opacity: 1, delay: 1 }
+          { opacity: 1, delay: 1 },
         )
         .fromTo(
           img1Ref.current,
@@ -76,7 +76,7 @@ export default function Items({
             yoyo: true,
             repeat: -1,
           },
-          "="
+          "=",
         )
         .fromTo(
           img2Ref.current,
@@ -89,7 +89,7 @@ export default function Items({
             yoyo: true,
             repeat: -1,
           },
-          "="
+          "=",
         )
         .fromTo(
           img3Ref.current,
@@ -102,7 +102,7 @@ export default function Items({
             yoyo: true,
             repeat: -1,
           },
-          "="
+          "=",
         )
         .fromTo(
           img4Ref.current,
@@ -115,7 +115,7 @@ export default function Items({
             yoyo: true,
             repeat: -1,
           },
-          "="
+          "=",
         )
         .fromTo(
           img5Ref.current,
@@ -128,7 +128,7 @@ export default function Items({
             yoyo: true,
             repeat: -1,
           },
-          "="
+          "=",
         );
       // Cleanup function
       return () => {
@@ -137,7 +137,7 @@ export default function Items({
         }
       };
     },
-    { scope: containerRef } // Added step to dependencies
+    { scope: containerRef }, // Added step to dependencies
   );
 
   return (
@@ -146,7 +146,7 @@ export default function Items({
         <>
           <div
             ref={containerRef}
-            className="absolute w-full h-full z-[0] grid justify-center items-center overflow-x-hidden"
+            className="absolute z-[0] grid h-full w-full items-center justify-center overflow-x-hidden"
             style={{
               gridTemplateAreas: `
           "top-left . top-right"
@@ -161,7 +161,7 @@ export default function Items({
             {/* Top Left */}
             <div
               style={{ gridArea: "top-left" }}
-              className={`flex justify-center items-center relative ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
+              className={`relative flex items-center justify-center ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
             >
               <Image
                 ref={img1Ref}
@@ -169,7 +169,7 @@ export default function Items({
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}
-                className="object-contain rounded-3xl sm:w-[120px]! sm:h-[150px]! w-[50px]! h-[70px]! "
+                className="h-[70px]! w-[50px]! rounded-3xl object-contain sm:h-[150px]! sm:w-[120px]!"
                 priority
               />
             </div>
@@ -178,7 +178,7 @@ export default function Items({
             {img2 && (
               <div
                 style={{ gridArea: "top-right" }}
-                className={`flex justify-center items-center relative ${lang === "en" ? "left-1/4" : "right-1/4"} `}
+                className={`relative flex items-center justify-center ${lang === "en" ? "left-1/4" : "right-1/4"} `}
               >
                 <Image
                   ref={img2Ref}
@@ -186,7 +186,7 @@ export default function Items({
                   alt={`Cover for ${img2}`}
                   width={100}
                   height={100}
-                  className="object-contain rounded-3xl sm:w-[120px]! sm:h-[150px]! w-[50px]! h-[70px]! "
+                  className="h-[70px]! w-[50px]! rounded-3xl object-contain sm:h-[150px]! sm:w-[120px]!"
                   priority
                 />
               </div>
@@ -195,7 +195,7 @@ export default function Items({
             {/* Center */}
             <div
               style={{ gridArea: "center" }}
-              className="flex justify-center items-center "
+              className="flex items-center justify-center"
             >
               <Image
                 ref={img3Ref}
@@ -203,7 +203,7 @@ export default function Items({
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}
-                className="object-contain rounded-3xl sm:w-[120px]! sm:h-[150px]! w-[50px]! h-[70px]! "
+                className="h-[70px]! w-[50px]! rounded-3xl object-contain sm:h-[150px]! sm:w-[120px]!"
                 priority
               />
             </div>
@@ -212,7 +212,7 @@ export default function Items({
             {img2 && (
               <div
                 style={{ gridArea: "bottom-left" }}
-                className={`flex justify-center items-center  relative ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
+                className={`relative flex items-center justify-center ${lang === "en" ? "-left-1/4" : "-right-1/4"}`}
               >
                 <Image
                   ref={img4Ref}
@@ -220,7 +220,7 @@ export default function Items({
                   alt={`Cover for ${img2}`}
                   width={100}
                   height={100}
-                  className="object-contain rounded-3xl sm:w-[120px]! sm:h-[150px]! w-[50px]! h-[70px]! "
+                  className="h-[70px]! w-[50px]! rounded-3xl object-contain sm:h-[150px]! sm:w-[120px]!"
                   priority
                 />
               </div>
@@ -229,7 +229,7 @@ export default function Items({
             {/* Bottom Right */}
             <div
               style={{ gridArea: "bottom-right" }}
-              className={`flex justify-center items-center  relative ${lang === "en" ? "left-1/4" : "right-1/4"}`}
+              className={`relative flex items-center justify-center ${lang === "en" ? "left-1/4" : "right-1/4"}`}
             >
               <Image
                 ref={img5Ref}
@@ -237,7 +237,7 @@ export default function Items({
                 alt={`Cover for ${img}`}
                 width={100}
                 height={100}
-                className="object-contain rounded-3xl sm:w-[120px]! sm:h-[150px]! w-[50px]! h-[70px]! "
+                className="h-[70px]! w-[50px]! rounded-3xl object-contain sm:h-[150px]! sm:w-[120px]!"
                 priority
               />
             </div>

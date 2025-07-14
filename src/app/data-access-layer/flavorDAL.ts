@@ -11,22 +11,22 @@ import { deleteUTFiles } from "./uploadthingDAL";
 export const AddFlavor = async (
   name: string,
   primaryImg: string,
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
-        message: "internal server error",
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
-        message: "Un Authorized to add flavor",
+        message:
+          "You should be Admin to add a flavor 😔 / يجب أن تكون مشرف حتى تستطيع إضافة نكهة 😔 ",
       };
     }
-    // Check if flavor with same name already exists
     const existingFlavor = await prisma.flavor.findFirst({
       where: {
         name,
@@ -37,11 +37,11 @@ export const AddFlavor = async (
     if (existingFlavor) {
       return {
         status: 409,
-        message: "Flavor with this name already exists",
+        message:
+          "Flavor with this name already exists / يوجد بالفعل نكهة بهذا الاسم ",
       };
     }
 
-    // Create new flavor
     const newFlavor = await prisma.flavor.create({
       data: {
         name,
@@ -53,99 +53,37 @@ export const AddFlavor = async (
     if (!newFlavor) {
       return {
         status: 500,
-        message: "Failed to create flavor",
+        message: "Failed to create flavor / فشل إضافة نكهة",
       };
     }
 
-    // Revalidate relevant paths
     revalidatePath(`/en/flavors`, "page");
     revalidatePath(`/ar/flavors`, "page");
 
     return {
       status: 201,
-      message: "Flavor created successfully",
+      message: "Flavor created successfully ♡ / تم إنشاء النكهة بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddFlavor:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
-
-export const getAllFlavor = cache(async (language: string) => {
-  try {
-    const flavors = await prisma.flavor.findMany({
-      where: { lang: language },
-      select: {
-        name: true,
-        id: true,
-        primaryImg: true,
-      },
-    });
-
-    if (!flavors || flavors.length === 0) {
-      return {
-        status: 404,
-        message: "No flavors found",
-        flavors: [],
-      };
-    }
-
-    return {
-      status: 200,
-      message: "Flavors retrieved successfully",
-      flavors,
-    };
-  } catch (error) {
-    console.error("Error in getAllFlavor:", error);
-    return {
-      status: 500,
-      message: "Internal server error",
-      flavors: [],
-    };
-  }
-});
-
-export const getAllFlavorsWithoutLang = cache(async () => {
-  try {
-    const flavors = await prisma.flavor.findMany();
-
-    if (!flavors || flavors.length === 0) {
-      return {
-        status: 404,
-        message: "No flavors found",
-        flavors: [],
-      };
-    }
-
-    return {
-      status: 200,
-      message: "Flavors retrieved successfully",
-      flavors,
-    };
-  } catch (error) {
-    console.error("Error in getAllFlavor:", error);
-    return {
-      status: 500,
-      message: "Internal server error",
-      flavors: [],
-    };
-  }
-});
 export const updateFlavor = async (flavor: Flavor) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
-        message: "internal server error",
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
-        message: "Un Authorized to update flavor",
+        message:
+          "You should be Admin to update a flavor 😔 / يجب أن تكون مشرف حتى تستطيع تعديل النكهة 😔 ",
       };
     }
     const existingFlavor = await prisma.flavor.findFirst({
@@ -155,7 +93,8 @@ export const updateFlavor = async (flavor: Flavor) => {
     if (!existingFlavor) {
       return {
         status: 404,
-        message: "No flavor found",
+        message:
+          "flavor Not found choose the flavor again / لم يتم إيجاد النكهة اختر النكهة مجددا",
       };
     }
 
@@ -171,30 +110,95 @@ export const updateFlavor = async (flavor: Flavor) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update flavor / فشل في تعديل النكهة",
       };
     }
     revalidatePath("/en/Control/Update/Flavor");
     revalidatePath("/ar/Control/Update/Flavor");
     return {
       status: 200,
-      message: "Flavor updated successfully",
+      message: "Flavor updated successfully ♡ / تم تعديل النكهة بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in update Flavor:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
+export const getAllFlavor = cache(async (language: string) => {
+  try {
+    const flavors = await prisma.flavor.findMany({
+      where: { lang: language },
+      select: {
+        name: true,
+        id: true,
+        primaryImg: true,
+      },
+    });
+
+    if (!flavors || flavors.length === 0) {
+      return {
+        status: 404,
+        messageEn: "No flavors found 😔",
+        messageAr: "لم يتم إيجاد أي نكهة 😔",
+        flavors: [],
+      };
+    }
+
+    return {
+      status: 200,
+
+      messageEn: "Flavors retrieved successfully ♡",
+      messageAr: "تم إحضار النكهات بنجاح ♡",
+      flavors,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
+      flavors: [],
+    };
+  }
+});
+
+export const getAllFlavorsWithoutLang = cache(async () => {
+  try {
+    const flavors = await prisma.flavor.findMany();
+
+    if (!flavors || flavors.length === 0) {
+      return {
+        status: 404,
+        messageEn: "No flavors found 😔",
+        messageAr: "لم يتم إيجاد أي نكهة 😔",
+        flavors: [],
+      };
+    }
+
+    return {
+      status: 200,
+      messageEn: "Flavors retrieved successfully ♡",
+      messageAr: "تم إحضار النكهات بنجاح ♡",
+      flavors,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
+      flavors: [],
+    };
+  }
+});
+
 export const deleteFlavor = async (
   deleteAll: boolean,
-  flavor: Flavor | null
+  flavor: Flavor | null,
 ) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -239,7 +243,6 @@ export const deleteFlavor = async (
           status: 500,
         };
       }
-      //complete this to delete one flavor
       const existingFlavor = await prisma.flavor.findFirst({
         where: { id: flavor.id },
       });
@@ -250,9 +253,8 @@ export const deleteFlavor = async (
         };
       }
       await deleteUTFiles(
-        existingFlavor?.primaryImg.split("/").pop() as string
+        existingFlavor?.primaryImg.split("/").pop() as string,
       );
-      // Get all related data first
       const [products, recipies] = await Promise.all([
         prisma.product.findMany({
           where: { flavorId: flavor.id },
@@ -281,23 +283,18 @@ export const deleteFlavor = async (
         await deleteUTFiles(item.coverImg.split("/").pop() as string);
       });
       item = await prisma.$transaction([
-        // Delete videos for all products with this flavor
         prisma.video.deleteMany({
           where: { productId: { in: productIds } },
         }),
-        // Delete all products with this flavor
         prisma.product.deleteMany({
           where: { id: { in: productIds } },
         }),
-        // Delete all votes on recipes with this flavor
         prisma.voteOnRecipy.deleteMany({
           where: { RecipyId: { in: recipyIds } },
         }),
-        // Delete all recipes with this flavor
         prisma.recipy.deleteMany({
           where: { id: { in: recipyIds } },
         }),
-        // Finally delete the flavor itself
         prisma.flavor.delete({
           where: { id: flavor.id },
         }),

@@ -6,8 +6,7 @@ interface SearchableSelectProps {
   selectedOption: any | null;
   onSelect: (option: any | null) => void;
   placeholder?: string;
-  label?: string;
-  className?: string;
+  noOptions?: string;
 }
 
 export default function SearchableSelect({
@@ -15,8 +14,7 @@ export default function SearchableSelect({
   selectedOption,
   onSelect,
   placeholder = "Search...",
-  label,
-  className = "",
+  noOptions = "No option found",
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +22,7 @@ export default function SearchableSelect({
   const selectedItemRef = useRef<HTMLLIElement>(null);
 
   const filteredOptions = options?.filter((option) =>
-    option.name.toLowerCase().includes(searchTerm.toLowerCase())
+    option.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   useEffect(() => {
@@ -79,7 +77,7 @@ export default function SearchableSelect({
       </div>
 
       <ul
-        className={`transition ease-in duration-100 ${
+        className={`transition duration-100 ease-in ${
           isOpen ? "block" : "hidden"
         } absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm`}
         role="listbox"
@@ -123,7 +121,7 @@ export default function SearchableSelect({
           })
         ) : (
           <li className="relative cursor-default py-2 pr-9 pl-3 text-gray-500 select-none">
-            No options found
+            {noOptions}
           </li>
         )}
       </ul>

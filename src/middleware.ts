@@ -1,71 +1,124 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt, updateSession } from "@/app/lib/session";
-
 import Negotiator from "negotiator";
 import { match } from "@formatjs/intl-localematcher";
 
 const locales = ["en", "ar"];
 const defaultLocale = "en";
 const cookieName = "i18nlang";
-const protectedRoutes = ["/Control"];
 
+// Helper to get locale from request
 function getLocale(request: NextRequest): string {
-  if (request.cookies.has(cookieName))
-    return request.cookies.get(cookieName)!.value;
+  // First check cookie
+  const cookieLang = request.cookies.get(cookieName)?.value;
+  if (cookieLang && locales.includes(cookieLang)) {
+    return cookieLang;
+  }
+
+  // Then check Accept-Language header
   const acceptLang = request.headers.get("Accept-Language");
-  if (!acceptLang) return defaultLocale;
-  const headers = { "accept-language": acceptLang };
-  const languages = new Negotiator({ headers }).languages();
-  return match(languages, locales, defaultLocale);
+  if (acceptLang) {
+    const headers = { "accept-language": acceptLang };
+    const languages = new Negotiator({ headers }).languages();
+    const matched = match(languages, locales, defaultLocale);
+    if (matched) return matched;
+  }
+
+  return defaultLocale;
 }
-const specialRoutes = ["FAQ", "ContactUs,PrivacyPolicy", "TermsConditions"];
+
+const specialRoutes = ["FAQ", "ContactUs", "PrivacyPolicy", "TermsConditions"];
+
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-  if (path.startsWith("/_next")) return NextResponse.next();
-  if (path.startsWith("/api/uploadthing")) return NextResponse.next();
+
+  // Skip middleware for static files and special paths
+  if (
+    path.startsWith("/_next") ||
+    path.startsWith("/api/uploadthing") ||
+    path.includes(".well-known")
+  ) {
+    return NextResponse.next();
+  }
+
+  // Handle special route redirects
   for (const route of specialRoutes) {
     const normalizedPath = path.endsWith("/") ? path : `${path}/`;
-    const normalizedReferer = req.headers.get("referer")?.endsWith("/")
-      ? req.headers.get("referer")
-      : `${req.headers.get("referer")}/`;
+    const referer = req.headers.get("referer");
+    const normalizedReferer = referer?.endsWith("/") ? referer : `${referer}/`;
+
     if (
       normalizedPath.includes(`/${route}/`) &&
       normalizedReferer?.includes(`/${route}/`) &&
       ((normalizedPath.includes("ar") && normalizedReferer?.includes("en")) ||
         (normalizedPath.includes("en") && normalizedReferer?.includes("ar")))
     ) {
-      req.nextUrl.pathname = `/${path.includes("/en") ? "en" : "ar"}/${route}Page`;
-      const response = NextResponse.redirect(req.nextUrl);
-      return response;
+      const newPath = `/${path.includes("/en") ? "en" : "ar"}/${route}Page`;
+      req.nextUrl.pathname = newPath;
+      return NextResponse.redirect(req.nextUrl);
     }
   }
-  const pathnameHasLocale = locales.some(
-    (locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`
-  );
 
+  // Authentication checks
   const isProtectedRoute = path.includes("/Control");
+  const needsSignIn =
+    path.includes("/SuggestAFlavor") || path.includes("/Opinion");
+  const session = req.cookies.get("session")?.value;
 
-  const session = req.cookies.get("session");
-
-  if (session !== undefined && session) {
-    const decryptedSession = await decrypt(session?.value);
-
-    const user = decryptedSession as { userId: string; userRole: string };
-    if (isProtectedRoute && user.userRole !== "Admin") {
-      return NextResponse.redirect(new URL("/unAuthorized", req.nextUrl));
+  if (session) {
+    const decryptedSession = await decrypt(session);
+    if (decryptedSession.status) {
+      const user = decryptedSession.payload as {
+        userId: string;
+        userRole: string;
+      };
+      if (isProtectedRoute && user?.userRole !== "Admin") {
+        return NextResponse.redirect(new URL("/unAuthorized", req.nextUrl));
+      }
     }
-  } else if (isProtectedRoute) {
+  } else if (needsSignIn || isProtectedRoute) {
     return NextResponse.redirect(new URL("/signIn", req.nextUrl));
   }
 
+  // Update session
   await updateSession(req);
 
-  if (pathnameHasLocale) return;
+  // Extract current locale from path
+  const currentLocale = locales.find(
+    (locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`,
+  );
 
-  const locale = getLocale(req);
-  req.nextUrl.pathname = `/${locale}${path}`;
-  const response = NextResponse.redirect(req.nextUrl);
-  response.cookies.set(cookieName, locale);
+  // Create response object
+  let response: NextResponse;
+  if (currentLocale) {
+    // Path already has locale - use existing response
+    response = NextResponse.next();
+
+    // Update language cookie if needed
+    const cookieLang = req.cookies.get(cookieName)?.value;
+    if (cookieLang !== currentLocale) {
+      // console.log(cookieLang, currentLocale, "Dfsdff");
+      response.cookies.set(cookieName, currentLocale, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+    }
+  } else {
+    // Add locale to path
+    const locale = getLocale(req);
+    req.nextUrl.pathname = `/${locale}${path}`;
+    response = NextResponse.redirect(req.nextUrl);
+
+    // Set language cookie
+    response.cookies.set(cookieName, locale, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
 
   return response;
 }
@@ -73,6 +126,6 @@ export default async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|.*\\.(?:png|jpe?g|gif|svg|ico|webp|avif)$).*)",
-    "/api/:path",
+    "/api/:path*",
   ],
 };

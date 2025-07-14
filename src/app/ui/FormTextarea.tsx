@@ -4,7 +4,7 @@ interface FormTextareaProps {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
-  error?: string[] | undefined;
+  error?: string | undefined;
   required?: boolean;
   rows?: number;
 }
@@ -22,7 +22,7 @@ export const FormTextarea = ({
   <div className="col-span-full">
     <label
       htmlFor={id}
-      className="block text-sm lg:text-lg font-medium text-black"
+      className="block text-sm font-medium text-black lg:text-lg"
     >
       {label}
     </label>

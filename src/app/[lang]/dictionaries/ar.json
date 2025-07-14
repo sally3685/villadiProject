@@ -60,7 +60,8 @@
   },
   "lang": {
     "first": "English",
-    "second": "العربية"
+    "second": "العربية",
+    "hello": "مرحبا"
   },
   "sideLinks": {
     "page1": "صنف",
@@ -72,14 +73,76 @@
     "page7": "فيديو",
     "page8": "ميديا"
   },
+  "Templang": {
+    "langButton": "إضافة بالعربية ",
+    "opplangButton": "Add in english"
+  },
+  "submitStatus": {
+    "submit": "إرسال",
+    "waitSubmit": "الرجاء الانتظار ...",
+    "proccessing": "يتم المعالجة",
+    "waitDelete": "جاري الحذف ...",
+    "delete": "حذف"
+  },
+
+  "required": {
+    "categoryRequired": "من فضلك اختر صنفا",
+    "flavorRequired": "من فضلك اختر نكهة",
+    "image": "الرجاء رفع صورة أولاً",
+    "pinMark": "الرجاء إضافة علامة واحدة على الأقل",
+    "mapRequired": "من فضلك اختر خريطة",
+    "productRequired": "يجب أن تختار منتج",
+    "videoRequired": "يجب أن تختار فيديو",
+    "recipeRequired": "يجب أن تختار وصفة",
+    "coverImgRequired": "الرجاء رفع صورة غلاف أولاً",
+    "socialAppRequired": "يجب أن تختار تطبيق أولا"
+  },
+
+  "updateCategoryForm": {
+    "title": "تعديل صنف"
+  },
+  "steps": {
+    "title": "الخطوات ",
+    "previous": "الخطوة السابقة",
+    "next": "الخطوة التالية"
+  },
+  "choose": {
+    "category": "اختر الصنف",
+    "flavor": "اختر نكهة ",
+    "map": "اختر خريطة",
+    "product": "اختر منتج",
+    "recipe": "اختر وصفة",
+    "video": "اختر فيديو",
+    "social": "اختر تطبيق التواصل "
+  },
+  "imageUpload": {
+    "instruction": "اضغط على الصورة لحذفها وإعادة الادخال",
+    "warning": "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها",
+    "deleted": "تم حذف الصورة",
+    "failed": "فشل الحذف",
+    "uploaded": "تم تحميل الصورة تستطيع الاستمرار",
+    "validate": "يحب أن تكون الصورة بصيغة png وبحجم أقصاه 4MB"
+  },
+  "done": {
+    "success": "تم بنجاح",
+    "error": "خطأ"
+  },
+  "delete": {
+    "deleteSuccess": "تم الحذف بنجاح",
+    "deleteFailed": "فشل الحذف",
+    "deleteCheck": "احرص على اختيار عنصر واختيار تأكيد الحذف",
+    "noPermission": "ليس لديك إذن للحذف",
+    "noSelectionText": "الرجاء تحديد عنصر للحذف"
+  },
+  "map": {
+    "title": "انتشار شركة فيلادي",
+    "noItem": "لم يتم إضافة خرائط",
+    "map": "الانتشار في ",
+    "next": "التالي",
+    "prev": "السابق"
+  },
   "addCategoryForm": {
     "title": "إضافة صنف ",
-    "update": "تعديل صنف",
-    "category": "اختر الصنف",
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة بالعربية ",
-    "opplangButton": "Add in english",
     "name": "اسم الصنف",
     "oppName": "Category name",
     "namePlaceHolder": "بسكويت ويفر",
@@ -92,55 +155,35 @@
     "img": "صورة الصنف",
     "oppImg": "Category img",
     "addimg": "اضغط لاضافة صورة",
-    "imgselected": "الصورة المختارة",
-    "imgdetailes": "صيغة PNG فقط، حتى 100 ميجابايت، بدون خلفية، ودقة جيدة.",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة الصنف بنجاح",
-    "validationError": "خطـأ !!",
-    "steps": "الخطوات ",
-    "categoryRequired": "يجب اختيار الصنف",
-
-    "previous": "الخطوة السابقة",
-    "next": "الخطوة التالية",
     "deleteAll": "حذف كل الأصناف",
     "deleteLabel": "حذف صنف",
     "deleteWarning": "هل أنت متأكد من الحذف ؟ كل المنتجات المربوطة مع الصنف والفيديوهات المتعلقة بهذه المنتجات سيتم حذفها"
   },
+  "updateFlavorForm": {
+    "title": "تعديل نكهة"
+  },
   "addFlavorForm": {
     "title": "إضافة نكهة ",
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة الانكليزية ",
-    "opplangButton": "Add in Arabic",
     "name": "اسم النكهة",
     "oppName": "Flavor name",
     "namePlaceHolder": "جبنة الشيدر ",
-    "img": "صورة النكهة الأساسية",
-    "oppImg": "Primary flavor image",
-    "addimg": "اضغط لاضافة صورةأساسية",
-    "img2": "صورة النكهة الثانوية ",
-    "oppImg2": "Secondary flavor image",
-    "addimg2": "اضغط لاضافة صورة ثانوية",
-    "imgselected": "الصورة المختارة",
-    "imgdetailes": "صيغة PNG فقط، حتى 100 ميجابايت، بدون خلفية، ودقة جيدة.",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة النكهة بنجاح",
-    "doneUpdate": "تم تعديل النكهة بنجاح",
-    "validationError": "خطـأ !!",
-    "update": "تعديل نكهة",
-    "flavor": "اختر نكهة ",
+    "img": "صورة النكهة ",
+    "oppImg": "flavor image",
+    "addimg": "اضغط لاضافة صورة",
     "deleteAll": "حذف كل النكهات",
     "deleteLabel": "حذف نكهة",
     "deleteWarning": "هل أنت متأكد من الحذف ؟ كل المنتجات المربوطة مع النكهة والفيديوهات المتعلقة بهم والوصفات والتصويتات عليهم سيتم حذفها"
   },
+  "search": {
+    "title": "بحث...",
+    "noOptions": "لا يوجد اختيارات"
+  },
+
+  "updateProductForm": {
+    "title": "اختر منتج"
+  },
   "addProductForm": {
     "title": "إضافة منتج ",
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة بالعربية ",
-    "opplangButton": "Add in english",
     "category": "اختر الصنف الذي يتبع له المنتج",
     "oppCategory": "Choose product's category",
     "flavor": "اختر نكهة المنتج",
@@ -156,73 +199,51 @@
     "detailesPlaceHolder": "أضف بعض التفاصيل للتعبير عن المنتج الجديد",
     "img": "صورة المنتج ",
     "oppImg": "Product image",
-    "addimg": "اضغط لاضافة صورة",
+    "oppImg2": "Product's piece image",
+    "img2": "صورة قطعة من المنتج ",
     "backgroundColor": "لون الخلفية للمنتج",
     "oppBackgroundColor": "Product's background color",
     "patternColor": "لون نمط المنتج",
     "oppPatternColor": "Product's pattern color",
-    "imgselected": "الصورة المختارة",
-    "imgdetailes": "صيغة PNG فقط، حتى 100 ميجابايت، بدون خلفية، ودقة جيدة.",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة المنتج بنجاح",
-    "previous": "الخطوة السابقة",
-    "next": "الخطوة التالية",
-    "categoryRequired": "من فضلك اختر صنفا",
-    "flavorRequired": "من فضلك اختر نكهة",
-    "validationError": "خطـأ !!",
-    "steps": "الخطوات ",
-    "productRequired": "يجب أن تختار منتج",
-    "product": "اختر منتج",
     "deleteAll": "حذف كل المنتجات",
     "deleteLabel": "حذف منتج",
     "deleteWarning": "هل أنت متأكد من الحذف ؟ كل الفيديوهات المتعلقة بهم عليهم سيتم حذفها"
   },
+  "updateRecipyForm": {
+    "title": "تعديل وصفة"
+  },
   "addRecipyForm": {
     "title": "إضافة وصفة ",
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة بالعربية ",
-    "opplangButton": "Add in english",
-    "flavor": "اختر نكهة المنتج",
+    "flavor": "اختر نكهة الوصفة",
     "oppFlavor": "Choose recipy's flavor",
     "name": "اسم الوصفة",
     "oppName": "Recipy name",
     "namePlaceHolder": "وصفة الصيف",
+    "oppCode": "Recipe code",
+    "code": "كود الوصفة",
+    "codePlaceHolder": "425-A",
     "details": "التفاصيل",
     "oppDetails": "Detailes",
     "detailsPlaceHolder": "أضف بعض التفاصيل للتعبير عن الوصفة الجديد",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة الوصفة بنجاح",
-    "validationError": "خطـأ !!",
-    "steps": "الخطوات ",
-    "previous": "الخطوة السابقة",
-    "next": "الخطوة التالية",
-    "recipe": "اختر وصفة",
-    "recipeRequired": "يجب أن تختار وصفة",
-    "update": "تعديل وصفة",
     "deleteAll": "حذف كل الوصفات",
     "deleteLabel": "حذف وصفة",
     "deleteWarning": "هل أنت متأكد من الحذف ؟ كل التصويتات المتعلقة بهم عليهم سيتم حذفها"
   },
   "addAdminForm": {
     "title": "منح صلاحية أدمن ",
-    "admin": "مرحبا مشرف ",
+    "helloAdmin": "مرحبا مشرف ",
     "chooseAdmin": "اختر مستخدم",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم منح الصلاحية بنجاح",
-    "generalWarn": "اختر مستخدم للاستمرار",
+    "selectWarn": "اختر مستخدم للاستمرار",
     "deleteLabel": "سحب سماحية مشرف",
-    "deleteWarning": "هل أنت متأكد من سحب سماحية مشرف من هذا المستخدم"
+    "deleteWarning": "هل أنت متأكد من سحب سماحية مشرف من هذا المستخدم",
+    "deleteWarning2": "انتبه اخر مشرف متبقي لا يمكن سحب الصلاحية منه",
+    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!"
+  },
+  "updateMapForm": {
+    "title": "تعديل خريطة"
   },
   "addMapForm": {
     "title": "إضافة موقع ",
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة بالعربية ",
-    "opplangButton": "Add in english",
     "name": "اسم البلد",
     "oppName": "Country name",
     "namePlaceHolder": "سوريا,حلب",
@@ -231,35 +252,49 @@
     "detailesPlaceHolder": "أضف بعض التفاصيل المتعلقة بهذا الموقع",
     "img": "صورة البلد ",
     "oppImg": "Country image",
-    "addimg": "اضغط لاضافة صورة",
-    "imgselected": "الصورة المختارة",
-    "imgdetailes": "صيغة PNG فقط، حتى 100 ميجابايت، بدون خلفية، ودقة جيدة.",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة الخريطة بنجاح",
-    "previous": "الخطوة السابقة",
-    "next": "الخطوة التالية",
-    "categoryRequired": "من فضلك اختر صنفا",
-    "flavorRequired": "من فضلك اختر نكهة",
-    "validationError": "خطـأ !!",
-    "steps": "الخطوات ",
-    "imageUploadSuccess": "تم تحميل الصورة تستطيع الاستمرار",
-    "upload": "رفع الصورة",
-    "update": "تعديل خريطة",
-    "mapRequired": "يجب أن تختار خريطة",
-    "map": "اختر خريطة",
+    "selectPosition": "اضغط على الخريطة لتحدد موقع",
     "changeImage": "فعل الاختيار اذا أردت تغيير الصورة ",
     "deleteAll": "حذف كل الخرائط",
     "deleteLabel": "حذف خريطة",
     "deleteWarning": "هل أنت متأكد من الحذف ؟"
   },
+  "updateVideoForm": {
+    "title": "تعديل فيديو"
+  },
+  "updateSocial": {
+    "title": "تعديل روابط وسائل التواصل",
+    "channelLink": "رابط القناة",
+    "embeddedLinkPlaceHolder": "انظر الى التعليمات فوق",
+    "instagram": {
+      "title": "للحصول على مفتاح منشور الانستغرام",
+      "embededLink": "مفتاح المنشور",
+      "steps": [
+        "افتح المنشور في نافذة المتصفح ",
+        "وانسخ الرابط من شريط البحث",
+        "يجب أن يكون الرابط بهذه الصيغة :https://www.instagram.com/p/<span style=\"background:#7abc43; padding:4px; border-radius:5px\">abc123xyzAB</span>/",
+        "انسخ المفتاح . سيكون بمكان النص الملون فوق "
+      ]
+    },
+    "facebook": {
+      "title": "لتحصل على اسم صفحة الفيسبوك المتعلق بالرابط : ",
+      "embededLink": "رابط الصفحة",
+      "steps": [
+        "  احصل على رابط الصفحة سيكون بالصيغة التالية www.facebook.com/<span style=\"background:#7abc43; padding:4px; border-radius:5px\" >Villade11</span>?...",
+        "انسخ الاسم . سيكون بمكان النص الملون فوق "
+      ]
+    },
+    "youtube": {
+      "title": "لتحصل على رابط فيديو اليوتيوب : ",
+      "embededLink": "مفتاح الفيديو",
+      "steps": [
+        "افتح الفيديو في نافذة المتصفح وانسخ الرابط من شريط البحث ",
+        "يجب أن يكون الرابط بهذه الصيغة https://www.youtube.com/watch?v=<span style=\"background:#7abc43; padding:4px; border-radius:5px\" >K4xCjdwNKlA</span>/",
+        "انسخ المفتاح . سيكون بمكان النص الملون فوق "
+      ]
+    }
+  },
   "addVideoForm": {
     "title": "إضافة فيديو ",
-
-    "admin": "مرحبا مشرف ",
-    "adminWarning": " لاحظ أن هذه هي النسخة العربية، والمعلومات التي ستدخلها لن تُترجم تلقائيًا!!",
-    "langButton": "إضافة بالعربية ",
-    "opplangButton": "Add in english",
     "oppName": "Video title",
     "name": "عنوان الفيديو",
     "namePlaceHolder": "منتج الذرة",
@@ -268,23 +303,8 @@
     "embededLinkPlaceHolder": "https://www.youtube.com/watch?v",
     "oppImg": "cover video image",
     "img": "صورة غلاف الفيديو ",
-    "addimg": "اضغط لاضافة صورة",
-    "imgselected": "الصورة المختارة",
-    "imgdetailes": "صيغة PNG فقط، حتى 100 ميجابايت، بدون خلفية، ودقة جيدة.",
-    "submit": "إرسال",
-    "waitSubmit": "الرجاء الانتظار ...",
-    "doneSubmit": "تم إضافة الفيديو بنجاح",
-    "previous": "الخطوة السابقة",
-    "next": "الخطوة التالية",
-    "productRequired": "يجب أن تختار منتج",
-    "videoRequired": "يجب أن تختار فيديو",
-
     "product": "اختر المنتج الموافق للفيديو ",
     "oppProduct": "Choose video's product",
-    "validationError": "خطـأ !!",
-    "steps": "الخطوات ",
-    "video": "اختر فيديو",
-    "update": "تعديل فيديو",
     "deleteAll": "حذف كل الفيديوهات",
     "deleteLabel": "حذف فيديو",
     "deleteWarning": "هل أنت متأكد من الحذف ؟"
@@ -298,20 +318,65 @@
     "name": "الفيديوهات",
     "noVideos": "لا يوجد المزيد من مقاطع الفيديو",
     "more": "مشاهدة كل الفيديوهات",
-    "details": "تفاصيل المنتج"
+    "link": "تفاصيل المنتج",
+    "search": "بحث عن فيديو..."
+  },
+  "ProdsWrapper": {
+    "noProds": "لا يوجد منتجات بعد",
+    "all": "كل المنتجات",
+    "view": "مشاهدة الكل ",
+    "moreProds": "المزيد من المنتجات",
+    "link": "تفاصيل المنتج",
+    "notFound": "لم يتم إيجاد المنتج",
+    "title": "المنتجات",
+    "search": "بحث عن منتج...",
+    "details": "تفاصيل المنتج",
+    "product": "المنتج",
+    "flavor": "نكهة"
   },
   "catigoriesWrapper": {
     "noCats": "لا يوجد اصناف بعد",
+    "noProds": "لا يوجد منتجات بعد",
     "all": "كل الاصناف",
-    "have": "ما نقدمه ",
+    "title": "ما نقدمه ",
     "view": "مشاهدة الكل ",
-    "Cats": "كل الأصناف"
+    "Cats": "كل الأصناف",
+    "more": "المزيد من الأصناف",
+    "moreProds": "المزيد من المنتجات",
+    "link": "منتجات الصنف",
+    "search": "بحث عن صنف..."
   },
   "recipesWrapper": {
     "noRecs": "لا يوجد وصفات بعد !",
-    "all": "تفاصيل الوصفة",
+    "link": "تفاصيل الوصفة",
     "view": "مشاهدة الكل ",
-    "Recs": "كل الوصفات "
+    "title": "كل الوصفات ",
+    "NotFound": " لم يتم ايجاد الوصفة",
+    "trending": "أكثر الوصفات إعجابا",
+    "search": "بحث عن وصفة..."
+  },
+  "contactUs": {
+    "title": "اتصل بنا",
+    "location": "سوريا_حلب"
+  },
+  "addComment": {
+    "doneSubmit": "تم إضافة تعليق",
+    "title": "أتريد إضافة تعليق ؟",
+    "label": "شاركنا رأيك",
+    "placeHolder": " افضل منتج هو بطاطس الذرة "
+  },
+  "updateComment": {
+    "doneSubmit": "تم تعديل تعليق",
+    "title": "أتريد تعديل التعليق ؟"
+  },
+  "deleteComment": {
+    "doneSubmit": "تم الحذف بنجاح",
+    "error": "فشل الحذف",
+    "check": "تأكد من اختيار تأكيد الحذف ",
+    "checkWarn": "هل أنت متأكد من حذف تعليقك",
+    "noPermission": "لا يوجد إذن للحذف",
+    "noComment": "لم يتم اختيار تعليق",
+    "title": "أتريد حذف التعليق ؟"
   },
   "FAQ": {
     "title": "الأسئلة الشائعة",
@@ -466,5 +531,64 @@
       }
     ],
     "acceptanceText": "باستخدام خدماتنا، فإنك تقر بممارسات الخصوصية لدينا كما هو موضح في هذه السياسة."
+  },
+  "vote": {
+    "title": "التصويتات",
+    "votedBefore": "تستطيع التصويت مرة واحدة فقط ♡",
+    "voteError": "حدث خطأ , فشل التصويت",
+    "notSigned": "من فضلك سجل دخول أولا ♡"
+  },
+  "suggestAFlavor": {
+    "title": "أتريد اقتراح نكهة ؟",
+    "label": " اكتب رسالة لوصف الاقتراح ",
+    "placeHolder": "ماذا عن نكهة الكتشب مع الليمون ؟",
+    "doneSubmit": "تم إضافة اقتراحك",
+    "waitSubmit": "الرجاء الانتظار ...",
+    "submit": "إرسال"
+  },
+  "verifypasswordForm": {
+    "title": "إعادة تعيين كلمة السر",
+    "code": "أدخل كود التحقق الذي تم إرساله لبريدك الالكتروني",
+    "resend": "إعادة إرسال كود التحقق؟",
+    "click": "اضغط هنا",
+    "verify": "تم تفعيل حسابك ♡"
+  },
+  "verifyEmailForm": {
+    "title": "تأكيد البريد الإلكتروني",
+    "body": "أدخل رمز التحقق المكون من 4 أرقام الذي تم إرساله إلى بريدك الإلكتروني.",
+    "resend": "إعادة إرسال الرمز؟",
+    "click": "انقر هنا",
+    "signup": "لم تسجل بعد؟",
+    "sign": "تسجيل دخول",
+    "verify": "تم تفعيل حسابك ♡"
+  },
+  "resendCodeForm": {
+    "email": "إعادة إرسال كود التحقق",
+    "password": "إعادة إرسال كود إعادة تعيين كلمة السر"
+  },
+  "resetPasswordForm": { "title": "إعادة تعيين كلمة السر" },
+
+  "EmailTemplate": {
+    "title": "تأكيد البريد الإلكتروني",
+    "subtitle": "موقع فيلادي",
+    "hello": "مرحباً",
+    "instructions": "الرجاء استخدام رمز التحقق التالي لتأكيد عنوان بريدك الإلكتروني:",
+    "warning": "سينتهي صلاحية هذا الرمز خلال ساعة واحدة.",
+    "ignore": "إذا لم تطلب هذا الرمز، يرجى تجاهل هذا البريد الإلكتروني"
+  },
+  "EmailFlavorTemplate": {
+    "title": "اقتراح نكهة جديدة",
+    "subtitle": "من موقع فيلادي",
+    "team": "مرحباً بفريق فيلادي،",
+    "message": "لقد تلقيت اقتراح نكهة جديد من",
+    "date": "تم تقديم هذا الاقتراح في"
+  },
+  "EmailTemplatePass": {
+    "title": "رمز إعادة تعيين كلمة المرور",
+    "subtitle": "موقع فيلادي",
+    "hello": "مرحباً،",
+    "instruction": "الرجاء استخدام الرمز التالي لتعيين كلمة مرور جديدة:",
+    "expire": "سينتهي صلاحية هذا الرمز خلال ساعة واحدة.",
+    "ignore": "إذا لم تطلب هذا الرمز، يرجى تجاهل هذا البريد الإلكتروني"
   }
 }

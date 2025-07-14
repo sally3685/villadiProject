@@ -4,7 +4,26 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-export default function Maps({ maps, lang }: { maps: any; lang: string }) {
+import { MapDictionary } from "../[lang]/Maps/types";
+import { EmptyState } from "./EmptyState";
+import NextPrevButton from "./ControlForms/NextPrevButton";
+export default function Maps({
+  maps,
+  lang,
+  t,
+}: {
+  t: MapDictionary;
+  maps: {
+    lang: string;
+    left: string[];
+    top: string[];
+    id: string;
+    details: string;
+    img: string;
+    name: string;
+  }[];
+  lang: string;
+}) {
   const [step, setStep] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,11 +36,10 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
     (index: number) => (el: HTMLDivElement | null) => {
       pinMarker.current[index] = el;
     },
-    []
+    [],
   );
   useGSAP(
     () => {
-      // Only animate if all refs are available
       if (
         !details.current ||
         !pinMarker.current.length ||
@@ -30,13 +48,10 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
       )
         return;
 
-      // Create a reference to store the timeline
-      // Kill any existing timeline before creating a new one
       if (tlRef.current) {
         tlRef.current.kill();
       }
 
-      // Create new timeline
       tlRef.current = gsap.timeline();
       gsap.set([details, pinMarker, mapImg], {
         opacity: 0,
@@ -52,7 +67,7 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
           {
             x: 0,
             opacity: 1,
-          }
+          },
         )
         .fromTo(
           pinMarker.current,
@@ -61,7 +76,7 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
           },
           {
             scale: 1,
-          }
+          },
         )
         .fromTo(
           details.current,
@@ -72,7 +87,7 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
           {
             x: 0,
             opacity: 1,
-          }
+          },
         );
       return () => {
         if (tlRef.current) {
@@ -80,38 +95,38 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
         }
       };
     },
-    { scope: containerRef, dependencies: [step] } // Added step to dependencies
+    { scope: containerRef, dependencies: [step] },
   );
   return (
     <div
       ref={containerRef}
-      className="relative w-full  flex justify-evenly items-center flex-col max-w-7xl py-[100px] sm:pt-48 gap-[4rem] sm:gap-[150px] "
+      className="relative flex w-full max-w-7xl flex-col items-center justify-evenly gap-[4rem] px-4 py-[100px] lg:gap-[150px] lg:pt-48"
     >
       {maps.length === 0 ? (
-        <h1 className=" h-full flex w-full justify-center items-center  text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
-          {lang === "en" ? "No maps added yet" : "لم يتم إضافة خرائط بعد "}
-        </h1>
+        <EmptyState noItems={t.map.noItem} lang={lang} />
       ) : (
         <>
-          <h1 className=" text-2xl sm:text-4xl xl:text-5xl font-bold text-black">
-            {lang === "en" ? "Market of Villadi" : "انتشار شركة فيلادي"}
+          <h1 className="text-2xl font-bold text-black lg:text-4xl xl:text-5xl">
+            {t.map.title}
           </h1>
-          <div className="w-full flex gap-[4rem] sm:gap-[150px] justify-evenly items-center h-1/2  max-w-7xl flex-wrap sm:flex-nowrap">
-            <div className="relative w-[300px] h-[300px] left-0 sm:left-[76px] sm:scale-[1.5] bg-[#033155] rounded-2xl overflow-hidden">
+          <div className="flex h-1/2 w-full max-w-7xl flex-wrap items-center justify-evenly gap-[4rem] lg:flex-nowrap lg:gap-[150px]">
+            <div
+              className={`relative left-0 h-[300px] w-[300px] overflow-hidden rounded-2xl bg-[#033155] ${lang === "en" ? "lg:left-[76px]" : "lg:right-[76px]"} lg:scale-[1.5]`}
+            >
               <Image
                 ref={mapImg}
                 src={`${maps[step].img}`}
                 alt="map image"
                 width={200}
                 height={200}
-                className="w-[300px] h-[300px] object-contain"
+                className="h-[300px] w-[300px] object-contain"
               />
               {maps[step].top.map((item: any, index: any) => (
                 <div
                   key={index}
                   // ref={pinMarker}
                   ref={setPinRef(index)}
-                  className="origin-bottom absolute size-[30px] bg-[url(/pinMap_1.svg)] bg-no-repeat bg-contain bg-center rounded-full pointer-events-none transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  className="pointer-events-none absolute z-10 size-[30px] origin-bottom -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-[url(/pinMap_1.svg)] bg-contain bg-center bg-no-repeat"
                   style={{
                     top: `${item}%`,
                     left: `${maps[step].left[index]}%`,
@@ -119,46 +134,39 @@ export default function Maps({ maps, lang }: { maps: any; lang: string }) {
                 ></div>
               ))}
             </div>
-            <div className="w-full sm:w-[70%] h-full flex justify-center items-center flex-col ">
+            <div className="flex h-full w-full flex-col items-center justify-center lg:w-[50%]">
               <div
                 ref={details}
-                className="flex flex-col justify-center items-center text-black z-[2] gap-6 p-6 max-w-[90%] sm:max-w-[450px]"
+                className="z-[2] flex max-w-[90%] flex-col items-center justify-center gap-6 p-6 text-black lg:max-w-[450px]"
               >
-                <h2 className="text-xl sm:text-3xl xl:text-4xl font-semibold text-center">
-                  {lang === "en" ? "Market of " : "الانتشار في "}{" "}
-                  {maps[step].name}
+                <h2 className="text-center text-xl font-semibold lg:text-3xl xl:text-4xl">
+                  {t.map.location} {maps[step].name}
                 </h2>
-                <p className="text-lg sm:text-2xl xl:text-3xl font-medium">
+                <p className="text-lg font-medium lg:text-2xl xl:text-3xl">
                   {maps[step].details}
                 </p>
               </div>
-              <div className="w-full h-auto flex justify-around items-center">
-                <button
-                  className={`text-black  rounded-xl px-4 py-2  ${
-                    step + 1 < maps.length
-                      ? "cursor-pointer bg-[#fcdc43]"
-                      : "bg-gray-500 cursor-not-allowed"
-                  }`}
-                  disabled={step + 1 >= maps.length}
-                  onClick={() => {
+              <div className="flex h-auto w-full items-center justify-around">
+                <NextPrevButton
+                  handleStep={() => {
                     if (step + 1 < maps.length) setStep(step + 1);
                   }}
-                >
-                  next
-                </button>
-                <button
-                  className={`text-black  rounded-xl px-4 py-2  ${
-                    step - 1 >= 0
-                      ? "cursor-pointer bg-[#fcdc43]"
-                      : "bg-gray-500 cursor-not-allowed"
-                  }`}
-                  disabled={step - 1 < 0}
-                  onClick={() => {
+                  disabled={step + 1 >= maps.length}
+                  text={t.map.next}
+                  bg="rounded-xl! px-4! py-2! text-black! bg-[#fcdc43]!"
+                  hoverBg="bg-[#cfad00]!"
+                  disBg="bg-neutral-300!"
+                />
+                <NextPrevButton
+                  handleStep={() => {
                     if (step - 1 >= 0) setStep(step - 1);
                   }}
-                >
-                  prev
-                </button>
+                  disabled={step - 1 < 0}
+                  text={t.map.prev}
+                  bg="rounded-xl! px-4! py-2! text-black! bg-[#fcdc43]!"
+                  hoverBg="bg-[#cfad00]!"
+                  disBg="bg-neutral-300!"
+                />
               </div>
             </div>
           </div>

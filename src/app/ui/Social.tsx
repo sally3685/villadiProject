@@ -53,12 +53,12 @@ export default function Social({
     return (
       <h1
         ref={titleRef}
-        className="z-[0] top-[11%] overflow-hidden text-2xl sm:text-4xl xl:text-5xl font-bold relative w-full h-full flex justify-center items-center text-black"
+        className="relative top-[11%] z-[0] flex h-full w-full items-center justify-center overflow-hidden text-2xl font-bold text-black sm:text-4xl xl:text-5xl"
       >
         {text.split("").map((letter, i) => (
           <span
             key={i}
-            className="letter inline-block opacity-0 translate-y-full"
+            className="letter inline-block translate-y-full opacity-0"
             style={{ display: letter === " " ? "inline" : "inline-block" }}
           >
             {letter}
@@ -109,38 +109,8 @@ export default function Social({
           stagger: 0.5,
           y: 0,
         },
-        "<=0.2"
+        "<=0.2",
       );
-    // .fromTo(
-    //   instaRef.current,
-    //   {
-    //     opacity: 0,
-    //     y: 80,
-    //     duration: 1.2,
-    //     ease: "back.out(1.2)",
-    //   },
-    //   {
-    //     opacity: 1,
-    //     y: 0,
-    //   },
-    //   "<=0.2"
-    // )
-    // .fromTo(
-    //   youTubeRef.current,
-    //   {
-    //     opacity: 0,
-    //     y: 80,
-    //     duration: 1.2,
-    //     ease: "back.out(1.2)",
-    //   },
-    //   {
-    //     opacity: 1,
-    //     y: 0,
-    //   },
-    //   "<=0.2"
-    // );
-
-    // Additional scroll-based animations can be added to the timeline
 
     return () => {
       // Cleanup
@@ -151,55 +121,26 @@ export default function Social({
     };
   }, [lang]); // Re-run when lang changes
 
-  // useEffect(() => {
-  // const instagram_embed = document.querySelectorAll(".instagram-embed");
-  // if (
-  //     typeof instagram_embed !== "undefined" &&
-  //     instagram_embed !== null &&
-  //     Object.values(instagram_embed).length > 0
-  // ) {
-  //     Object.values(instagram_embed).map((emb) => {
-  //         const url = emb?.textContent;
-  //         if (url.startsWith("https")) {
-  //             const newComponent = (
-  //                 <InstagramEmbed
-  //                     width={700}
-  //                     height={900}
-  //                     url={url}
-  //                     className="my-5"
-  //                 />
-  //             );
-  //             const root = ReactDOM.createRoot(emb);
-  //             root.render(newComponent);
-  //             return () => {
-  //                 root.unmount();
-  //             };
-  //         }
-  //     });
-  // }
-  // }, []);
-
   return (
     <div
       ref={containerRef}
-      className="relative py-20 flex lg:block flex-col gap-[30px] lg:gap-0 px-4 w-full h-auto lg:h-full justify-center items-center"
+      className="relative flex h-auto w-full flex-wrap items-center justify-center gap-[30px] px-4 py-20 lg:block lg:h-full lg:gap-0"
     >
       {lang === "en" ? (
         renderAnimatedText("Get Social")
       ) : (
-        <h1 className="z-[0]  overflow-hidden text-2xl lg:text-4xl xl:text-5xl font-bold relative w-full h-full flex justify-center items-center text-black">
-          تواجدنا على مواقع التواصل
+        <h1 className="relative z-[0] flex h-full w-full items-center justify-center overflow-hidden text-2xl font-bold text-black lg:text-4xl xl:text-5xl">
+          مواقع التواصل
         </h1>
       )}
-      {/* <div class="instagram-embed">https://www.instagram.com/p/link/</div> */}
 
       <div
         ref={instaRef}
-        className="relative lg:absolute  lg:top-[5%] lg:left-[28%] lg:scale-[0.7] top-0 left-0 scale-[1]!  rounded-2xl"
+        className="relative top-0 left-0 scale-[1]! rounded-2xl lg:absolute lg:top-[5%] lg:left-[28%] lg:scale-[0.7]"
       >
-        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
+        <div className="absolute top-[-10px] left-[-10px] z-[3] flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#5F9FD6]">
           <Link href={insta.channel}>
-            <div className="bg-[url(/insta.png)] bg-center bg-contain size-[60px] rounded-full "></div>
+            <div className="size-[60px] rounded-full bg-[url(/insta.png)] bg-contain bg-center"></div>
           </Link>
         </div>
         <iframe
@@ -208,16 +149,16 @@ export default function Social({
           width="280"
           height="300"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          className="rounded-2xl lg:w-[280px]! lg:h-[300px]! w-[300px]! h-[300px]! "
+          className="h-[300px]! w-[300px]! rounded-2xl lg:h-[300px]! lg:w-[280px]!"
         ></iframe>
       </div>
       <div
         ref={youTubeRef}
-        className="relative lg:absolute scale-[1]! lg:scale-none bg-grey-600 rounded-2xl  lg:top-1/2 lg:left-[10%] left-0 top-0"
+        className="bg-grey-600 relative top-0 left-0 scale-[1]! rounded-2xl lg:absolute lg:top-1/2 lg:left-[10%] lg:scale-none"
       >
-        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-10px] left-[-10px] flex justify-center items-center">
+        <div className="absolute top-[-10px] left-[-10px] z-[3] flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#5F9FD6]">
           <Link href={you.channel}>
-            <div className="bg-[url(/youtube.png)] bg-center   bg-contain size-[60px] rounded-full "></div>
+            <div className="size-[60px] rounded-full bg-[url(/youtube.png)] bg-contain bg-center"></div>
           </Link>
         </div>
         <iframe
@@ -227,16 +168,16 @@ export default function Social({
           width="300"
           height="350"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          className="rounded-2xl lg:w-[300px]! lg:h-[350px]! w-[300px]! h-[300px]! "
+          className="h-[300px]! w-[300px]! rounded-2xl lg:h-[350px]! lg:w-[300px]!"
         ></iframe>
       </div>
       <div
         ref={facebookRef}
-        className="relative lg:absolute  rounded-2xl  lg:top-[40%] lg:left-[70%] left-0 top-0 lg:scale-[0.9] scale-[1]!"
+        className="relative top-0 left-0 scale-[1]! rounded-2xl lg:absolute lg:top-[40%] lg:left-[70%] lg:scale-[0.9]"
       >
-        <div className="rounded-full z-[3] bg-[#5F9FD6] h-[80px] w-[80px] absolute top-[-20px] left-[-10px] flex justify-center items-center">
+        <div className="absolute top-[-20px] left-[-10px] z-[3] flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#5F9FD6]">
           <Link href={face.channel}>
-            <div className="bg-[url(/facebook.png)] bg-center bg-contain size-[60px] rounded-full "></div>
+            <div className="size-[60px] rounded-full bg-[url(/facebook.png)] bg-contain bg-center"></div>
           </Link>
         </div>
         <iframe
@@ -244,7 +185,7 @@ export default function Social({
           width="310"
           height="360"
           scrolling="no"
-          className="rounded-2xl  lg:w-[310px]! lg:h-[360px]! w-[300px]! h-[300px]!"
+          className="h-[300px]! w-[300px]! rounded-2xl lg:h-[360px]! lg:w-[310px]!"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share "
         ></iframe>
       </div>

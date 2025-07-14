@@ -6,7 +6,7 @@
     "question": "Already have an account?"
   },
   "SignUp": {
-    "title": "Sign up/in",
+    "title": "Sign up",
     "stop": "You have already created an account",
     "validationTips": {
       "name": {
@@ -63,7 +63,8 @@
   },
   "lang": {
     "first": "English",
-    "second": "العربية"
+    "second": "العربية",
+    "hello": "Hi"
   },
   "sideLinks": {
     "page1": "Category",
@@ -75,13 +76,74 @@
     "page7": "Video",
     "page8": "Media"
   },
+  "Templang": {
+    "langButton": "Add in English ",
+    "opplangButton": "إضافة بالعربية"
+  },
+  "submitStatus": {
+    "submit": "Submit",
+    "waitSubmit": "Please wait ...",
+    "proccessing": "Proccessing",
+    "waitDelete": "Deleting ...",
+    "delete": "Delete"
+  },
+  "required": {
+    "categoryRequired": "please select a category",
+    "flavorRequired": "please select a flavor",
+    "image": "Please upload an image first",
+    "pinMark": "Please add at least one marker",
+    "mapRequired": "you should select a map",
+    "productRequired": "you should select the product",
+    "videoRequired": "you should select the video",
+    "recipeRequired": "you should select the recipe",
+    "coverImgRequired": "Please upload a cover image first",
+    "socialAppRequired": "please select an app first"
+  },
+  "updateCategoryForm": {
+    "title": "Update category"
+  },
+  "steps": {
+    "title": "Steps ",
+    "previous": "previous step",
+    "next": "next step"
+  },
+  "choose": {
+    "category": "please choose a category",
+    "flavor": "please choose a flavor",
+    "map": "please choose a map",
+    "product": "please choose a product",
+    "recipe": "please choose a recipe",
+    "video": "please choose a video",
+    "social": "Choose social app"
+  },
+  "imageUpload": {
+    "instruction": "click on the image to delete and reupload",
+    "warning": "if image is not here it is a network error . you can still click and delete it ",
+    "deleted": "image deleted",
+    "failed": "deletion failed",
+    "uploaded": "Image uploaded successfully you can continue ",
+    "validate": "image must be png ,has no background and max size of 4MB "
+  },
+  "done": {
+    "success": "Done successfully",
+    "error": "Error"
+  },
+  "delete": {
+    "deleteSuccess": "Deletion successful",
+    "deleteFailed": "Deletion failed",
+    "deleteCheck": "make sure to choose an item and check the delete warning",
+    "noPermission": "no permission to delete",
+    "noSelectionText": "Please select an item to delete"
+  },
+  "map": {
+    "title": "Market of Villadi",
+    "noItem": "No Maps added",
+    "location": "Market of",
+    "next": "next",
+    "prev": "prev"
+  },
   "addCategoryForm": {
     "title": "ِAdd category",
-    "admin": "Hello Admin ",
-    "category": "choose the category",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
     "name": "Category name",
     "oppName": "اسم الصنف",
     "namePlaceHolder": "puffs",
@@ -94,56 +156,66 @@
     "img": "Category image",
     "oppImg": "صورة الصنف",
     "addimg": "Click to upload image",
-    "imgselected": "Image selected",
-    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "Category added successfully ",
-    "validationError": "error !!",
-    "update": "Update category",
-    "steps": "Steps ",
-    "categoryRequired": "you should select the category",
-    "previous": "previous step",
-    "next": "next step",
     "deleteAll": "delete all categories",
     "deleteLabel": "Delete category",
     "deleteWarning": "Are you sure you want to delete ? All related products and videos related to the products will be deleted with it ."
   },
+  "updateFlavorForm": {
+    "title": "Update flavor"
+  },
+  "updateSocial": {
+    "title": "Update social links",
+    "channelLink": "Channel Link",
+    "embeddedLinkPlaceHolder": "Look at the instructions above",
+    "instagram": {
+      "title": "To get the instagram post id :",
+      "embededLink": "Post id",
+      "steps": [
+        "Open a post in a browser window",
+        "and copy the URL from the address bar.",
+        "The URL should be in the format: https://www.instagram.com/p/<span style=\"background:#7abc43; padding:4px; border-radius:5px\">abc123xyzAB</span>/",
+        "Copy its id . it will be like the highlighted text above"
+      ]
+    },
+    "facebook": {
+      "title": "To get the Facebook page name associated to the link: ",
+      "embededLink": "Page link",
+      "steps": [
+        "Get the page link it will be in this format :  www.facebook.com/<span style=\"background:#7abc43; padding:4px; border-radius:5px\">Villade11</span>?...",
+        "Copy its name . it will be like the highlighted text above "
+      ]
+    },
+    "youtube": {
+      "title": "To get the Youtube video link: ",
+      "embededLink": "Video id",
+      "steps": [
+        "Open a video in a browser window and copy the URL from the address bar. ",
+        "The URL should be in the format: https://www.youtube.com/watch?v=<span style=\"background:#7abc43; padding:4px; border-radius:5px\">K4xCjdwNKlA</span>/",
+        "Copy its id . it will be like the highlighted text above"
+      ]
+    }
+  },
   "addFlavorForm": {
     "title": "Add Flavor",
-    "admin": "Hello Admin ",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
     "name": "Flavor name",
     "oppName": "اسم النكهة",
     "namePlaceHolder": "chedder",
-    "img": "Primary flavor image",
-    "oppImg": "صورة النكهة الأساسية",
-    "addimg": "Click to upload primary image",
-    "img2": "Secondary flavor image",
-    "oppImg2": "صورة النكهة الثانوية ",
-    "addimg2": "Click to upload secondary image",
-    "imgselected": "Image selected",
-    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "Flavor added successfully ",
-    "doneUpdate": "Flavor updated successfully",
-    "validationError": "error !!",
-    "update": "Update flavor",
-    "flavor": "choose flavor",
+    "img": "flavor image",
+    "oppImg": "صورة النكهة ",
+    "addimg": "Click to upload image",
     "deleteAll": "delete all flavors",
     "deleteLabel": "Delete flavor",
     "deleteWarning": "Are you sure you want to delete ? All related products ,videos related to products, recipes and the votes on them will be deleted with it ."
   },
+  "search": {
+    "title": "Search...",
+    "noOptions": "No option found"
+  },
+  "updateProductForm": {
+    "title": "Update Product"
+  },
   "addProductForm": {
     "title": "Add Product",
-    "admin": "Hello Admin ",
-    "product": "choose product",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
     "category": "Choose product's category",
     "oppCategory": "اختر الصنف الذي يتبع له المنتج",
     "flavor": "Choose product's flavor",
@@ -153,7 +225,8 @@
     "namePlaceHolder": "puff",
     "img": "Product image",
     "oppImg": "صورة المنتج ",
-    "addimg": "Click to upload image",
+    "img2": "Product's piece image",
+    "oppImg2": "صورة قطعة من المنتج ",
     "code": "Product code",
     "oppCode": "كود المنتج",
     "codePlaceHolder": "425-A",
@@ -164,103 +237,64 @@
     "oppPatternColor": "لون نمط المنتج",
     "patternColor": "Product's pattern color",
     "detailesPlaceHolder": "Add some detailes for this new product",
-    "imgselected": "Image selected",
-    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "Product added successfully ",
-    "previous": "previous step",
-    "next": "next step",
-    "categoryRequired": "you select the category",
-    "flavorRequired": "you select the flavor",
-    "validationError": "error !!",
-    "steps": "Steps ",
-    "productRequired": "you should select the product",
-    "update": "Update Product",
     "deleteAll": "delete all products",
     "deleteLabel": "Delete product",
     "deleteWarning": "Are you sure you want to delete ? All related videos will be deleted with it ."
   },
+  "updateRecipyForm": {
+    "title": "Update Recipe"
+  },
   "addRecipyForm": {
     "title": "Add Recipy",
-    "admin": "Hello Admin ",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
-    "oppFlavor": "اختر نكهة المنتج",
+    "oppFlavor": "اختر نكهة الوصفة",
     "flavor": "Choose recipy's flavor",
     "oppName": "اسم الوصفة",
+    "code": "Recipe code",
+    "oppCode": "كود الوصفة",
+    "codePlaceHolder": "425-A",
     "name": "Recipy name",
     "namePlaceHolder": "summer recipy",
     "oppDetails": "التفاصيل",
     "details": "Detailes",
     "detailsPlaceHolder": "Add some detailes for this new recipy",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "recipy added successfully ",
-    "validationError": "error !!",
-    "steps": "Steps ",
-    "previous": "previous step",
-    "next": "next step",
-    "recipe": "choose recipe",
-    "recipeRequired": "you should choose the recipe",
     "deleteAll": "delete all recipes",
     "deleteLabel": "Delete recipe",
     "deleteWarning": "Are you sure you want to delete ? All votes on the recipe will be deleted with it ."
   },
   "addAdminForm": {
     "title": "Grant Admin Role",
-    "admin": "Hello Admin ",
+    "helloAdmin": "Hello Admin ",
     "chooseAdmin": "Choose a user",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "permission granted successfully ",
-    "generalWarn": "Choose a user to complete",
+    "selectWarn": "Choose a user to complete",
     "deleteLabel": "Remove the admin permission",
-    "deleteWarning": "Are you sure you want to remove this users from admins ?"
+    "deleteWarning": "Are you sure you want to remove this users from admins ?",
+    "deleteWarning2": " Note that the last remaining admin cant be removed",
+    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!"
+  },
+  "updateMapForm": {
+    "title": "update Map"
   },
   "addMapForm": {
     "title": "Add Location",
-    "admin": "Hello Admin ",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
     "name": "Country name",
     "oppName": "اسم البلد",
     "namePlaceHolder": "Syria,Aleppo",
     "img": "Country image",
     "oppImg": "صورة البلد ",
-    "addimg": "Click to upload image",
     "detailes": "Detailes",
     "oppDetailes": "التفاصيل",
     "detailesPlaceHolder": "Add some detailes for this new Location",
-    "imgselected": "Image selected",
-    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "Map added successfully ",
-    "previous": "previous step",
-    "next": "next step",
-    "categoryRequired": "you should select the category",
-    "flavorRequired": "you should select the flavor",
-    "validationError": "error !!",
-    "steps": "Steps ",
-    "imageUploadSuccess": "Image uploaded successfully you can continue ",
-    "upload": "upload",
-    "update": "update Map",
-    "map": "choose a map",
-    "mapRequired": "you should choose a map",
+    "selectPosition": "click on the map to pin a location",
     "changeImage": "Mark the check box if you want to change the image",
     "deleteAll": "delete all maps",
     "deleteLabel": "Delete map",
     "deleteWarning": "Are you sure you want to delete ?"
   },
+  "updateVideoForm": {
+    "title": "Update video"
+  },
   "addVideoForm": {
     "title": "Add Video",
-    "admin": "Hello Admin ",
-    "adminWarning": "Notice this is the english version the information you will enter will not translate automatically !!",
-    "langButton": "Add in English ",
-    "opplangButton": "إضافة بالعربية",
     "name": "Video title",
     "oppName": "عنوان الفيديو",
     "namePlaceHolder": "snack it , love it ,want it",
@@ -269,23 +303,8 @@
     "embededLinkPlaceHolder": "https://www.youtube.com/watch?v",
     "img": "cover video image",
     "oppImg": "صورة غلاف الفيديو ",
-    "addimg": "Click to upload image",
-    "imgselected": "Image selected",
-    "imgdetailes": "PNG only, up to 100MB, no background ,good resolution",
-    "submit": "Submit",
-    "waitSubmit": "please wait ...",
-    "doneSubmit": "video added successfully ",
-    "previous": "previous step",
-    "next": "next step",
-    "productRequired": "you should select the product",
-    "videoRequired": "you should select the video",
-
     "oppProduct": "اختر المنتج الموافق للفيديو ",
     "product": "Choose video's product",
-    "validationError": "error !!",
-    "steps": "Steps ",
-    "video": "choose video",
-    "update": "Update video",
     "deleteAll": "delete all videos",
     "deleteLabel": "Delete video",
     "deleteWarning": "Are you sure you want to delete ?"
@@ -299,20 +318,59 @@
     "name": "Videos",
     "noVideos": "No more videos Added",
     "more": "All videos",
-    "details": "product detailes"
+    "link": "product detailes",
+    "search": "Search video..."
+  },
+  "ProdsWrapper": {
+    "noProds": "No products yet !!",
+    "all": "All Products",
+    "view": "View All",
+    "moreProds": "More products",
+    "link": "Product details",
+    "notFound": "Product was not found",
+    "title": "products",
+    "search": "Search products...",
+    "details": "Product details",
+    "product": "product",
+    "flavor": "flavor"
   },
   "catigoriesWrapper": {
     "noCats": "No Categories yet !!",
-    "all": "All Products",
-    "have": "What we have",
+    "title": "What we have",
     "view": "View All",
-    "Cats": "All Categories "
+    "Cats": "All Categories ",
+    "more": "More categories",
+    "link": "Category's products",
+    "search": "Search category..."
   },
   "recipesWrapper": {
     "noRecs": "No Recipes yet !!",
-    "all": "Recipe detailes",
+    "link": "Recipe detailes",
     "view": "View All",
-    "Recs": "All Recipes "
+    "title": "All Recipes ",
+    "NotFound": "Recipe not found",
+    "trending": "Trending recipies",
+    "search": "Search recipe..."
+  },
+  "contactUs": {
+    "title": "Contact us",
+    "location": "Syria_Aleppo"
+  },
+  "addComment": {
+    "title": "Leave a comment ?",
+    "label": "Share your opinion with us",
+    "placeHolder": "Best product is ketchup potatos"
+  },
+  "updateComment": {
+    "title": "Update this comment ?"
+  },
+  "deleteComment": {
+    "doneSubmit": "comment deleted successfully ",
+    "error": "Deletion failed",
+    "checkWarn": "make sure to check the delete warning",
+    "check": "Are you sure you want to delete your comment",
+    "noComment": "No comment selected",
+    "title": "delete this comment ?"
   },
   "FAQ": {
     "title": "FAQ",
@@ -467,5 +525,63 @@
       }
     ],
     "acceptanceText": "By using our services, you acknowledge our privacy practices as described in this policy."
+  },
+  "vote": {
+    "title": "votes",
+    "votedBefore": "You can only vote once ♡",
+    "voteError": "Somthing went wrong, vote failed",
+    "notSigned": "Please sign in first ♡"
+  },
+  "suggestAFlavor": {
+    "title": "Suggest a flavor ?",
+    "label": "write the message of you suggestion  ",
+    "placeHolder": "What about lemon with ketchup ?",
+    "doneSubmit": "Flavor suggested successfully",
+    "waitSubmit": "Please wait ...",
+    "submit": "Send"
+  },
+  "verifypasswordForm": {
+    "title": "Password reset code",
+    "code": "Enter the 4-digit verification code that was sent to your Email.",
+    "resend": "Resend code ?",
+    "click": "click here",
+    "verify": " Verified ♡"
+  },
+  "verifyEmailForm": {
+    "title": "Email Verification",
+    "body": "Enter the 4-digit verification code that was sent to your Email.",
+    "resend": "Resend code ?",
+    "click": "click here",
+    "signup": "Haven't signed up yet ?",
+    "sign": "Sign Up",
+    "verify": " Verified ♡"
+  },
+  "resendCodeForm": {
+    "email": "Resend verification code :",
+    "password": "Send password recovery code :"
+  },
+  "resetPasswordForm": { "title": "Reset password" },
+  "EmailTemplate": {
+    "title": "Email Verification",
+    "subtitle": "Villadi website",
+    "hello": "Hello",
+    "instructions": "Please use the following verification code to confirm your email address:",
+    "warning": "This code will expire in 1 hour.",
+    "ignore": "If you didn't request this code, please ignore this email"
+  },
+  "EmailFlavorTemplate": {
+    "title": "New Flavor Suggestion",
+    "subtitle": "From Villadi Website",
+    "team": "Hello Villadi Team,",
+    "message": "You've received a new flavor suggestion from",
+    "date": "This suggestion was submitted on"
+  },
+  "EmailTemplatePass": {
+    "title": "Password reset code",
+    "subtitle": "Villadi website",
+    "hello": "Hello,",
+    "instruction": " Please use the following code to set a new password:",
+    "expire": "This code will expire in 1 hour.",
+    "ignore": "If you didn't request this code, please ignore this email"
   }
 }

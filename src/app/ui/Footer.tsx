@@ -7,10 +7,10 @@ export default function Footer({ lang }: { lang: string }) {
   return (
     <div
       dir="ltr"
-      className="bg-white h-auto relative text-black min-h-[400px] w-full p-12  flex flex-col justify-evenly gap-12 items-center"
+      className="relative flex h-auto min-h-[400px] w-full flex-col items-center justify-evenly gap-12 bg-white p-12 text-black"
     >
       <div
-        className={`relative text-3xl font-bold w-full h-[50px] flex flex-wrap sm:flex-nowrap sm:left-0 justify-center sm:justify-start items-center gap-4 float-left`}
+        className={`relative float-left flex h-[50px] w-full flex-wrap items-center justify-center gap-4 text-3xl font-bold sm:left-0 sm:flex-nowrap sm:justify-start`}
       >
         <Image
           src={"/contactus.png"}
@@ -19,10 +19,10 @@ export default function Footer({ lang }: { lang: string }) {
           alt="more"
           className="w-[200px] sm:w-[300px]"
         ></Image>
-        <div className="flex justify-center  gap-2">
+        <div className="flex justify-center gap-2">
           <svg
             style={{ width: "30px", height: "30px" }}
-            className="w-[30px]! h-[30px]! relative object-contain"
+            className="relative h-[30px]! w-[30px]! object-contain"
             id="Layer_1"
             data-name="Layer 1"
             xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@ export default function Footer({ lang }: { lang: string }) {
           </svg>
           <svg
             style={{ width: "30px", height: "30px" }}
-            className="w-[30px]! h-[30px]! relative object-contain"
+            className="relative h-[30px]! w-[30px]! object-contain"
             id="Layer_1"
             data-name="Layer 1"
             xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@ export default function Footer({ lang }: { lang: string }) {
           </svg>
           <svg
             style={{ width: "30px", height: "30px" }}
-            className="w-[30px]! h-[30px]! relative object-contain"
+            className="relative h-[30px]! w-[30px]! object-contain"
             id="Layer_1"
             data-name="Layer 1"
             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@ export default function Footer({ lang }: { lang: string }) {
       </div>
       {/* </>
       )} */}
-      <div className="z-[0] flex flex-col mt-4 sm:flex-row gap-5 text-black justify-center items-center">
+      <div className="z-[0] mt-4 flex flex-col items-center justify-center gap-5 text-black sm:flex-row">
         {/* <Link href={"/ContactUs"}>contact us</Link> */}
         <Link href={`/${lang}/ContactUs`}>
           {lang === "en" ? "Contact us" : "تواصل معنا"}
@@ -102,7 +102,7 @@ export default function Footer({ lang }: { lang: string }) {
           {lang === "en" ? "food service" : "خدمات الطعام"}
         </Link>
       </div>
-      <div className="flex flex-col sm:flex-row gap-5 text-black justify-center items-center">
+      <div className="flex flex-col items-center justify-center gap-5 text-black sm:flex-row">
         <Image
           src={lang === "en" ? "/villadiLogo.svg" : "/villadiLogoAr.svg"}
           width={150}
@@ -110,13 +110,13 @@ export default function Footer({ lang }: { lang: string }) {
           alt="logo"
         ></Image>
       </div>
-      <div className="flex flex-col sm:flex-row gap-5 text-black justify-center items-center">
+      <div className="mb-[18px] flex flex-col items-center justify-center gap-5 text-black sm:flex-row">
         <p dir="ltr">
           © 2025 CELLO Graphics Company, Amin a karbengan ket naisagana. Maysa
           a paset ti philadelphia-ko
         </p>
         <Image
-          className="absolute hidden md:block right-0 bottom-0"
+          className="absolute right-0 bottom-0 hidden md:block"
           src={"/footerimg.png"}
           width={200}
           height={200}

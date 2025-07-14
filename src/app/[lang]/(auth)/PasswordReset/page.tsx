@@ -1,11 +1,9 @@
 import { sessionExist } from "@/app/lib/session";
-import { SignInForm } from "@/app/ui/SignInForm";
 import React from "react";
-import Image from "next/image";
 
-import LogOutButton from "@/app/ui/LogOutButton";
+import LogOutButton from "@/app/ui/auth/LogOutButton";
 import { getDictionary } from "../../dictionaries";
-import { ResetPasswordForm } from "@/app/ui/ResetPasswordForm";
+import { ResetPasswordForm } from "@/app/ui/auth/ResetPasswordForm";
 export default async function ResetPassword({
   params,
 }: {
@@ -15,11 +13,8 @@ export default async function ResetPassword({
   const t = await getDictionary(lang);
   const session = await sessionExist();
   return (
-    <main className="min-h-screen w-full bg-blue-800 relative before:absolute before:content-[''] before:w-full before:h-full before:bg-blue-300 before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover ">
-      <div
-        className="bg-white w-full md:w-1/2 min-h-screen text-black
-          z-[0] relative flex flex-col justify-center items-center gap-3"
-      >
+    <main className="relative min-h-screen w-full bg-blue-800 before:absolute before:top-0 before:block before:h-full before:w-full before:bg-blue-300 before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-['']">
+      <div className="relative z-[0] flex min-h-screen w-full flex-col items-center justify-center gap-3 bg-white text-black md:w-1/2">
         {" "}
         {session ? (
           <>

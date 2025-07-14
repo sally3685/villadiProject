@@ -2,6 +2,7 @@
 import { UploadDropzone } from "./uploadthing";
 import Image from "next/image";
 import { deleteUTFiles } from "../data-access-layer/uploadthingDAL";
+import { controlDictionary } from "./ControlForms/types";
 
 interface FormFileInputProps {
   label: string;
@@ -9,8 +10,8 @@ interface FormFileInputProps {
   onAction: (value: boolean) => void;
   setFormDataf: (value: any) => void;
   formDataf: any;
-  error?: string[] | undefined;
-  lang?: string;
+  error?: string | undefined;
+  t: controlDictionary;
   tempLang?: string | null;
   toast: any;
   alt: string;
@@ -24,61 +25,48 @@ export const FormFileInput = ({
   formDataf,
   onAction,
   error,
-  lang,
+  t,
   toast,
   alt,
   className,
 }: FormFileInputProps) => {
   return (
-    <div className={`col-span-full `}>
-      <label className="block text-sm lg:text-lg font-medium text-black">
+    <div className={`col-span-full`}>
+      <label className="block text-sm font-medium text-black lg:text-lg">
         {label}
       </label>
       <div
-        className={`mt-2 flex justify-center flex-col rounded-lg border border-dashed ${
+        className={`mt-2 flex flex-col justify-center rounded-lg border border-dashed ${
           error ? "border-red-500" : "border-gray-900/25"
         } px-6 py-10`}
       >
         {imgName && (
-          <div className={`flex flex-col gap-2 w-full ${className}`}>
-            <p className="text:sm lg:text-lg font-semibold">
-              {lang === "en"
-                ? "click on the image to delete and reupload"
-                : "اضغط على الصورة لحذفها وإعادة الادخال"}
+          <div className={`flex w-full flex-col gap-2 ${className}`}>
+            <p className="text:sm font-semibold lg:text-lg">
+              {t.imageUpload.instruction}
             </p>
-            <p className="text:xs lg:text-sm ">
-              {lang === "en"
-                ? "if image is not here it is a network error . you can still click and delete it "
-                : "اذا لم تظهر الصورة فهي مشكلة بالانترنت لازال بامكانك الضغط لحذفها"}
-            </p>
+            <p className="text:xs lg:text-sm">{t.imageUpload.warning}</p>
             <Image
               src={imgName}
               width={500}
               height={200}
               alt={alt}
-              className="object-contain cursor-pointer h-[200px]"
+              className="h-[200px] cursor-pointer object-contain"
               onClick={async () => {
                 onAction(true);
                 const res = await deleteUTFiles(formDataf.key);
                 if (res.status === 200) {
-                  toast.success(
-                    lang === "en" ? "image deleted" : "تم حذف الصورة"
-                  );
+                  toast.success(t.imageUpload.deleted);
                   setFormDataf({ ...formDataf, img: "", key: "" });
-                } else
-                  toast.error(lang === "en" ? "deletion failed" : "فشل الحذف");
+                } else toast.error(t.imageUpload.failed);
                 if (res) onAction(false);
               }}
             ></Image>
           </div>
         )}
         {imgName === "" && (
-          <div className={`flex flex-col gap-2 w-full `}>
-            <p className="text:xs lg:text-sm ">
-              {lang === "en"
-                ? "image must be png ,has no background and max size of 4MB "
-                : "يحب أن تكون الصورة بصيغة png وبحجم أقصاه 4MB"}
-            </p>
+          <div className={`flex w-full flex-col gap-2`}>
+            <p className="text:xs lg:text-sm">{t.imageUpload.validate}</p>
             <UploadDropzone
               endpoint="imageUploader"
               appearance={{
@@ -94,6 +82,7 @@ export const FormFileInput = ({
                   key: file.key,
                 });
                 onAction(false);
+                toast.success(t.imageUpload.uploaded);
               }}
               onUploadBegin={() => {
                 onAction(true);
@@ -108,68 +97,4 @@ export const FormFileInput = ({
       </div>
     </div>
   );
-  // <div className={`col-span-full ${className}`}>
-  //   <label
-  //     htmlFor={id}
-  //     className="block text-sm lg:text-lg font-medium text-black"
-  //   >
-  //     {label}
-  //   </label>
-  //   <div
-  //     className={`mt-2 flex justify-center rounded-lg border border-dashed ${
-  //       error ? "border-red-500" : "border-gray-900/25"
-  //     } px-6 py-10`}
-  //   >
-  //     <div className="text-center">
-  //       <svg
-  //         className="mx-auto size-12 text-gray-300"
-  //         viewBox="0 0 24 24"
-  //         fill="currentColor"
-  //       >
-  //         <path
-  //           fillRule="evenodd"
-  //           d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
-  //           clipRule="evenodd"
-  //         />
-  //       </svg>
-  //       <div className="mt-4 flex text-sm/6 text-gray-600">
-  //         <label
-  //           htmlFor={id}
-  //           className="relative text-center w-full cursor-pointer rounded-md bg-white font-semibold text-[#7abc43] focus-within:ring-2 focus-within:ring-[#7abc43] focus-within:ring-offset-2 focus-within:outline-hidden hover:text-[#7abc43]"
-  //         >
-  //           <span>{addText}</span>
-  //           <input
-  //             id={id}
-  //             name={id}
-  //             type="file"
-  //             className="w-full h-full sr-only"
-  //             required={required}
-  //             onChange={(e) =>
-  //               onChange(e.target.value.replace(/^.*[\\\/]/, ""))
-  //             }
-  //           />
-  //           {showLanguageInput && (
-  //             <input
-  //               id="language"
-  //               name="language"
-  //               type="text"
-  //               hidden
-  //               value={tempLang ? tempLang : lang}
-  //               onChange={() => {
-  //                 if (tempLang) return tempLang;
-  //                 else return lang;
-  //               }}
-  //             />
-  //           )}
-  //         </label>
-  //       </div>
-  //       <p className="text-xs/5 text-gray-600">
-  //         <span className="text-xs/5 text-[#7abc43]">{selectedText}</span>
-  //         {value.replace("\\", "/").split("/")}
-  //       </p>
-  //       <p className="text-xs/5 text-gray-600">{detailsText}</p>
-  //     </div>
-  //   </div>
-  //   {error && <p className="mt-3 text-sm/6 text-red-600">{error}</p>}
-  // </div>
 };

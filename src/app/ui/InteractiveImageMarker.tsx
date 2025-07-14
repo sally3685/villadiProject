@@ -14,7 +14,7 @@ interface InteractiveImageMarkerProps {
   setMarkers: (markers: MarkerPosition[]) => void;
   className?: string;
   imageUrl: string;
-  error?: string[] | undefined;
+  error?: string | undefined;
 }
 
 const InteractiveImageMarker = ({
@@ -26,7 +26,7 @@ const InteractiveImageMarker = ({
   className = "",
 }: InteractiveImageMarkerProps) => {
   const [hoverPosition, setHoverPosition] = useState<MarkerPosition | null>(
-    null
+    null,
   );
   const [isHovering, setIsHovering] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -68,14 +68,16 @@ const InteractiveImageMarker = ({
   };
 
   return (
-    <div className={`relative w-full max-w-md mx-auto ${className}`}>
+    <div className={`relative mx-auto w-full max-w-md ${className}`}>
       {label && (
-        <h3 className="text-sm font-medium text-gray-700 mb-2">{label}</h3>
+        <h3 className="block text-sm font-medium text-black lg:text-lg">
+          {label}
+        </h3>
       )}
 
       <div
         ref={imageRef}
-        className="relative w-[300px] h-[300px] bg-[#5e9ed5] overflow-hidden cursor-crosshair"
+        className="relative h-[300px] w-[300px] cursor-crosshair overflow-hidden bg-[#5e9ed5]"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => {
           setIsHovering(false);
@@ -84,12 +86,11 @@ const InteractiveImageMarker = ({
         onMouseMove={handleMouseMove}
         onClick={handleImageClick}
       >
-        {/* Image with error handling */}
         {imageUrl ? (
           <Image
             src={`${imageUrl}`}
             alt="Interactive map"
-            className="w-[300px] h-[300px] object-contain pointer-events-none"
+            className="pointer-events-none h-[300px] w-[300px] object-contain"
             width={300}
             height={300}
             onError={(e) => {
@@ -97,15 +98,14 @@ const InteractiveImageMarker = ({
             }}
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center bg-gray-200">
             <span className="text-gray-500">No image selected</span>
           </div>
         )}
 
-        {/* Hover effects */}
         {isHovering && hoverPosition && (
           <div
-            className="absolute w-3 h-3 bg-white border-2 border-red-500 rounded-full pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-red-500 bg-white"
             style={{
               left: `${hoverPosition.left}%`,
               top: `${hoverPosition.top}%`,
@@ -113,11 +113,10 @@ const InteractiveImageMarker = ({
           />
         )}
 
-        {/* Render all markers */}
         {markers.map((marker) => (
           <div
             key={`marker-${marker.id}`}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer"
+            className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer"
             style={{
               left: `${marker.left}%`,
               top: `${marker.top}%`,
@@ -127,26 +126,20 @@ const InteractiveImageMarker = ({
             <MapPin
               color="#ef4444"
               size={30}
-              className="hover:scale-110 transition-transform"
+              className="transition-transform hover:scale-110"
               fill="#ef4444"
             />
           </div>
         ))}
       </div>
 
-      {/* Status information */}
       <div className="mt-2 text-sm text-gray-600">
         {markers.length} {markers.length === 1 ? "marker" : "markers"} placed
       </div>
 
-      {/* Error display */}
-      {error && error.length > 0 && (
+      {error && (
         <div className="mt-2">
-          {error.map((err, idx) => (
-            <p key={`error-${idx}`} className="text-sm text-red-600">
-              {err}
-            </p>
-          ))}
+          <p className="text-sm text-red-600">{error}</p>
         </div>
       )}
     </div>

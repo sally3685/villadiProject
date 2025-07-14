@@ -12,7 +12,7 @@ const Stepper: React.FC<StepperProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`flex  items-center  ${className}`}>
+    <div className={`flex items-center ${className}`}>
       {Array.from({ length: totalSteps + 1 }).map((_, index) => {
         const stepNumber = index;
         const isActive = currentStep === stepNumber;
@@ -20,28 +20,23 @@ const Stepper: React.FC<StepperProps> = ({
 
         return (
           <React.Fragment key={stepNumber}>
-            <div className="flex items-center ">
+            <div className="flex items-center">
               {/* Step circle */}
 
               <div className="relative flex flex-col items-center">
                 <div
                   role="button"
-                  className={`flex items-center justify-center w-5 h-5 rounded-full border-2 transition-all duration-300
-                    font-semibold
-                    ${
-                      isCompleted
-                        ? " border-[#7abc43]"
-                        : "border-black bg-white"
-                    }${
+                  className={`flex h-5 w-5 items-center justify-center rounded-full border-2 font-semibold transition-all duration-300 ${
+                    isCompleted ? "border-[#7abc43]" : "border-black bg-white"
+                  }${
                     isActive
-                      ? "scale-125 bg-[#7abc43] border-green-500 text-white"
+                      ? "scale-125 border-green-500 bg-[#7abc43] text-white"
                       : ""
-                  }
-                  `}
+                  } `}
                 >
                   <span
                     className={`text-xs ${
-                      isActive ? "text-white" : "text-black "
+                      isActive ? "text-white" : "text-black"
                     }`}
                   >
                     {isCompleted ? (
@@ -55,7 +50,7 @@ const Stepper: React.FC<StepperProps> = ({
               {/* Connector line (except after last step) */}
               {stepNumber < totalSteps && (
                 <div
-                  className={`w-16 h-0.5 mx-2 ${
+                  className={`mx-2 h-0.5 w-16 ${
                     isCompleted ? "bg-green-500" : "bg-gray-300"
                   }`}
                 ></div>

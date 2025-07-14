@@ -5,27 +5,16 @@ import {
   deleteCategory,
   updateCategory,
 } from "../data-access-layer/catigoryDAL";
-import { writeFile } from "fs/promises";
 import { CategoryFormSchema, FormCategoryState } from "../lib/definitions";
+import { redirect } from "next/navigation";
 
 export async function AddCategoryAction(
   state: FormCategoryState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormCategoryState> {
   try {
-    // Validate required fields
-    const requiredFields = ["name", "code", "img"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
+    const language = formData.get("language")?.toString() || "en";
 
-    // Parse and validate form data
     const result = CategoryFormSchema.safeParse({
       name: formData.get("name"),
       code: formData.get("code"),
@@ -40,58 +29,40 @@ export async function AddCategoryAction(
     }
 
     const { ...categoryData } = result.data;
-    const language = formData.get("language")?.toString() || "en";
 
-    // Add category to database
     const { status, message } = await AddCategory(
       categoryData.name,
       categoryData.code,
       categoryData.detailes,
       categoryData.img,
-      language
+      language,
     );
 
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
     if (status === 409) {
       return { errors: { code: [message] } };
     }
 
     if (status !== 201) {
-      return { general: message || "Failed to create category" };
+      return {
+        general: message || "Failed to create category / فشل إضافة صنف ",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCategoryAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateCategoryAction(
   state: FormCategoryState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormCategoryState> {
   try {
-    // Validate required fields
-    const requiredFields = [
-      "id",
-      "name",
-      "code",
-      "img",
-      "detailes",
-      "language",
-    ];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = CategoryFormSchema.safeParse({
       name: formData.get("name"),
       code: formData.get("code"),
@@ -109,9 +80,6 @@ export async function UpdateCategoryAction(
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
 
-    // Handle image upload if provided
-
-    // Add category to database
     const { status, message } = await updateCategory({
       id: id,
       name: categoryData.name,
@@ -121,32 +89,34 @@ export async function UpdateCategoryAction(
       lang: language,
     });
 
-    if (status === 409) {
-      return { errors: { code: [message] } };
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
     }
 
     if (status !== 200) {
-      return { general: message || "Failed to create category" };
+      return {
+        general: message
+          ? message
+          : "Failed to update category / فشل تعديل الصنف ",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCategoryAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 
 export async function DeleteCategoryAction(
   deleteAll: string,
-  selectedField: any
+  selectedField: any,
 ) {
   try {
-    // Validate required fields
     const { status } = await deleteCategory(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };

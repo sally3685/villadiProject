@@ -18,20 +18,17 @@ export default function FormColorInput({
   const [isValid, setIsValid] = useState(true);
   const [showPicker, setShowPicker] = useState(false);
 
-  // Validate hex color format
   const validateHexColor = (value: string): boolean => {
     const hexColorRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i;
     return hexColorRegex.test(value);
   };
 
-  // Handle input changes with validation
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setColor(value);
     setIsValid(validateHexColor(value) || value === "");
   };
 
-  // Handle color picker changes
   const handlePickerChange = (newColor: string) => {
     setColor(newColor);
     setIsValid(true);
@@ -39,12 +36,12 @@ export default function FormColorInput({
 
   return (
     <div className={`col-span-full ${className}`}>
-      <label className="block text-sm lg:text-lg font-medium text-black mb-2">
+      <label className="mb-2 block text-sm font-medium text-black lg:text-lg">
         {label}
       </label>
 
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="rounded-lg border-2 border-dashed border-gray-300 p-4">
+        <div className="mb-4 flex items-center gap-4">
           <input
             type="text"
             value={color}
@@ -57,7 +54,7 @@ export default function FormColorInput({
           />
 
           <div
-            className="w-10 h-10 rounded-md border border-gray-300 cursor-pointer transition-all hover:scale-105"
+            className="h-10 w-10 cursor-pointer rounded-md border border-gray-300 transition-all hover:scale-105"
             style={{ backgroundColor: isValid ? color : "#ff0000" }}
             onClick={() => setShowPicker(!showPicker)}
             title={showPicker ? "Hide color picker" : "Show color picker"}
@@ -65,7 +62,7 @@ export default function FormColorInput({
         </div>
 
         {!isValid && (
-          <p className="mt-1 text-sm text-red-600 mb-4">
+          <p className="mt-1 mb-4 text-sm text-red-600">
             Please enter a valid hex color (e.g., #FFFFFF or #FFF)
           </p>
         )}

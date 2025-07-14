@@ -17,20 +17,22 @@ export const AddProduct = async (
   flavorId: string,
   backgroundColor: string,
   patternColor: string,
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to add category 😔 / يجب أن تكون مشرف حتى تستطيع إضافة وصفة 😔 ",
       };
     }
-    // Check if product with same code already exists
     const existingProduct = await prisma.product.findFirst({
       where: { code, lang: language },
     });
@@ -38,11 +40,11 @@ export const AddProduct = async (
     if (existingProduct) {
       return {
         status: 409,
-        message: "Product with this code already exists",
+        message:
+          "Product with this code already exists / يوجد بالفعل منتج بهذا الكود",
       };
     }
 
-    // Validate category exists
     const category = await prisma.category.findFirst({
       where: { id: categoryId, lang: language },
     });
@@ -50,11 +52,10 @@ export const AddProduct = async (
     if (!category) {
       return {
         status: 404,
-        message: "Category not found",
+        message: "Category not found / لم يتم إيجاد الصنف",
       };
     }
 
-    // Validate flavor exists
     const flavor = await prisma.flavor.findFirst({
       where: { id: flavorId, lang: language },
     });
@@ -62,11 +63,10 @@ export const AddProduct = async (
     if (!flavor) {
       return {
         status: 404,
-        message: "Flavor not found",
+        message: "Flavor not found / لم يتم إيجاد النكهة",
       };
     }
 
-    // Create new product
     const newProduct = await prisma.product.create({
       data: {
         name,
@@ -85,24 +85,20 @@ export const AddProduct = async (
     if (!newProduct) {
       return {
         status: 500,
-        message: "Failed to create product",
+        message: "Failed to create product / فشل في إنشاء منتج",
       };
     }
-
-    // Revalidate relevant paths
-    // revalidatePath(`/[lang]/categories`, "page");
-    // revalidatePath(`/[lang]/products`, "page");
 
     revalidatePath("/en");
     revalidatePath("/ar");
     return {
       status: 201,
-      message: "Product created successfully",
+      message: "Product created successfully ♡ / تم إنشاء المنتج بنجاح ♡",
     };
   } catch (error) {
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
@@ -119,21 +115,23 @@ export const getAllProducts = cache(async (language: string) => {
     if (!products || products.length === 0) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "No product found 😔",
+        messageAr: "لم يتم إيجاد أي منتج 😔",
         products: [],
       };
     }
 
     return {
       status: 200,
-      message: "Products retrieved successfully",
+      messageEn: "Products retrieved successfully ♡",
+      messageAr: "تم إحضار المنتجات بنجاح ♡",
       products,
     };
   } catch (error) {
-    console.error("Error in getAllProducts:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       products: [],
     };
   }
@@ -151,20 +149,23 @@ export const getProdsWithFlavs = cache(async (lang: string) => {
     if (!products || products.length === 0) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "No product found 😔",
+        messageAr: "لم يتم إيجاد أي منتج 😔",
         products: [],
       };
     }
 
     return {
       status: 200,
-      message: "Products retrieved successfully",
+      messageEn: "Products retrieved successfully ♡",
+      messageAr: "تم إحضار المنتجات بنجاح ♡",
       products,
     };
   } catch (error) {
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       products: [],
     };
   }
@@ -176,35 +177,40 @@ export const getAllProductsWithoutLang = cache(async () => {
     if (!products || products.length === 0) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "No product found 😔",
+        messageAr: "لم يتم إيجاد أي منتج 😔",
         products: [],
       };
     }
 
     return {
       status: 200,
-      message: "Products retrieved successfully",
+      messageEn: "Products retrieved successfully ♡",
+      messageAr: "تم إحضار المنتجات بنجاح ♡",
       products,
     };
   } catch (error) {
-    console.error("Error in getAllProducts:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       products: [],
     };
   }
 });
 export const updateProduct = async (product: Product) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to update a product 😔 / يجب أن تكون مشرف حتى تستطيع تعديل منتج 😔 ",
       };
     }
     const existingProduct = await prisma.product.findFirst({
@@ -214,7 +220,8 @@ export const updateProduct = async (product: Product) => {
     if (!existingProduct) {
       return {
         status: 404,
-        message: "No products found",
+        message:
+          "Product not found choose the product again / لم يتم إيجاد المنتج اختر المنتج مجددا",
       };
     }
 
@@ -237,7 +244,7 @@ export const updateProduct = async (product: Product) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update product / فشل في تعديل المنتج",
       };
     }
     revalidatePath("/en/Control/Update/Product");
@@ -246,23 +253,22 @@ export const updateProduct = async (product: Product) => {
     revalidatePath("/ar");
     return {
       status: 200,
-      message: "Product updated successfully",
+      message: "Product updated successfully ♡ / تم تعديل المنتج بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in update Product:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
 export const deleteProduct = async (
   deleteAll: boolean,
-  product: Product | null
+  product: Product | null,
 ) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -275,15 +281,11 @@ export const deleteProduct = async (
     if (deleteAll) {
       const resVideos = await getAllVideossWithoutLang();
       const resProduct = await getAllProductsWithoutLang();
-      if (resVideos.status === 500 || resProduct.status === 500) {
-        return {
-          status: 500,
-        };
-      }
-      resVideos.videos.map(async (item) => {
+
+      resVideos?.videos.map(async (item) => {
         await deleteUTFiles(item.coverImg.split("/").pop() as string);
       });
-      resProduct.products.map(async (item) => {
+      resProduct?.products.map(async (item) => {
         await deleteUTFiles(item.img.split("/").pop() as string);
         await deleteUTFiles(item.secondryImg.split("/").pop() as string);
       });
@@ -309,7 +311,7 @@ export const deleteProduct = async (
 
       await deleteUTFiles(existingProduct.img.split("/").pop() as string);
       await deleteUTFiles(
-        existingProduct.secondryImg.split("/").pop() as string
+        existingProduct.secondryImg.split("/").pop() as string,
       );
       const videos = await prisma.video.findMany({
         where: {
@@ -358,20 +360,23 @@ export const getProdsByCode = cache(async (code: string, lang: string) => {
     if (!product) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "product not found 😔",
+        messageAr: "لم يتم إيجاد منتج 😔",
         product: null,
       };
     }
 
     return {
       status: 200,
-      message: "Products retrieved successfully",
+      messageEn: "Product retrieved successfully ♡",
+      messageAr: "تم إحضار المنتج بنجاح ♡",
       product,
     };
   } catch (error) {
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       product: null,
     };
   }
@@ -386,7 +391,8 @@ export const getAllProdCats = cache(async (code: string, lang: string) => {
     if (!product) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "product not found 😔",
+        messageAr: "لم يتم إيجاد منتج 😔",
         products: null,
       };
     }
@@ -411,19 +417,22 @@ export const getAllProdCats = cache(async (code: string, lang: string) => {
     if (!cats) {
       return {
         status: 404,
-        message: "No products found",
+        messageEn: "No categories found 😔",
+        messageAr: "لم يتم إيجاد أي صنف 😔",
         products: null,
       };
     }
     return {
       status: 200,
-      message: "Products retrieved successfully",
+      messageEn: "Product retrieved successfully ♡",
+      messageAr: "تم إحضار المنتج بنجاح ♡",
       products: cats.products,
     };
   } catch (error) {
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       products: null,
     };
   }

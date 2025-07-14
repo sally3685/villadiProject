@@ -10,20 +10,22 @@ export const AddRecipe = async (
   code: string,
   details: string,
   flavorId: string,
-  language: string
+  language: string,
 ) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to add a recipe 😔 / يجب أن تكون مشرف حتى تستطيع إضافة وصفة 😔 ",
       };
     }
-    // Validate flavor exists
     const flavor = await prisma.flavor.findFirst({
       where: { id: flavorId, lang: language },
     });
@@ -31,11 +33,11 @@ export const AddRecipe = async (
     if (!flavor) {
       return {
         status: 404,
-        message: "Flavor not found for the selected language",
+        message:
+          "Flavor not found for the selected language / لم يتم إيجاد النكهة بهذه اللغة",
       };
     }
 
-    // Check if recipe with same name already exists
     const existingRecipe = await prisma.recipy.findFirst({
       where: {
         code,
@@ -46,11 +48,11 @@ export const AddRecipe = async (
     if (existingRecipe) {
       return {
         status: 409,
-        message: "Recipe with this name already exists for the selected flavor",
+        message:
+          "Recipe with this name already exists for the selected flavor / يوجد بالفعل وصفة بهذا الاسم لهذه النكهة",
       };
     }
 
-    // Create new recipe
     const newRecipe = await prisma.recipy.create({
       data: {
         name,
@@ -64,23 +66,21 @@ export const AddRecipe = async (
     if (!newRecipe) {
       return {
         status: 500,
-        message: "Failed to create recipe",
+        message: "Failed to create recipe / فشل في إنشاء وصفة",
       };
     }
 
-    // Revalidate relevant paths
-    // revalidatePath(`/${lang}/Recipes`, "page");
-    // revalidatePath(`/${lang}`, "page");
+    revalidatePath(`/en/Recipes`, "page");
+    revalidatePath(`/ar/Recipes`, "page");
 
     return {
       status: 201,
-      message: "Recipe created successfully",
+      message: "Recipe created successfully ♡ / تم إنشاء الوصفة بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddRecipe:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
@@ -91,21 +91,23 @@ export const getAllRecipiesWithoutLang = cache(async () => {
     if (!recipies || recipies.length === 0) {
       return {
         status: 404,
-        message: "No recipies found",
+        messageEn: "No recipes found 😔",
+        messageAr: "لم يتم إيجاد أي وصفة 😔",
         recipies: [],
       };
     }
 
     return {
       status: 200,
-      message: "recipies retrieved successfully",
+      messageEn: "Recipes retrieved successfully ♡",
+      messageAr: "تم إحضار الوصفات بنجاح ♡",
       recipies,
     };
   } catch (error) {
-    console.error("Error in getAllrecipies:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       recipies: [],
     };
   }
@@ -127,21 +129,23 @@ export const getAllRecipies = cache(async (lang: string) => {
     if (!recipies || recipies.length === 0) {
       return {
         status: 404,
-        message: "No recipies found",
+        messageEn: "No recipes found 😔",
+        messageAr: "لم يتم إيجاد أي وصفة 😔",
         recipies: [],
       };
     }
 
     return {
       status: 200,
-      message: "recipies retrieved successfully",
+      messageEn: "Recipes retrieved successfully ♡",
+      messageAr: "تم إحضار الوصفات بنجاح ♡",
       recipies,
     };
   } catch (error) {
-    console.error("Error in getAllrecipies:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       recipies: [],
     };
   }
@@ -163,35 +167,40 @@ export const getAllRecipyById = cache(async (code: string, lang: string) => {
     if (!recipie) {
       return {
         status: 404,
-        message: "No recipies found",
+        messageEn: "recipe not found 😔",
+        messageAr: "لم يتم إيجاد الوصفة 😔",
         recipie: null,
       };
     }
 
     return {
       status: 200,
-      message: "recipies retrieved successfully",
+      messageEn: "Recipe retrieved successfully ♡",
+      messageAr: "تم إحضار الوصفة بنجاح ♡",
       recipie,
     };
   } catch (error) {
-    console.error("Error in getAllrecipies:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الدخلي 😔",
       recipie: null,
     };
   }
 });
 export const updateRecipe = async (recipe: Recipy) => {
   try {
-    const result = await getSession();
-    if (result.success === false) {
+    const session = await getSession();
+    if (session.status !== 200) {
       return {
-        status: 500,
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    } else if (result.user?.role !== "Admin") {
+    } else if (session.user?.role !== "Admin") {
       return {
         status: 403,
+        message:
+          "You should be Admin to add a recipe 😔 / يجب أن تكون مشرف حتى تستطيع إضافة وصفة 😔 ",
       };
     }
     const existingRecipe = await prisma.recipy.findFirst({
@@ -201,7 +210,8 @@ export const updateRecipe = async (recipe: Recipy) => {
     if (!existingRecipe) {
       return {
         status: 404,
-        message: "recipy was not found",
+        message:
+          "recipe Not found choose the recipe again / لم يتم إيجاد الوصفة اختر الوصفة مجددا",
       };
     }
 
@@ -219,26 +229,26 @@ export const updateRecipe = async (recipe: Recipy) => {
     if (!item) {
       return {
         status: 500,
-        message: "couldnt update",
+        message: "Failed to update recipe / فشل في تعديل الوصفة",
       };
     }
     revalidatePath("/en/Control/Update/Recipy");
     revalidatePath("/ar/Control/Update/Recipy");
     return {
       status: 200,
-      message: "Recipe updated successfully",
+      message: "Recipe updated successfully ♡ / تم تعديل الوصفة بنجاح ♡",
     };
   } catch (error) {
     return {
       status: 500,
-      message: "Internal server error",
+      message: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 };
 export const deleteRecipe = async (deleteAll: boolean, recipe: Recipy) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };

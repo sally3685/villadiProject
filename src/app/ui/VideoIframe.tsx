@@ -3,9 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import ErrorPage from "../[lang]/error";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { VideoType } from "../[lang]/Catigories/types";
+import { getContrastColor } from "../../../helpers/contrastColor";
 
 export default function VideoIframe({
   t,
@@ -17,7 +19,7 @@ export default function VideoIframe({
 }: {
   t: any;
   lang: string;
-  video: any;
+  video: VideoType;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   step: number;
   boundry: number;
@@ -35,7 +37,6 @@ export default function VideoIframe({
   const imgRef = useRef<HTMLImageElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Intersection Observer for auto-scroll visibility
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -43,7 +44,7 @@ export default function VideoIframe({
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     observerRef.current.observe(containerRef.current);
@@ -55,7 +56,6 @@ export default function VideoIframe({
     };
   }, []);
 
-  // Auto-scroll effect
   useEffect(() => {
     if (boundry <= 1) return;
 
@@ -63,17 +63,15 @@ export default function VideoIframe({
       if (!isVisible || isPaused) return;
 
       setStep((prev) => {
-        if (prev >= boundry - 1) return 0; // Loop to start
+        if (prev >= boundry - 1) return 0;
         return prev + 1;
       });
     };
 
-    // Clear any existing interval
     if (autoScrollRef.current) {
       clearInterval(autoScrollRef.current);
     }
 
-    // Set up new interval if component is visible and not paused
     if (isVisible && !isPaused) {
       autoScrollRef.current = setInterval(autoScroll, 5000);
     }
@@ -85,7 +83,6 @@ export default function VideoIframe({
     };
   }, [boundry, isVisible, isPaused, setStep]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (autoScrollRef.current) clearInterval(autoScrollRef.current);
@@ -95,18 +92,14 @@ export default function VideoIframe({
 
   const handleNext = () => {
     if (step < boundry - 1) {
-      // Pause auto-scrolling
       setIsPaused(true);
 
-      // Clear any pending resume
       if (resumeTimerRef.current) {
         clearTimeout(resumeTimerRef.current);
       }
 
-      // Update step
       setStep((prev) => prev + 1);
 
-      // Schedule resume after 3 seconds
       resumeTimerRef.current = setTimeout(() => {
         setIsPaused(false);
       }, 3000);
@@ -115,59 +108,31 @@ export default function VideoIframe({
 
   const handlePrev = () => {
     if (step > 0) {
-      // Pause auto-scrolling
       setIsPaused(true);
 
-      // Clear any pending resume
       if (resumeTimerRef.current) {
         clearTimeout(resumeTimerRef.current);
       }
 
-      // Update step
       setStep((prev) => prev - 1);
 
-      // Schedule resume after 3 seconds
       resumeTimerRef.current = setTimeout(() => {
         setIsPaused(false);
       }, 3000);
     }
   };
-  function getContrastColor(bgColor: string): string {
-    // Clean the hex color (remove # if present)
-    const hex = bgColor.replace("#", "");
 
-    // Convert 3-digit hex to 6-digits if needed
-    const fullHex =
-      hex.length === 3
-        ? hex
-            .split("")
-            .map((c) => c + c)
-            .join("")
-        : hex;
-
-    // Parse RGB components
-    const r = parseInt(fullHex.substring(0, 2), 16);
-    const g = parseInt(fullHex.substring(2, 4), 16);
-    const b = parseInt(fullHex.substring(4, 6), 16);
-
-    // Calculate luminance (perceived brightness)
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-    // Return black for light colors, white for dark colors
-    return luminance > 0.5 ? "black" : "white";
-  }
-  // Update background colors when step changes
   useEffect(() => {
     const mainElement = document.getElementById("section2");
 
     if (mainElement) {
       mainElement.setAttribute(
         "data-bgcolor",
-        video ? video.product.color : "#ff832b"
+        video && video.product ? video.product.color : "#ff832b",
       );
       mainElement.setAttribute(
         "data-color",
-        video ? video.product.p_color : "#ffffff"
+        video && video.product ? video.product.p_color : "#ffffff",
       );
     }
   }, [step, video]);
@@ -186,18 +151,6 @@ export default function VideoIframe({
       if (tlRef.current) {
         tlRef.current.kill();
       }
-      // const mainElement = document.getElementById("section2");
-
-      // if (mainElement) {
-      //   mainElement.setAttribute(
-      //     "data-bgcolor",
-      //     video ? video.product.color : "#ff832b"
-      //   );
-      //   mainElement.setAttribute(
-      //     "data-color",
-      //     video ? video.product.p_color : "#ffffff"
-      //   );
-      // }
 
       tlRef.current = gsap.timeline({
         scrollTrigger: {
@@ -225,13 +178,13 @@ export default function VideoIframe({
           {
             scale: 1,
           },
-          "<"
+          "<",
         )
         .fromTo(
           box2Ref.current,
           { borderRadius: "0px" },
           { borderRadius: "24px" },
-          "<"
+          "<",
         )
         .fromTo(boxRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0 });
 
@@ -241,24 +194,23 @@ export default function VideoIframe({
         }
       };
     },
-    { scope: containerRef, dependencies: [step] }
+    { scope: containerRef, dependencies: [step] },
   );
 
   return (
     <div
       ref={containerRef}
-      className={`relative aspect-video w-full h-full rounded-lg flex flex-col justify-center items-center overflow-hidden`}
+      className={`relative flex aspect-video h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg`}
     >
       <h1
-        className={` font-bold text-2xl sm:text-4xl xl:text-5xl mb-12 text-${video && video.product ? getContrastColor(video.product.p_color) : "white"}`}
+        className={`mb-12 text-2xl font-bold sm:text-4xl xl:text-5xl text-${video && video.product ? getContrastColor(video.product.p_color) : "white"}`}
       >
         {t.videoWrapper.name}
       </h1>
       {!showVideo && video ? (
-        // Cover photo with play button
         <button
           onClick={() => setShowVideo(true)}
-          className="relative overflow-hidden w-[90%] h-[315px] sm:h-[450px] max-w-[700px] cursor-pointer"
+          className="relative h-[315px] w-[90%] max-w-[700px] cursor-pointer overflow-hidden sm:h-[450px]"
           aria-label={`Play video ${video.name}`}
         >
           <Image
@@ -266,19 +218,19 @@ export default function VideoIframe({
             src={`${video.coverImg}`}
             alt={`Cover for ${video.name}`}
             fill
-            className="object-cover rounded-3xl"
+            className="rounded-3xl object-cover"
             priority
           />
           <div
             ref={box2Ref}
-            className="overflow-hidden rounded-3xl absolute inset-0 flex items-center justify-center bg-gradient-to-tr from-[#000000]/80 transition hover:from-transparent hover:to-[#000000]/80"
+            className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-tr from-[#000000]/80 transition hover:from-transparent hover:to-[#000000]/80"
           >
-            <div className="h-16 w-16 overflow-hidden rounded-full bg-red-600 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-red-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="white"
-                className="h-8 w-8 ml-1"
+                className="ml-1 h-8 w-8"
               >
                 <path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
               </svg>
@@ -294,7 +246,7 @@ export default function VideoIframe({
               onClick={() => {
                 setShowVideo(!showVideo);
               }}
-              className="rounded-3xl w-[90%] h-[315px] sm:h-[450px]! max-w-[700px]!"
+              className="h-[315px] w-[90%] max-w-[700px]! rounded-3xl sm:h-[450px]!"
               src={`${video.embededLink}`}
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -307,7 +259,7 @@ export default function VideoIframe({
               alt={`Cover for video`}
               width={100}
               height={100}
-              className="object-contain w-[90%]! h-[315px]! max-w-[560px]!"
+              className="h-[315px]! w-[90%]! max-w-[560px]! object-contain"
               priority
             />
           )}
@@ -315,7 +267,7 @@ export default function VideoIframe({
       )}
       <div
         ref={boxRef}
-        className="flex relative items-center justify-center w-full gap-8"
+        className="relative flex w-full items-center justify-center gap-8"
       >
         {video && (
           <ArrowLeft
@@ -327,12 +279,12 @@ export default function VideoIframe({
             }`}
           ></ArrowLeft>
         )}
-        <div className="bg-white text-black font-bold  text-center  px-6 py-6 rounded-[50px] gap-2 relative bottom-[15px] flex flex-col justify-center items-center text-lg sm:text-2xl">
+        <div className="relative bottom-[15px] flex flex-col items-center justify-center gap-2 rounded-[50px] bg-white px-6 py-6 text-center text-lg font-bold text-black sm:text-2xl">
           <h2>"{video ? `${video.name}` : `${t.videoWrapper.noVideos}`}"</h2>
           {video && (
             <Link
               href={"/Videos"}
-              className="bg-black text-white text-sm sm:text-lg py-2 px-4 rounded-3xl"
+              className="rounded-3xl bg-black px-4 py-2 text-sm text-white sm:text-lg"
             >
               {t.videoWrapper.more}
             </Link>

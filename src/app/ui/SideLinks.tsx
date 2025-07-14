@@ -108,11 +108,11 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
   return (
     <div
       ref={containerRef}
-      className="lg:p-6 p-4 relative pt-0 lg:h-full w-full"
+      className="relative w-full p-4 pt-0 lg:h-full lg:p-6"
     >
       <ul
         ref={ulRef}
-        className="justify-evenly lg:justify-center font-medium flex lg:flex-col lg:gap-12 gap-0 flex-row h-full w-full relative"
+        className="relative flex h-full w-full flex-row justify-evenly gap-0 font-medium lg:flex-col lg:justify-center lg:gap-12"
       >
         {/* Green indicator element */}
         <div
@@ -121,7 +121,7 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             right: lang === "ar" && greenLeft === "-5%" ? greenLeft : "",
             left: greenLeft !== "-5%" ? greenLeft : "",
           }}
-          className={`transition-all duration-600 absolute w-[40px] lg:w-[121%] lg:h-[45px] h-full bg-[#7abc43] ${
+          className={`absolute h-full w-[40px] bg-[#7abc43] transition-all duration-600 lg:h-[45px] lg:w-[121%] ${
             lang === "ar"
               ? "rotate-[90deg] rounded-r-xl lg:right-[-5%]"
               : "rotate-[-90deg] rounded-l-xl lg:left-[-5%]"
@@ -129,24 +129,24 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
         >
           {/* Top corner */}
           <div
-            className={`absolute w-[25px] h-[25px] ${
+            className={`absolute h-[25px] w-[25px] ${
               lang === "ar" ? "left-0 rotate-[90deg]" : "right-0"
             } top-[-25px] lg:top-[-25px]`}
           >
-            <div className="relative w-[25px] h-[25px] bg-white rounded-br-2xl z-[3]" />
-            <div className="absolute content-[''] w-[15px] h-[15px] bg-[#7abc43] bottom-0 right-0 z-[2]" />
+            <div className="relative z-[3] h-[25px] w-[25px] rounded-br-2xl bg-white" />
+            <div className="absolute right-0 bottom-0 z-[2] h-[15px] w-[15px] bg-[#7abc43] content-['']" />
           </div>
 
           {/* Bottom corner */}
           <div
-            className={`absolute w-[25px] h-[25px] top-[40px] lg:top-[45px] ${
+            className={`absolute top-[40px] h-[25px] w-[25px] lg:top-[45px] ${
               lang === "ar"
-                ? "left-0 transform scale-[-1]"
+                ? "left-0 scale-[-1] transform"
                 : "right-0 rotate-[270deg]"
             }`}
           >
-            <div className="relative w-[25px] h-[25px] bg-white rounded-br-2xl z-[3]" />
-            <div className="absolute content-[''] w-[15px] h-[15px] bg-[#7abc43] bottom-0 right-0 z-[2]" />
+            <div className="relative z-[3] h-[25px] w-[25px] rounded-br-2xl bg-white" />
+            <div className="absolute right-0 bottom-0 z-[2] h-[15px] w-[15px] bg-[#7abc43] content-['']" />
           </div>
         </div>
 
@@ -156,12 +156,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Catigory`}
             className={`flex ${
               pathname.includes("Catigory")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] items-center p-2 rounded-lg text-lg lg:text-xl relative`}
+            } relative items-center rounded-lg p-2 text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <Shapes className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <Shapes className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page1}
             </span>
           </Link>
@@ -172,12 +172,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Product`}
             className={`flex items-center p-2 ${
               pathname.includes("Product")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+            } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <Codesandbox className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <Codesandbox className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page2}
             </span>
           </Link>
@@ -188,12 +188,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Recipy`}
             className={`flex items-center p-2 ${
               pathname.includes("Recipy")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+            } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <ChefHat className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <ChefHat className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page3}
             </span>
           </Link>
@@ -204,12 +204,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Map`}
             className={`flex items-center p-2 ${
               pathname.includes("Map")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+            } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <MapPinned className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <MapPinned className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page4}
             </span>
           </Link>
@@ -222,12 +222,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
                 href={`/${lang}/Control/${action}/Social`}
                 className={`flex items-center p-2 ${
                   pathname.includes("Social")
-                    ? "text-white font-bold hover:text-black"
+                    ? "font-bold text-white hover:text-black"
                     : "text-black"
-                } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+                } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
               >
-                <Facebook className="z-[1] relative" />
-                <span className="ms-3 lg:block hidden z-[1]">
+                <Facebook className="relative z-[1]" />
+                <span className="z-[1] ms-3 hidden lg:block">
                   {t.sideLinks.page8}
                 </span>
               </Link>
@@ -240,12 +240,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
                 href={`/${lang}/Control/${action}/Admin`}
                 className={`flex items-center p-2 ${
                   pathname.includes("Admin")
-                    ? "text-white font-bold hover:text-black"
+                    ? "font-bold text-white hover:text-black"
                     : "text-black"
-                } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+                } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
               >
-                <ShieldUser className="z-[1] relative" />
-                <span className="ms-3 lg:block hidden z-[1]">
+                <ShieldUser className="relative z-[1]" />
+                <span className="z-[1] ms-3 hidden lg:block">
                   {t.sideLinks.page5}
                 </span>
               </Link>
@@ -258,12 +258,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Flavor`}
             className={`flex items-center p-2 ${
               pathname.includes("Flavor")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+            } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <Laugh className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <Laugh className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page6}
             </span>
           </Link>
@@ -274,12 +274,12 @@ export default function SideLinks({ t, lang }: { t: any; lang: string }) {
             href={`/${lang}/Control/${action}/Video`}
             className={`flex items-center p-2 ${
               pathname.includes("Video")
-                ? "text-white font-bold hover:text-black"
+                ? "font-bold text-white hover:text-black"
                 : "text-black"
-            } hover:text-[#7abc43] rounded-lg text-lg lg:text-xl`}
+            } rounded-lg text-lg hover:text-[#7abc43] lg:text-xl`}
           >
-            <Video className="z-[1] relative" />
-            <span className="ms-3 lg:block hidden z-[1]">
+            <Video className="relative z-[1]" />
+            <span className="z-[1] ms-3 hidden lg:block">
               {t.sideLinks.page7}
             </span>
           </Link>

@@ -5,35 +5,24 @@ import {
   deleteFlavor,
   updateFlavor,
 } from "../data-access-layer/flavorDAL";
-import { writeFile } from "fs/promises";
 import {
   FlavorFormSchema,
   FormFlavorState,
   FormFlavorSuggestState,
 } from "../lib/definitions";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 import { getSession } from "../lib/session";
 import { Resend } from "resend";
-import { EmailFlavorTemplate } from "../ui/SuggestFlavorEmailTemplate";
+import { EmailFlavorTemplate } from "../ui/EmailTemplate";
+import { getDictionary } from "../[lang]/dictionaries";
 
 export async function AddFlavorAction(
   state: FormFlavorState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormFlavorState> {
   try {
-    // Validate required fields
-    const requiredFields = ["name", "img"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
+    const language = formData.get("language")?.toString() || "en";
 
-    // Parse and validate form data
     const result = FlavorFormSchema.safeParse({
       name: formData.get("name"),
       img: formData.get("img"),
@@ -46,47 +35,37 @@ export async function AddFlavorAction(
     }
 
     const { name, img } = result.data;
-    const language = formData.get("language")?.toString() || "en";
 
-    // Handle image uploads
-
-    // Add flavor to database
     const { status, message } = await AddFlavor(name, img, language);
-
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
     if (status === 409) {
-      return { errors: { name: [message] } };
+      return {
+        errors: {
+          name: [message || "Failed to create flavor / فشل إضافة نكهة "],
+        },
+      };
     }
 
     if (status !== 201) {
-      return { general: message };
+      return {
+        general: message || "Failed to create flavor / فشل إضافة نكهة ",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddFlavorAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateFlavorAction(
   state: FormFlavorState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormFlavorState> {
   try {
-    // Validate required fields
-    const requiredFields = ["id", "name", "img", "language"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = FlavorFormSchema.safeParse({
       name: formData.get("name"),
       img: formData.get("img"),
@@ -102,41 +81,44 @@ export async function UpdateFlavorAction(
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
 
-    // Handle image uploads
-
-    // Add category to database
     const { status, message } = await updateFlavor({
       id: id,
       name: name,
       primaryImg: img,
       lang: language,
     });
-
-    if (status === 404) {
-      return { errors: { name: [message] } };
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
     }
+    // if (status === 404) {
+    //   return {
+    //     errors: {
+    //       name: [message || "Failed to update flavor / فشل تعديل النكهة "],
+    //     },
+    //   };
+    // }
 
     if (status !== 200) {
-      return { general: message };
+      return {
+        general: message || "Failed to update flavor / فشل تعديل النكهة ",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCategoryAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function DeleteFlavorAction(
   deleteAll: string,
-  selectedField: any
+  selectedField: any,
 ) {
   try {
-    // Validate required fields
     const { status } = await deleteFlavor(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };
@@ -149,34 +131,44 @@ export async function DeleteFlavorAction(
 }
 export async function SuggestFlavorAction(
   state: FormFlavorSuggestState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
-    const user = await getSession();
-
-    if (user.success === false || !user.user)
+    const session = await getSession();
+    if (session.status !== 200 || !session.user) {
       return {
-        success: false,
-        user: "faild to find user",
+        status: session.status,
+        message: session.messageEn + " / " + session.messageAr,
       };
-    // Validate required fields
+    }
+    const t = await getDictionary(formData.get("lang") as string);
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: process.env.EMAIL_CO!,
       subject: "Flavor suggestion",
       react: EmailFlavorTemplate({
-        userName: user.user.name,
-        userEmail: user.user?.email,
+        userName: session.user.name,
+        userEmail: session.user?.email,
         text: formData.get("details") as string,
+        t: t,
       }),
     });
     if (error) {
-      return { success: false, general: "failed to send email" };
+      return {
+        success: false,
+        general: "Failed to send email / فشل في إرسال الإيميل",
+      };
     } else {
-      return { success: true };
+      return {
+        success: true,
+        general: "your suggestion successfully sent / تم إرسال اقتراحك ♡ ",
+      };
     }
   } catch (error) {
-    return { success: false, general: "failed to send email" };
+    return {
+      success: false,
+      general: "Failed to send email / فشل في إرسال الإيميل",
+    };
   }
 }

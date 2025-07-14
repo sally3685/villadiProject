@@ -17,7 +17,6 @@ import {
   UpdateUserVerify,
   updateUserPassword,
 } from "../data-access-layer/user";
-import { Resend } from "resend";
 import { createSession, deleteSession } from "../lib/session";
 import { redirect } from "next/navigation";
 import { generateSalt, hashPassword } from "../../../helpers/passwordHasher";
@@ -31,9 +30,7 @@ import {
   getVerifyPassSession,
   getVerifySession,
 } from "../lib/verifyEmailSession";
-import { EmailTemplatePass } from "../ui/EmailTemplatePass";
-import { error } from "console";
-
+import { getDictionary } from "../[lang]/dictionaries";
 export async function SignInAction(state: FormSignInState, formData: FormData) {
   const validatedFields = SigninFormSchema.safeParse({
     email: formData.get("email"),
@@ -45,11 +42,16 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
   }
 
   const { email } = validatedFields.data;
+
   const { status, message, user } = await checkUser(
     email,
-    formData.get("password") as string
+    formData.get("password") as string,
   );
-  //fix errors
+  if (status === 400) {
+    return {
+      general2: message,
+    };
+  }
   if (status === 500) {
     return {
       general: message,
@@ -69,7 +71,7 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
   }
   if (!user) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
   await createSession(user.id, user.role);
@@ -81,7 +83,7 @@ export async function SignInAction(state: FormSignInState, formData: FormData) {
 }
 export async function ResendCodeAction(
   state: FormCodeState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const validatedFields = SigninFormSchema.safeParse({
@@ -98,35 +100,41 @@ export async function ResendCodeAction(
     if (res.userData?.verified) {
       return {
         errors: {
-          email: ["Email Already Verified , click on "],
+          email: [
+            "Email Already Verified , just Sign in / تم بالفعل تأكيد حسابك فقط قم بتسجيل الدخول",
+          ],
         },
       };
     }
     if (!res.success || !res.userData) {
       return {
         errors: {
-          email: ["Email not found , click on "],
+          email: [
+            "email not found sign up first / الإيميل غير موجود أنشئ حساب أولا",
+          ],
         },
       };
     }
 
+    const t = await getDictionary(formData.get("lang") as string);
     const res1 = await createVerifySession(
       res.userData.id,
       res.userData.name,
-      res.userData.email
+      res.userData.email,
+      t,
     );
     return {
       success: res1.success,
     };
   } catch {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
 }
 export async function ResendCodePassAction(
   state: FormCodeState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const validatedFields = SigninFormSchema.safeParse({
@@ -144,40 +152,34 @@ export async function ResendCodePassAction(
     if (!res.success || !res.userData) {
       return {
         errors: {
-          email: ["Email not found , click on "],
+          email: [
+            "email not found sign up first / الإيميل غير موجود أنشئ حساب أولا",
+          ],
         },
       };
     }
+    const t = await getDictionary(formData.get("lang") as string);
     const res1 = await createVerifyPassSession(
       res.userData.id,
       res.userData.name,
-      res.userData.email
+      res.userData.email,
+      t,
     );
     return {
       success: res1.success,
     };
   } catch (error) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
 }
 
 export async function VerifyCodeAction(
   state: FormCodeVerifyState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
-    const requiredFields = ["code1", "code2", "code3", "code4"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
     const validatedFields = CodeFormSchema.safeParse({
       code1: parseInt(formData.get("code1") as string),
       code2: parseInt(formData.get("code2") as string),
@@ -194,7 +196,8 @@ export async function VerifyCodeAction(
     const res = await getVerifySession();
     if (res.success === false || !res.userCode || !res.user) {
       return {
-        general2: "Refresh the page",
+        general2:
+          "code expired click on resend email / انتهت صلاحية الكود اضغط على إعادة إرسال إيميل",
       };
     }
     let numbers = "";
@@ -206,21 +209,22 @@ export async function VerifyCodeAction(
     if (numbers !== res.userCode) {
       return {
         errors: {
-          code1: ["code not matching"],
+          code1: ["code not matching / الكود غير متطابق"],
         },
       };
     }
     const res1 = await getUserByEmail(res.user.email);
     if (!res1.success || !res1.userData) {
       return {
-        general: "email not found sign up first",
+        general:
+          "email not found sign up first / الإيميل غير موجود أنشئ حساب أولا",
       };
     }
     await deleteVerifySession();
     const success = await UpdateUserVerify(res1.userData.id);
     if (!success) {
       return {
-        general: "error occured",
+        general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
       };
     }
     const res2 = await createSession(res1.userData.id, res1.userData.role);
@@ -231,25 +235,15 @@ export async function VerifyCodeAction(
     else redirect("/ar");
   } catch (error) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
 }
 export async function VerifyPassAction(
   state: FormCodeVerifyState,
-  formData: FormData
+  formData: FormData,
 ) {
   try {
-    const requiredFields = ["code1", "code2", "code3", "code4"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
     const validatedFields = CodeFormSchema.safeParse({
       code1: parseInt(formData.get("code1") as string),
       code2: parseInt(formData.get("code2") as string),
@@ -266,7 +260,8 @@ export async function VerifyPassAction(
     const res = await getVerifyPassSession();
     if (res.success === false || !res.userCode || !res.user) {
       return {
-        general2: "Refresh the page",
+        general2:
+          "code expired click on resend email / انتهت صلاحية الكود اضغط على إعادة إرسال إيميل",
       };
     }
     let numbers = "";
@@ -278,14 +273,15 @@ export async function VerifyPassAction(
     if (numbers !== res.userCode) {
       return {
         errors: {
-          code1: ["code not matching"],
+          code1: ["code not matching / الكود غير متطابق"],
         },
       };
     }
     const res1 = await getUserByEmail(res.user.email);
     if (!res1.success || !res1.userData) {
       return {
-        general: "email not found sign up first",
+        general:
+          "email not found sign up first / الإيميل غير موجود أنشئ حساب أولا",
       };
     }
 
@@ -294,7 +290,7 @@ export async function VerifyPassAction(
     };
   } catch (error) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
 }
@@ -310,30 +306,32 @@ export async function resetAction(state: FormResetState, formData: FormData) {
 
   const { password } = validatedFields.data;
   const res = await getVerifyPassSession();
-  //fix errors
+
   if (!res.success) {
     return {
-      general2: "code expired",
+      general2:
+        "code expired click on resend email / انتهت صلاحية الكود اضغط على إعادة إرسال إيميل",
     };
   }
 
   if (!res.user) {
     return {
-      general: "error occured",
+      general:
+        "email not found sign up first / الإيميل غير موجود أنشئ حساب أولا",
     };
   }
   const data1 = await updateUserPassword(res.user.email, password);
   if (data1.status !== 200 || !data1.user) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
   await deletePassSession();
-  await createSession(data1.user?.id, data1.user?.password);
+  // await createSession(data1.user?.id, data1.user?.password);
   const headersList = await headers();
   const fullUrl = headersList.get("referer") || "";
-  if (fullUrl?.includes("en")) redirect("/en");
-  else redirect("/ar");
+  if (fullUrl?.includes("en")) redirect("/en/signIn");
+  else redirect("/ar/signIn");
 }
 
 export async function SignUpAction(state: FormSignUpState, formData: FormData) {
@@ -341,7 +339,7 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
   if (res.success === true) {
     return {
       general2:
-        "Already signed up .your email and password were stored during the previus sign up. click on verify ",
+        "Already signed up .your email and password were stored during the previus sign up. click on verify / لقد قمت بالفعل بإنشاء حساب . تم حفظ بريدك الالكتروني وكلمة السر خلال اخر إنشاء حساب قمت به .اضغط على تأكيد حسابي ",
     };
   }
   const validatedFields = SignupFormSchema.safeParse({
@@ -369,7 +367,7 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
     ) {
       return {
         general2:
-          "Already signed up .your email and password were stored during the previus sign up. click on verify ",
+          "Already signed up .your email and password were stored during the previus sign up. click on verify / لقد قمت بالفعل بإنشاء حساب . تم حفظ بريدك الالكتروني وكلمة السر خلال اخر إنشاء حساب قمت به .اضغط على تأكيد حسابي ",
       };
     } else if (
       res1 &&
@@ -379,7 +377,7 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
     ) {
       return {
         general2:
-          "Already signed up and verified .click on `Alredy have an account` ",
+          "Already signed up and verified .click on `Alredy have an account` / لقد قمت بالفعل بتسجيل حسابك وتأكيده . اضغط على `لدي حساب بالفعل`",
       };
     }
     const salt = generateSalt();
@@ -389,7 +387,7 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
       name,
       email,
       hashedPassword,
-      salt
+      salt,
     );
     if (status === 500) {
       return {
@@ -405,14 +403,13 @@ export async function SignUpAction(state: FormSignUpState, formData: FormData) {
     }
     if (!user) {
       return {
-        general: "error occured",
+        general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
       };
     }
-
-    await createVerifySession(user.id, name, email);
+    await createVerifySession(user.id, name, email, formData.get("t") as any);
   } catch (error) {
     return {
-      general: "error occured",
+      general: "internal server error 😔 / خطأ في المخدم الداخلي 😔",
     };
   }
 

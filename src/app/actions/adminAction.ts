@@ -4,41 +4,44 @@ import { FormAdminState } from "../lib/definitions";
 
 export async function AddAdminAction(
   state: FormAdminState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormAdminState> {
   try {
     const userId = formData.get("selectedUser");
 
     if (!userId || typeof userId !== "string") {
       return {
-        general: "Please select a valid user",
-        success: false,
+        status: 400,
+        messageEn: "Please select a valid user 😔",
+        messageAr: "الرجاء اختيار مستخدم صحيح 😔",
       };
     }
 
-    const { status, message } = await grantAdminP(userId);
+    const result = await grantAdminP(userId);
 
-    if (status !== 200) {
+    if (result.status !== 200) {
       return {
-        general: message || "Failed to promote user to admin",
-        success: false,
+        status: result.status,
+        messageEn: result.messageEn,
+        messageAr: result.messageAr,
       };
     }
 
     return {
-      success: true,
+      status: 200,
+      messageEn: "User promoted to admin successfully ♡",
+      messageAr: "تم ترقية المستخدم إلى مدير بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in AddAdminAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
-      success: false,
+      status: 500,
+      messageEn: "An unexpected error occurred. Please try again later. 😔",
+      messageAr: "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى لاحقًا. 😔",
     };
   }
 }
 export async function removeAdminAction(selectedField: any) {
   try {
-    // Validate required fields
     const { status } = await removeAdminP(selectedField);
     if (status !== 200) {
       return { success: false };

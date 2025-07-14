@@ -3,57 +3,72 @@ import {
   getAllProdCats,
 } from "@/app/data-access-layer/productDAL";
 import ErrorPage from "@/app/[lang]/error";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getDictionary } from "@/app/[lang]/dictionaries";
-import Carousal3D from "@/app/ui/Carousal3D";
-import ProdCodeItems from "@/app/ui/CatsProps";
 import ProdDetails from "@/app/ui/ProdDetails";
-import CarousalProducts from "@/app/ui/CarousalProducts";
+import Carousel from "@/app/ui/Carousel/Carousel";
+import { EmptyState } from "@/app/ui/EmptyState";
+import { ProdDetailsDictionary } from "../../types";
+import { carouselDictionary } from "@/app/ui/Carousel/carouselTypes";
 export default async function ProdCodeDetails({
   params,
 }: {
-  params: Promise<{ productId: string; lang: string }>;
+  params: Promise<{ productId: string; lang: "ar" | "en" }>;
 }) {
   const { productId, lang } = await params;
   const t = await getDictionary(lang);
   const prods = await getProdsByCode(productId, lang);
 
-  const allProds = await getAllProdCats(productId, lang);
+  if (prods.status === 500) {
+    return (
+      <ErrorPage
+        error={new Error(lang === "en" ? prods.messageEn : prods.messageAr)}
+      ></ErrorPage>
+    );
+  }
 
-  if (prods.status === 500 || allProds.status === 500) {
-    return <ErrorPage error={new Error("internal server error ")}></ErrorPage>;
+  const allProds = await getAllProdCats(productId, lang);
+  if (allProds.status === 500) {
+    return (
+      <ErrorPage
+        error={
+          new Error(lang === "en" ? allProds.messageEn : allProds.messageAr)
+        }
+      ></ErrorPage>
+    );
   }
   return (
-    <main className="min-h-screen w-full flex justify-center items-center flex-col relative before:absolute before:content-[''] before:w-full before:h-full before:bg-[#e6b56c4d] before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover bg-[#ffd597] ">
+    <main className="relative flex min-h-screen w-full flex-col items-center justify-center bg-[#ffd597] before:absolute before:top-0 before:block before:h-full before:w-full before:bg-[#e6b56c4d] before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-['']">
       {!allProds || !allProds.products ? (
-        <>
-          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black z-[0]">
-            {lang === "en" ? "No products found" : "لا يوجد منتجات لعرضها"}
-          </h1>
-          <div
-            className={`w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}] bg-center bg-contain bg-no-repeat`}
-          ></div>
-        </>
+        <EmptyState
+          noItems={(t as ProdDetailsDictionary).ProdsWrapper.noProds}
+          lang={lang}
+        />
       ) : !prods || !prods.product ? (
         <>
-          <h1 className="text-2xl sm:text-4xl xl:text-5xl font-bold text-black z-[0]">
-            {lang === "en" ? "Product was not found" : "لم يتم إيجاد المنتج"}
-          </h1>
-          <div
-            className={`w-[300px] h-[200px] md:w-[400px] z-[0] md:h-[300px] justify-center items-center bg-[url(${`/${lang === "en" ? "villadiLogo.svg" : "villadiLogoAr.svg"}`}] bg-center bg-contain bg-no-repeat`}
-          ></div>
+          <EmptyState
+            noItems={(t as ProdDetailsDictionary).ProdsWrapper.notFound}
+            lang={lang}
+          />
         </>
       ) : (
         <>
-          <div className="flex flex-col w-full items-center justify-center gap-[100px] sm:gap-[calc(var(--spacing)_*_40)] px-2 py-[100px] sm:py-40 max-w-7xl z-[0] overflow-x-hidden">
-            <ProdDetails t={t} product={prods} lang={lang} />
-            <CarousalProducts
-              items={allProds.products}
-              title={lang === "en" ? "More Products" : "المزيد من المنتجات"}
-              noCats={lang === "en" ? "No Products yet" : "لا يوجد منتجات بعد"}
-              all={t.catigoriesWrapper.view}
+          <div className="z-[0] flex w-full max-w-7xl flex-col items-center justify-center gap-[100px] overflow-x-hidden px-2 py-[100px] sm:gap-[calc(var(--spacing)_*_40)] sm:py-40">
+            <ProdDetails
+              t={t as ProdDetailsDictionary}
+              product={prods.product}
               lang={lang}
-              color="#1c1100"
+            />
+            <Carousel
+              items={allProds.products}
+              title={(t as ProdDetailsDictionary).ProdsWrapper.moreProds}
+              all={(t as ProdDetailsDictionary).ProdsWrapper.view}
+              noItems={(t as ProdDetailsDictionary).ProdsWrapper.noProds}
+              lang={lang}
+              t={t as carouselDictionary}
+              type="products"
+              // color="#1c1100"
+              linkPrefix={`/${lang}/Catigories/${prods.product.category.code}/Products`}
+              linkText={(t as ProdDetailsDictionary).ProdsWrapper.link}
             />
           </div>
         </>

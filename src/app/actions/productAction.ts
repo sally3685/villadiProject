@@ -1,38 +1,18 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import {
   AddProduct,
   deleteProduct,
   updateProduct,
 } from "../data-access-layer/productDAL";
-import { writeFile } from "fs/promises";
 import { ProductFormSchema, FormProductState } from "../lib/definitions";
 
 export async function AddProductAction(
   state: FormProductState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormProductState> {
   try {
-    // Validate required fields
-    const requiredFields = [
-      "selectedC",
-      "selectedF",
-      "backgroundColor",
-      "patternColor",
-      "img2",
-      "img",
-    ];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = ProductFormSchema.safeParse({
       name: formData.get("name"),
       code: formData.get("code"),
@@ -54,9 +34,6 @@ export async function AddProductAction(
     const { img, img2, ...productData } = result.data;
     const language = formData.get("language")?.toString() || "en";
 
-    // Handle image upload
-
-    // Add product to database
     const { status, message } = await AddProduct(
       productData.name,
       productData.code,
@@ -67,55 +44,37 @@ export async function AddProductAction(
       productData.selectedF,
       productData.backgroundColor,
       productData.patternColor,
-      language
+      language,
     );
-
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
     if (status === 409) {
-      return { errors: { code: [message || "Failed to create product"] } };
+      return {
+        errors: {
+          code: [message || "Failed to create product / فشل في إنشاء منتج"],
+        },
+      };
     }
 
     if (status !== 201) {
-      return { general: message || "Failed to create product" };
+      return {
+        general: message || "Failed to create product / فشل في إنشاء منتج",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddProductAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateProductAction(
   state: FormProductState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormProductState> {
   try {
-    // Validate required fields
-    const requiredFields = [
-      "id",
-      "name",
-      "code",
-      "img",
-      "img2",
-      "backgroundColor",
-      "patternColor",
-      "detailes",
-      "language",
-      "selectedC",
-      "selectedF",
-    ];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = ProductFormSchema.safeParse({
       name: formData.get("name"),
       code: formData.get("code"),
@@ -138,7 +97,6 @@ export async function UpdateProductAction(
     const language = formData.get("language")?.toString() || "en";
     const id = formData.get("id") as string;
 
-    // Add category to database
     const { status, message } = await updateProduct({
       id: id,
       name: productData.name,
@@ -153,32 +111,37 @@ export async function UpdateProductAction(
       lang: language,
     });
 
-    if (status === 404) {
-      return { errors: { code: [message || "Failed to create product"] } };
-    }
+    // if (status === 404) {
+    //   return {
+    //     errors: {
+    //       code: [message || "Failed to update product / فشل في تعديل منتج"],
+    //     },
+    //   };
+    // }
 
     if (status !== 200) {
-      return { general: message || "Failed to create category" };
+      return {
+        general: message || "Failed to update product / فشل في تعديل منتج",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCategoryAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 
 export async function DeleteProductAction(
   deleteAll: string,
-  selectedField: any
+  selectedField: any,
 ) {
   try {
     // Validate required fields
     const { status } = await deleteProduct(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };

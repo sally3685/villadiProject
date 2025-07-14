@@ -1,11 +1,11 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { SessionPayload } from "./definitions";
 import { getUserById } from "../data-access-layer/user";
 import { EmailTemplate } from "@/app/ui/EmailTemplate";
 import { Resend } from "resend";
-import { EmailTemplatePass } from "../ui/EmailTemplatePass";
+import { EmailTemplatePass } from "@/app/ui/EmailTemplate";
+import { getDictionary } from "../[lang]/dictionaries";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const secretKey = process.env.SESSION_SECRET;
@@ -14,7 +14,8 @@ const encodedKey = new TextEncoder().encode(secretKey);
 export async function createVerifySession(
   userId: string,
   userName: string,
-  email: string
+  email: string,
+  t: any,
 ) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
   try {
@@ -24,15 +25,18 @@ export async function createVerifySession(
       const finalNum = Math.floor(randomNum);
       numbers = numbers.concat(finalNum.toString());
     }
-
     const { data, error } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
       subject: "Verify Email",
-      react: EmailTemplate({ numbers, userName }),
+      react: EmailTemplate({ numbers, userName, t }),
     });
     if (error) {
-      return { success: false, general: "failed to send email" };
+      return {
+        success: false,
+        messageEn: "Failed to send email 😔",
+        messageAr: "فشل في إرسال الإيميل 😔",
+      };
     }
     if (data) {
       const user = { userId: userId, userCode: JSON.stringify(numbers) };
@@ -49,17 +53,26 @@ export async function createVerifySession(
         success: true,
       };
     } else {
-      return { success: false, general: "failed to send email" };
+      return {
+        success: false,
+        messageEn: "Failed to send email 😔",
+        messageAr: "فشل في إرسال الإيميل 😔",
+      };
     }
   } catch (error) {
-    return { success: false, general: "failed to send email" };
+    return {
+      success: false,
+      messageEn: "Failed to send email 😔",
+      messageAr: "فشل في إرسال الإيميل 😔",
+    };
   }
 }
 
 export async function createVerifyPassSession(
   userId: string,
   userName: string,
-  email: string
+  email: string,
+  t: any,
 ) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
   try {
@@ -74,7 +87,7 @@ export async function createVerifyPassSession(
       from: "onboarding@resend.dev",
       to: email,
       subject: "Reset password",
-      react: EmailTemplatePass({ numbers }),
+      react: EmailTemplatePass({ numbers, t }),
     });
     if (error) {
       return { success: false, general: "failed to send email" };
@@ -94,10 +107,18 @@ export async function createVerifyPassSession(
         success: true,
       };
     } else {
-      return { success: false, general: "failed to send email" };
+      return {
+        success: false,
+        messageEn: "Failed to send email 😔",
+        messageAr: "فشل في إرسال الإيميل 😔",
+      };
     }
   } catch (error) {
-    return { success: false, general: "failed to send email" };
+    return {
+      success: false,
+      messageEn: "Failed to send email 😔",
+      messageAr: "فشل في إرسال الإيميل 😔",
+    };
   }
 }
 export async function getVerifyPassSession() {
@@ -111,7 +132,7 @@ export async function getVerifyPassSession() {
 
     if (!user) return { success: false };
     const res = await getUserById(user.userId);
-    if (res.success === true && res.userData)
+    if (res.status === 200 && res.userData)
       return { success: true, user: res.userData, userCode: user.userCode };
     else return { success: false };
   } catch {
@@ -138,7 +159,7 @@ export async function getVerifySession() {
 
     if (!user) return { success: false };
     const res = await getUserById(user.userId);
-    if (res.success === true && res.userData)
+    if (res.status === 200 && res.userData)
       return { success: true, user: res.userData, userCode: user.userCode };
     else return { success: false };
   } catch {

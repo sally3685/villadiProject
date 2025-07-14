@@ -8,7 +8,7 @@ import { getSession } from "../lib/session";
 export const AddVote = async (userEmail: string, recipeId: string) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -20,8 +20,9 @@ export const AddVote = async (userEmail: string, recipeId: string) => {
     });
     if (!existingUser) {
       return {
-        status: 409,
-        message: "No user",
+        status: 404,
+        messageEn: "user email not found ",
+        messageAr: "لم يتم إيجاد ايميل المستخدم",
       };
     }
     const existingVote = await prisma.voteOnRecipy.findFirst({
@@ -33,11 +34,11 @@ export const AddVote = async (userEmail: string, recipeId: string) => {
     if (existingVote) {
       return {
         status: 409,
-        message: "you can only vote once",
+        messageEn: "you can only vote once ♡",
+        messageAr: "يمكنك التصويت مرة واحدة فقط ♡",
       };
     }
 
-    // Create new recipe
     const newVote = await prisma.voteOnRecipy.create({
       data: {
         userId: existingUser.id,
@@ -48,31 +49,31 @@ export const AddVote = async (userEmail: string, recipeId: string) => {
     if (!newVote) {
       return {
         status: 500,
-        message: "Failed to vote",
+        messageEn: "Failed to vote 😔",
+        messageAr: "فشل التصويت 😔",
       };
     }
 
-    // Revalidate relevant paths
-    // revalidatePath(`/[lang]/recipes`, "page");
     revalidatePath(`/en/Recipes`);
     revalidatePath(`/ar/Recipes`);
-    //localhost:3000/en/Recipes/685ef6a82ee1f493bbfa5a20
-    http: return {
+
+    return {
       status: 201,
-      message: "voted successfully",
+      messageEn: "voted successfully ♡",
+      messageAr: "تم التصويت بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in vote:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الداخلي 😔",
     };
   }
 };
 export const AddCommentVote = async (userEmail: string, commentId: string) => {
   try {
     const result = await getSession();
-    if (result.success === false) {
+    if (result.status !== 200) {
       return {
         status: 500,
       };
@@ -84,8 +85,9 @@ export const AddCommentVote = async (userEmail: string, commentId: string) => {
     });
     if (!existingUser) {
       return {
-        status: 409,
-        message: "No user",
+        status: 404,
+        messageEn: "user email not found ",
+        messageAr: "لم يتم إيجاد ايميل المستخدم",
       };
     }
     const existingVote = await prisma.voteOnComment.findFirst({
@@ -97,11 +99,11 @@ export const AddCommentVote = async (userEmail: string, commentId: string) => {
     if (existingVote) {
       return {
         status: 409,
-        message: "you can only vote once",
+        messageEn: "you can only vote once ♡",
+        messageAr: "يمكنك التصويت مرة واحدة فقط ♡",
       };
     }
 
-    // Create new recipe
     const newVote = await prisma.voteOnComment.create({
       data: {
         userId: existingUser.id,
@@ -112,24 +114,24 @@ export const AddCommentVote = async (userEmail: string, commentId: string) => {
     if (!newVote) {
       return {
         status: 500,
-        message: "Failed to vote",
+        messageEn: "Failed to vote 😔",
+        messageAr: "فشل التصويت 😔",
       };
     }
 
-    // Revalidate relevant paths
-    // revalidatePath(`/[lang]/recipes`, "page");
     revalidatePath(`/en/Opinion`);
     revalidatePath(`/ar/Opinion`);
-    //localhost:3000/en/Recipes/685ef6a82ee1f493bbfa5a20
-    http: return {
+
+    return {
       status: 201,
-      message: "voted successfully",
+      messageEn: "voted successfully ♡",
+      messageAr: "تم التصويت بنجاح ♡",
     };
   } catch (error) {
-    console.error("Error in vote:", error);
     return {
       status: 500,
-      message: "Internal server error",
+      messageEn: "Internal server error 😔",
+      messageAr: "خطأ في المخدم الداخلي 😔",
     };
   }
 };

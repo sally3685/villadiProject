@@ -36,7 +36,7 @@ export default function VideoWrapper({
         }
       ></Items>
       <Bars t={t} myFont3={myFont3} />
-      <div className="w-full h-[600px] sm:h-[650px] scale-[0.9]">
+      <div className="h-[600px] w-full scale-[0.9] sm:h-[650px]">
         <VideoIframe
           t={t}
           lang={lang}

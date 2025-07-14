@@ -1,120 +1,72 @@
 "use client";
-import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import React, { useState } from "react";
 import VideoIframe from "./VideoIframe";
+import Light from "./Light";
+import {
+  ProductDetails,
+  ProdDetailsDictionary,
+} from "../[lang]/Catigories/types";
+import { useScaleAnimation } from "./ProductGrid/useScaleAnimation";
+import ProductImg from "./ProductGrid/ProductImg";
 export default function ProdDetails({
   product,
   lang,
   t,
 }: {
-  product: any;
-  lang: string | "en";
-  t: any;
+  product: ProductDetails;
+  lang: "ar" | "en";
+  t: ProdDetailsDictionary;
 }) {
-  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [step, setStep] = useState(0);
-  //   const filteredItems =
-  //     search !== "" || !search
-  //       ? product.videos.filter((item: any) =>
-  //           item.name.toLowerCase().includes(search.toLowerCase())
-  //         )
-  //       : product.videos;
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (!rowRefs.current.length) return;
-
-      gsap.fromTo(
-        rowRefs.current,
-        {
-          scale: 0.5,
-          duration: 0.8,
-          stagger: {
-            from: "center",
-            each: 0.05,
-          },
-          ease: "back.out(1.2)",
-        },
-        {
-          scale: 1,
-        }
-      );
-    },
-    { scope: containerRef } // Added step to dependencies
-  );
+  const { containerRef, registerRef } = useScaleAnimation();
   return (
     <>
-      <section className="w-full lg:min-w-5xl h-3/4 overflow-auto max-w-7xl rounded-2xl flex flex-wrap gap-20 py-12 px-4 relative bg-[#1c1100]/50  justify-center items-center flex-col">
-        <h1 className="text-2xl sm:text-4xl xl:text-5xl text-white font-bold text-center">
-          {product.product.category.name}{" "}
-          {lang === "en" ? (
-            <ArrowRight className="inline-block text-3xl font-bold" />
-          ) : (
-            <ArrowLeft className="inline-block text-3xl font-bold" />
-          )}{" "}
-          {lang === "en" ? "Products" : "منتجات"}{" "}
-          {lang === "en" ? (
-            <ArrowRight className="inline-block text-3xl font-bold" />
-          ) : (
-            <ArrowLeft className="inline-block text-3xl font-bold" />
-          )}{" "}
-          {product.product.name}{" "}
+      <section
+        ref={containerRef}
+        className="relative flex h-3/4 w-full max-w-7xl min-w-auto flex-col flex-wrap items-center justify-center gap-20 overflow-x-hidden overflow-y-auto rounded-2xl bg-[#1c1100]/50 px-4 py-12"
+      >
+        <h1 className="text-center text-2xl font-bold text-white sm:text-4xl xl:text-5xl">
+          {`${product.category?.name} ${lang === "en" ? "→" : "←"} ${t.ProdsWrapper.title} ${lang === "en" ? "→" : "←"} ${product.name}`}
         </h1>
-        <div className="flex gap-12 flex-wrap justify-center items-center h-full w-full">
-          <div className="flex justify-evenly gap-12 sm:gap-8 items-center w-full h-1/2 flex-wrap sm:flex-nowrap">
-            <div className="w-[300px] h-[300px] sm:w-[350px] sm:h-[300px] flex justify-center items-center relative rounded-2xl flex-col gap-4 transition-all duration-300  scale-[1.2] sm:scale-[1.3]">
-              <div
-                className="absolute w-full h-full before:absolute before:content-[''] before:w-1/2 before:h-full before:bg-[#ffffffa6] before:top-0 before:blur-3xl before:left-[22%] before:opacity-70
-             after:absolute after:content-[''] after:w-1/3 after:h-1/2 after:bg-[#ffffff66] after:bottom-[-10px] after:blur-2xl after:right-[15%] after:opacity-50 z-[0] "
-              ></div>
+        <div className="flex h-full w-full flex-wrap items-center justify-center gap-12">
+          <div className="flex h-1/2 w-full flex-wrap items-center justify-evenly gap-12 sm:flex-nowrap sm:gap-8">
+            <div className="relative flex h-[300px] w-[300px] scale-[1.2] flex-col items-center justify-center gap-4 rounded-2xl transition-all duration-300 sm:h-[300px] sm:w-[350px] sm:scale-[1.3]">
+              <Light />
 
-              <Image
-                src={`${product.product.img}`}
-                alt="product image"
-                className="w-[80%] h-[250px] object-contain z-[1]  transition-all duration-75 hover:scale-[1.2]"
-                width={200}
-                height={200}
-              />
-              <Image
-                src={`${product.product.flavor.primaryImg}`}
-                alt="flavor image"
-                className=" absolute z-[0] w-[150px] h-[200px] object-contain top-[12%] left-[6%] sm:left-[11%]"
-                width={200}
-                height={200}
-              />
+              <ProductImg
+                img={product.img}
+                flavorImg={product.flavor.primaryImg}
+              ></ProductImg>
             </div>
-            <div className="flex text-white flex-col gap-6 items-center justify-center sm:w-1/2 max-w-[400px] w-full h-1/2">
-              <h2 className="text-xl sm:text-3xl xl:text-4xl font-bold ">
-                {lang === "en" ? "Product : " : "المنتج : "}
-                {product.product.name}
+            <div className="flex h-1/2 w-full max-w-[400px] flex-col items-center justify-center gap-6 text-white sm:w-1/2">
+              <h2 className="text-center text-xl font-bold sm:text-3xl xl:text-4xl">
+                {t.ProdsWrapper.product} : {product.name}
               </h2>
-              <h3 className="text-xl sm:text-3xl xl:text-4xl font-semibold ">
-                {lang === "en" ? "Flavor : " : "النكهة : "}
-                {product.product.flavor.name}
+              <h3
+                className={`text-center text-xl font-semibold sm:text-3xl xl:text-4xl text-[${product.p_color}]`}
+              >
+                {t.ProdsWrapper.flavor} : {product.flavor.name}
               </h3>
 
               <p
                 dangerouslySetInnerHTML={{
-                  __html: product.product.detailes.replace(/\n/g, "<br />"),
+                  __html: (product.detailes ? product.detailes : "").replace(
+                    /\n/g,
+                    "<br />",
+                  ),
                 }}
-                className=" text-xl text-center sm:text-2xl font-semibold "
+                className="text-center text-xl font-semibold sm:text-2xl"
               ></p>
             </div>
           </div>
-          <div className="w-full h-[500px] text-white sm:h-[600px]">
+          <div className="h-[500px] w-full text-white sm:h-[600px]">
             <VideoIframe
               lang={lang}
               t={t}
-              video={product.product.videos[step]}
+              video={product.videos[step]}
               setStep={setStep}
               step={step}
-              boundry={product.product.videos.length}
+              boundry={product.videos.length}
             />
           </div>
         </div>

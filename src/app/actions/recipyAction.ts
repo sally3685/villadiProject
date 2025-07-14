@@ -1,4 +1,5 @@
 "use server";
+import { redirect } from "next/navigation";
 import {
   AddRecipe,
   deleteRecipe,
@@ -8,22 +9,9 @@ import { RecipeFormSchema, FormRecipeState } from "../lib/definitions";
 
 export async function AddRecipeAction(
   state: FormRecipeState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormRecipeState> {
   try {
-    // Validate required fields
-    const requiredFields = ["name", "details", "selectedF", "code"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = RecipeFormSchema.safeParse({
       name: formData.get("name"),
       details: formData.get("details"),
@@ -39,66 +27,55 @@ export async function AddRecipeAction(
 
     const { name, details, selectedF, code } = result.data;
     const language = (formData.get("language") as string) || "en";
-    // Add recipe to database
     const { status, message } = await AddRecipe(
       name,
       code,
       details,
       selectedF,
-      language
+      language,
     );
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
+    }
     if (status === 404) {
       return {
         errors: {
-          selectedF: [message ? message : "flavor not found"],
+          selectedF: [
+            message ? message : "flavor not found / لم يتم إيجاد النكهة",
+          ],
         },
       };
     }
     if (status === 409) {
       return {
         errors: {
-          name: [message ? message : "Recipy with this code already entered"],
-        },
-      };
-    }
-    if (status === 403) {
-      return {
-        errors: {
-          name: [message ? message : "Un authorized"],
+          name: [
+            message
+              ? message
+              : "Recipy with this code already entered / يوجد بالفعل وصفة بهذا الكود",
+          ],
         },
       };
     }
 
     if (status !== 201) {
-      return { general: message || "Failed to create recipe" };
+      return {
+        general: message || "Failed to create recipe / فشل في إنشاء الوصفة",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddRecipeAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateRecipeAction(
   state: FormRecipeState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormRecipeState> {
   try {
-    // Validate required fields
-    const requiredFields = ["id", "name", "detailes", "language", "selectedF"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = RecipeFormSchema.safeParse({
       name: formData.get("name"),
       details: formData.get("detailes"),
@@ -124,32 +101,40 @@ export async function UpdateRecipeAction(
       lang: language,
       code: recipeData.code,
     });
-
-    if (status === 404) {
-      return { errors: { name: [message ? message : "recipy was not found"] } };
+    if (status === 403) {
+      redirect(`/${language}/unAuthorized`);
     }
+    // if (status === 404) {
+    //   return {
+    //     errors: {
+    //       name: [
+    //         message ? message : "recipy was not found / لم يتم إيجاد الوصفة ",
+    //       ],
+    //     },
+    //   };
+    // }
 
     if (status !== 200) {
-      return { general: message || "Failed to create Recipe" };
+      return {
+        general: message || "Failed to update Recipe / فشل في إنشاء الوصفة",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddRecipeAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function DeleteRecipeAction(
   deleteAll: string,
-  selectedField: any
+  selectedField: any,
 ) {
   try {
-    // Validate required fields
     const { status } = await deleteRecipe(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };

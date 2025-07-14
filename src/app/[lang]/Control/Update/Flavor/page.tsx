@@ -1,37 +1,58 @@
 import { getDictionary } from "@/app/[lang]/dictionaries";
 import { getSession } from "@/app/lib/session";
 import { getAllFlavorsWithoutLang } from "@/app/data-access-layer/flavorDAL";
-import FlavorUpdateForm from "@/app/ui/FlavorUpdateForm";
+import FlavorUpdateForm from "@/app/ui/ControlForms/Flavor/FlavorUpdateForm";
 import ErrorPage from "@/app/[lang]/error";
 import { redirect } from "next/navigation";
+import { controlDictionary } from "@/app/ui/ControlForms/types";
 export default async function Flavor({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const t = await getDictionary(lang);
-  const result = await getSession();
-  const flavor = await getAllFlavorsWithoutLang();
-  if (result.success === false) {
-    return redirect("/signIn");
-  } else if (result.user?.role !== "Admin") {
-    redirect("/unAuthorized");
+  const t = (await getDictionary(lang)) as controlDictionary;
+  const session = await getSession();
+  if (session.status === 404) {
+    return redirect(`${lang}/signIn`);
+  } else if (session.user?.role !== "Admin") {
+    redirect(`/${lang}/unAuthorized`);
   }
-  if (flavor.status === 500) {
-    return <ErrorPage error={new Error("internal server error")}></ErrorPage>;
-  }
+  const resultOfFlavor = await getAllFlavorsWithoutLang();
   return (
     <>
-      {" "}
-      <h1
-        className={`text-black font-bold z-[1] text-2xl lg:text-3xl pt-3 w-[90%] pb-3 ${
-          lang === "en" ? "pl-12" : "pr-12"
-        }`}
-      >
-        {t.addFlavorForm.update}
-      </h1>
-      <FlavorUpdateForm t={t} flavor={flavor.flavors} lang={lang} />
+      {session.status !== 200 ? (
+        <ErrorPage
+          error={
+            new Error(lang === "en" ? session.messageEn : session.messageAr)
+          }
+        />
+      ) : resultOfFlavor.status === 500 ? (
+        <ErrorPage
+          error={
+            new Error(
+              lang === "en"
+                ? resultOfFlavor.messageEn
+                : resultOfFlavor.messageAr,
+            )
+          }
+        />
+      ) : (
+        <>
+          <h1
+            className={`z-[1] w-[90%] pt-3 pb-3 text-2xl font-bold text-black lg:text-3xl ${
+              lang === "en" ? "pl-12" : "pr-12"
+            }`}
+          >
+            {t.updateFlavorForm.title}
+          </h1>
+          <FlavorUpdateForm
+            t={t}
+            flavor={resultOfFlavor.flavors}
+            lang={lang as "en" | "ar"}
+          />
+        </>
+      )}
     </>
   );
 }

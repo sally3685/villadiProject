@@ -9,22 +9,9 @@ import {
 
 export async function AddCommentAction(
   state: FormCommentState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormCommentState> {
   try {
-    // Validate required fields
-    const requiredFields = ["text"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = CommentFormSchema.safeParse({
       text: formData.get("text"),
     });
@@ -38,41 +25,26 @@ export async function AddCommentAction(
     const { text } = result.data;
     const language = formData.get("language")?.toString() || "en";
 
-    // Handle image upload
-
-    // Add product to database
     const { status, message } = await AddComment(text, language);
 
     if (status !== 201) {
-      return { general: message || "Failed to create comment" };
+      return {
+        general: message || "Failed to create comment / فشل في إنشاء التعليق",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCommentAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 export async function UpdateCommentAction(
   state: FormCommentState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormCommentState> {
   try {
-    // Validate required fields
-    const requiredFields = ["text"];
-    for (const field of requiredFields) {
-      if (!formData.get(field)) {
-        return {
-          errors: {
-            [field]: ["This field is required"],
-          },
-        };
-      }
-    }
-
-    // Parse and validate form data
     const result = CommentFormSchema.safeParse({
       text: formData.get("text"),
     });
@@ -84,36 +56,34 @@ export async function UpdateCommentAction(
     }
 
     const { text } = result.data;
-    const language = formData.get("language")?.toString() || "en";
     const userId = formData.get("userId")?.toString()!;
     const id = formData.get("id")?.toString()!;
-    // Handle image upload
 
-    // Add product to database
     const { status, message } = await updateComments(text, userId, id);
 
     if (status !== 200) {
-      return { general: message || "Failed to create comment" };
+      return {
+        general: message || "Failed to update comment / فشل في تعديل التعليق",
+      };
     }
 
-    return { success: true };
+    return { success: true, general: message };
   } catch (error) {
-    console.error("Error in AddCommentAction:", error);
     return {
-      general: "An unexpected error occurred. Please try again later.",
+      general: "Internal server error / خطأ في المخدم الداخلي",
     };
   }
 }
 
 export async function DeleteCommentAction(
   deleteAll: string,
-  selectedField: any
+  selectedField: any,
 ) {
   try {
     // Validate required fields
     const { status } = await deleteComment(
       deleteAll === "on" ? true : false,
-      selectedField
+      selectedField,
     );
     if (status !== 200) {
       return { success: false };
