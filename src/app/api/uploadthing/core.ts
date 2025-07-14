@@ -23,7 +23,7 @@ export const ourFileRouter = {
       }
 
       const auth = await getSession();
-      if (auth.success === false) {
+      if (auth.status !== 200) {
         throw new UploadThingError({
           code: "BAD_REQUEST",
           message: "failed to get user",
