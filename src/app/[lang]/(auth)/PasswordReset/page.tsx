@@ -4,6 +4,7 @@ import React from "react";
 import LogOutButton from "@/app/ui/auth/LogOutButton";
 import { getDictionary } from "../../dictionaries";
 import { ResetPasswordForm } from "@/app/ui/auth/ResetPasswordForm";
+import { authTypes } from "@/app/ui/auth/authTypes";
 export default async function ResetPassword({
   params,
 }: {
@@ -22,7 +23,10 @@ export default async function ResetPassword({
             <LogOutButton t={t}></LogOutButton>
           </>
         ) : (
-          <ResetPasswordForm t={t} lang={lang}></ResetPasswordForm>
+          <ResetPasswordForm
+            t={t as authTypes}
+            lang={lang as "en" | "ar"}
+          ></ResetPasswordForm>
         )}
       </div>
     </main>
