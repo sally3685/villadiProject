@@ -16,7 +16,7 @@ export default async function ProdCode({
 }) {
   const { codeId, lang } = await params;
   const t = (await getDictionary(lang)) as CatsProdsDictionary;
-  const t1 = await getDictionary(lang);
+  const t2 = await getDictionary(lang);
   const catsProds = await getAllCodeCategory(lang, codeId);
   const cats = await getAllCategory(lang);
   if (cats.status === 500) {
@@ -60,7 +60,7 @@ export default async function ProdCode({
               all={t.catigoriesWrapper.view}
               noItems={t.catigoriesWrapper.noCats}
               lang={lang}
-              t={t1 as carouselDictionary}
+              t={t2 as carouselDictionary}
               type="categories"
               linkPrefix={`/${lang}/Catigories`}
               linkText={t.catigoriesWrapper.link}
