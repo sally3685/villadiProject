@@ -5,6 +5,13 @@ import LeftRightMenu from "@/app/ui/LeftRight/LeftRightMenu";
 import { getDictionary } from "../dictionaries";
 import Items from "@/app/ui/Items";
 import { mainPageDictionary } from "./types";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  description:
+    "Discover Viladi's snack categories: Crispy Chips, Flavorful Corn Snacks, Airy Puffs, and Premium Popcorn. Find your perfect halal snack from Syria's leading exporter.",
+  keywords:
+    "Viladi categories, snack types, chips varieties, corn snacks, puff snacks, popcorn range, halal snack categories, Syrian snack types, Villadi product ranges",
+};
 export default async function Catigory({
   params,
 }: {

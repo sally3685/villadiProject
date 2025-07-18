@@ -179,7 +179,6 @@ export const getUserById = cache(async (userId: string) => {
       userData,
     };
   } catch (error) {
-    console.log(error);
     return {
       status: 500, // Internal Server Error
       messageEn: "Failed to retrieve user 😔",

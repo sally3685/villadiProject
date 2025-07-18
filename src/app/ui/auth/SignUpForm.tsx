@@ -72,9 +72,14 @@ export function SignUpForm({ t, lang }: { t: any; lang: string }) {
         <div className="text-sm text-neutral-800">
           <p
             className={
-              validEmail && validPwd && validName
-                ? "hidden"
-                : "mb-2 block text-pink-800"
+              !validEmail &&
+              emailAddress != "" &&
+              !validPwd &&
+              password != "" &&
+              !validName &&
+              username != ""
+                ? "mb-2 block text-pink-800"
+                : "hidden"
             }
           >
             {t.authForm.validateFields}

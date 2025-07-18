@@ -3,10 +3,13 @@ import ErrorPage from "../error";
 import { getDictionary } from "../dictionaries";
 import Items from "@/app/ui/Items";
 import { getAllRecipies } from "@/app/data-access-layer/recipyDAL";
-import { Metadata } from "next";
 import LeftRightMenu from "@/app/ui/LeftRight/LeftRightMenu";
+import { Metadata } from "next";
 export const metadata: Metadata = {
-  description: "Recipies to make the best puffs",
+  description:
+    "Discover delicious recipes using Viladi snacks! From appetizers to main courses, transform our chips and snacks into creative dishes loved across Arab households.",
+  keywords:
+    "Viladi recipes, snack recipes, Arab snack dishes, recipes with chips, Viladi cooking ideas, easy snack meals, Syrian snack recipes, creative snack creations",
 };
 export default async function Catigory({
   params,

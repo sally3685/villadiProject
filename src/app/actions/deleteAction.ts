@@ -17,7 +17,7 @@ export async function DeleteAction(
     const type = (await formData.get("type")) as string;
     const deleteAll = (await formData.get("deleteAll")) as string;
     const selectedFeild = (await formData.get("selectedField")) as any;
-    console.log(selectedFeild);
+
     if (type === "category") {
       const { success } = await DeleteCategoryAction(
         deleteAll,

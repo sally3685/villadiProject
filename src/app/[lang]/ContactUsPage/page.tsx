@@ -10,12 +10,12 @@ export default async function ContactIntercepted({
   const { lang } = await params;
   const t = (await getDictionary(lang)) as contactUsDictionary;
   return (
-    <div className="top-[20%] z-[0] flex h-[90vh] w-[90%] flex-col gap-4 overflow-hidden rounded-2xl bg-[#d9d9d9] p-6 pt-48 text-black">
-      <h1 className="w-full text-center text-xl font-bold sm:text-2xl">
+    <div className="relative top-[20%] z-[0] flex h-[100vh] w-full flex-col items-center justify-center gap-[1.5rem] overflow-hidden rounded-2xl bg-[#d9d9d9] p-[10rem_0_4rem_0] text-black before:absolute before:top-0 before:block before:h-full before:w-full before:bg-white/20 before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-[''] sm:p-[13rem_0_4rem_0]">
+      <h1 className="z-[1] w-full text-center text-xl font-bold sm:text-2xl">
         {t.contactUs.title}
       </h1>
-      <div className="flex h-full w-full items-center justify-center">
-        <div className="flex h-full w-[310px] flex-col items-start justify-center gap-8">
+      <div className="z-[1] flex h-full w-full items-center justify-center">
+        <div className="flex h-full w-[204px] flex-col items-start justify-center gap-8">
           <div className="flex items-center justify-center gap-2">
             <svg
               style={{ width: "25px", height: "25px" }}
@@ -61,8 +61,8 @@ export default async function ContactIntercepted({
             <p className="text-xl font-bold">{t.contactUs.location}</p>
           </div>
           <p className="w-full text-xl font-bold">
-            <Link href={"mailo:villadico28@gmail.com"}>
-              villadico28@gmail.com
+            <Link href={"mailo:Resources@villadifoodindustries.com"}>
+              Resources@villadifoodindustries.com
             </Link>
           </p>
         </div>

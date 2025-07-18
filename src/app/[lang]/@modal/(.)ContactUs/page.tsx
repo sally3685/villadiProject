@@ -11,10 +11,10 @@ export default async function ContactIntercepted({
   const { lang } = await params;
   const t = (await getDictionary(lang)) as contactUsDictionary;
   return (
-    <div className="top-[20%] z-[3] flex h-[70%] w-[80%] flex-col gap-4 overflow-hidden rounded-2xl bg-white p-6 text-black">
+    <div className="top-[20%] z-[3] flex h-[100%] w-[95%] flex-col gap-4 overflow-hidden rounded-2xl bg-white p-4 text-black">
       <CloseBtn lang={lang} title={t.contactUs.title}></CloseBtn>
       <div className="flex h-full w-full items-center justify-center">
-        <div className="flex h-full w-[310px] flex-col items-start justify-center gap-8">
+        <div className="flex h-full w-[204px] flex-col items-start justify-center gap-8">
           <div className="flex items-center justify-center gap-2">
             <svg
               style={{ width: "25px", height: "25px" }}
@@ -60,8 +60,8 @@ export default async function ContactIntercepted({
             <p className="text-xl font-bold">{t.contactUs.location}</p>
           </div>
           <p className="w-full text-xl font-bold">
-            <Link href={"mailto:villadico28@gmail.com"}>
-              villadico28@gmail.com
+            <Link href={"mailto:Resources@villadifoodindustries.com"}>
+              Resources@villadifoodindustries.com
             </Link>
           </p>
         </div>

@@ -21,7 +21,6 @@ export const useSocialUpdate = (
     if (state) {
       window.scroll(0, 0);
       nameRef.current?.focus();
-      console.log(state);
       if (state.success) {
         toast.success(
           getMessage(state.general ? state.general : t.done.success, lang),

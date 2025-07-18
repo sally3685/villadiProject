@@ -373,158 +373,208 @@
     "title": "delete this comment ?"
   },
   "FAQ": {
-    "title": "FAQ",
+    "title": "Frequently Asked Questions (FAQ)",
     "array": [
       {
         "id": 1,
-        "question": "Are your snacks gluten-free?",
-        "answer": "Some of our products are gluten-free! Check the packaging for the \"Gluten-Free\" label or visit our Products Page for details."
+        "question": "Where can I buy Viladi products?",
+        "answer": "Viladi snacks are available at most supermarkets and retail stores across Syria, as well as in several Arab countries including Iraq, Lebanon, Jordan, Saudi Arabia, and Sudan.<br/>We are actively expanding our distribution and offer dedicated support for wholesalers and regional distributors."
       },
       {
         "id": 2,
-        "question": "Where can I buy your snacks?",
-        "answer": "Our snacks are available in supermarkets, convenience stores, and online retailers. Use our Store Locator to find the nearest seller."
+        "question": "Are Viladi products healthy and safe?",
+        "answer": "Yes. At Viladi, we prioritize safety and quality by using premium ingredients and applying strict food safety standards at every stage of production.<br/>We use carefully selected vegetable oils and ensure fat and salt levels remain within healthy limits."
       },
       {
         "id": 3,
-        "question": "Do you use artificial flavors or preservatives?",
-        "answer": "No! We pride ourselves on using natural ingredients and avoid artificial additives. Our snacks are made for real flavor lovers."
+        "question": "Are your products Halal?",
+        "answer": "Absolutely. All Viladi products are made with 100% Halal-certified ingredients and undergo rigorous health and quality inspections."
       },
       {
         "id": 4,
-        "question": "Are your products suitable for vegans?",
-        "answer": "Many of our snacks are vegan-friendly. Look for the \"Vegan\" badge on the packaging or check the ingredients list."
+        "question": "What’s the difference between your snack brands?",
+        "answer": "Each of our sub-brands offers a unique taste experience:<br/> <br/><span style=\"font-weight:600\">Viladi Puff </span>:  -Light, fun snacks for kids and adults with playful flavors.<br/> <br/><span style=\"font-weight:600\">Viladi Corn </span>: -Bold, crunchy roasted corn with savory seasonings.<br/> <br/><span style=\"font-weight:600\">Timali Corn </span> – Edgy, modern corn snacks with intense flavor profiles.<br/> <br/><span style=\"font-weight:600\">TikaPop </span>:  – Lightly flavored popcorn, perfect for movie nights and gatherings."
       },
       {
         "id": 5,
-        "question": "How should I store your snacks for maximum freshness?",
-        "answer": "Keep them in a cool, dry place away from direct sunlight. Once opened, reseal the bag tightly or transfer to an airtight container."
+        "question": "Do you offer direct delivery to consumers?",
+        "answer": "Currently, we do not provide direct sales from our factory to individual consumers.<br/>However, we’re happy to guide you to the nearest authorized retailer or distributor. Just get in touch!"
       },
       {
         "id": 6,
-        "question": "Do you offer bulk/wholesale orders?",
-        "answer": "Yes! Contact our sales team at sales@yourcompany.com for bulk pricing and distribution options."
+        "question": "How can I become a distributor or business partner?",
+        "answer": "We welcome collaboration with local and international distributors and wholesalers.<br/>Please reach out via our Contact Us page or email:<br/>📧 AMMAR_MANSOUR@villadifoodindustries.com"
+      },
+      {
+        "id": 7,
+        "question": "What flavors are available in your products?",
+        "answer": "Our flavor range includes both sweet and savory favorites, such as:<br/>Ketchup, Cheddar Cheese, Pizza, Noodles, Barbecue<br/>Strawberry, Mixed Fruits, Vanilla, Chocolate<br/>Japanese Pepper, Sweet Corn, Parmesan, and more."
+      },
+      {
+        "id": 8,
+        "question": "Are your snacks suitable for children?",
+        "answer": "Yes! Many of our products — especially Viladi Puff and TikaPop — are kid-friendly, suitable for children above 3 years old.<br/>All flavors are designed to be enjoyable and safe. Parental supervision is always recommended for younger kids."
+      },
+      {
+        "id": 9,
+        "question": "Can I follow your updates on social media?",
+        "answer": "Definitely! We're highly active on social media — sharing our latest products, behind-the-scenes content, and special offers.<br/>📱 Instagram: @villadico<br/>📘 Facebook: Villadi Co."
+      },
+      {
+        "id": 10,
+        "question": " Can Viladi products be exported to other countries?",
+        "answer": "Yes. Our products are export-ready and meet the food safety and packaging standards required in Arab markets.<br/>We currently export to Iraq, Lebanon, Jordan, Saudi Arabia, and Sudan, and we are actively expanding into new regions."
+      },
+      {
+        "id": 11,
+        "question": "Do you hold quality certifications or export documents?",
+        "answer": "Yes. We comply with strict food manufacturing regulations and provide full documentation for export, including:<br/><br/>Certificate of Origin<br/><br/>Laboratory Analysis Reports (from certified labs)<br/><br/>Commercial Invoices & Technical Specifications<br/><br/>Compliance Certificates (upon request)"
+      },
+      {
+        "id": 12,
+        "question": "Can I customize packaging or flavors for my market?",
+        "answer": "Yes. We offer customization options for flavors, packaging, and labeling to suit the preferences of different markets or clients.<br/>This includes private packaging designs and multi-language labels.<br/>Note: Minimum order quantities apply for custom production."
+      },
+      {
+        "id": 13,
+        "question": "What partnership models do you offer?",
+        "answer": "We’re open to various forms of B2B collaboration, such as:<br/><br/>Exclusive regional distribution<br/><br/>Sales agency representation<br/><br/>Wholesale importing<br/><br/>Private Label production<br/><br/>Feel free to contact us to discuss opportunities:<br/>📧 Sales@villadifoodindustries.com"
+      },
+      {
+        "id": 14,
+        "question": "What is the minimum order quantity (MOQ) for exports?",
+        "answer": "The MOQ depends on the destination and product type.<br/>Generally, orders start from one 20-ft container or equivalent volume.<br/>We provide customized quotations based on quantity and shipping destination."
+      },
+      {
+        "id": 15,
+        "question": "Can you assist with shipping or delivery to port?",
+        "answer": "Yes. We work with experienced local and international freight companies and can coordinate delivery under various incoterms:<br/><br/>Ex-Works (EXW) – Factory pickup<br/><br/>FOB – Latakia or Tartous port<br/><br/>CIF – Available upon request"
+      },
+      {
+        "id": 16,
+        "question": " How do I request a price quote?",
+        "answer": "Please send an email or use the contact form on our website with the following details:<br/><br/>Company Name<br/><br/>Country of Operation<br/><br/>Product Range of Interest<br/><br/>Estimated Quantities<br/><br/>📧 Purchases@villadifoodindustries.com<br/>📞 (Business WhatsApp will be provided soon)"
       }
     ]
   },
   "terms": {
-    "title": "Terms and Conditions",
-    "lastUpdated": "2023-11-15",
+    "title": "📄 Terms and Conditions ",
+    "lastUpdated": {
+      "date": "2025-7-17",
+      "title": "Last update"
+    },
     "sections": [
       {
-        "id": "introduction",
-        "title": "Introduction",
-        "content": "Welcome to [Company Name]. These Terms and Conditions govern your use of our website, products, and services. By accessing or using our services, you agree to be bound by these terms."
+        "title": "",
+        "content": "Please read these terms carefully before using this website or contacting us regarding our products and services.<br/>By accessing or using this website, you agree to be bound by the following terms:"
       },
       {
-        "id": "definitions",
-        "title": "Definitions",
-        "content": "Key terms used in this agreement:\n- 'Company', 'We', 'Us' refers to [Company Name].\n- 'Products' means our snack foods and related goods.\n- 'Website' means [yourwebsite.com]."
-      },
-      {
-        "id": "purchases",
-        "title": "Purchases and Orders",
-        "content": "All orders are subject to product availability. We reserve the right to limit quantities and refuse service. Prices are subject to change without notice."
-      },
-      {
-        "id": "returns",
-        "title": "Returns and Refunds",
-        "content": "Due to the perishable nature of our products, we generally do not accept returns. Refunds may be issued at our discretion for damaged or defective items."
-      },
-      {
-        "id": "liability",
-        "title": "Limitation of Liability",
-        "content": "[Company Name] shall not be liable for any indirect, incidental, or consequential damages arising from product use. Maximum liability is limited to the purchase price of the product."
-      },
-      {
-        "id": "allergens",
-        "title": "Allergen Information",
-        "content": "Our products may contain allergens including wheat, milk, soy, and nuts. While we follow strict procedures, we cannot guarantee allergen-free production environments."
-      },
-      {
-        "id": "ip",
         "title": "Intellectual Property",
-        "content": "All content on our website including logos, packaging designs, and product names are our exclusive property. Unauthorized use is prohibited."
+        "content": "All content on this website is the intellectual property of Viladi Food Industries, including but not limited to:<br/> <br/>Text content<br/> <br/>Images<br/> <br/>Logos and trademarks<br/> <br/>Packaging designs and product visuals<br/> <br/>You may not reproduce, reuse, or distribute any of these materials without prior written consent from the company."
       },
       {
-        "id": "governing-law",
-        "title": "Governing Law",
-        "content": "These terms shall be governed by the laws of [Country/State]. Any disputes shall be resolved in the courts of [Jurisdiction]."
+        "title": "Product Information",
+        "content": "We make every effort to ensure the accuracy of information regarding our products, flavors, and nutritional content.<br/>However, Viladi reserves the right to modify or update product descriptions or specifications without prior notice."
       },
       {
-        "id": "changes",
-        "title": "Changes to Terms",
-        "content": "We may update these terms periodically. Continued use after changes constitutes acceptance of the modified terms."
+        "title": "Pricing and Availability",
+        "content": "All prices, specifications, and availability — for both local sales and exports — are subject to change at any time without notice.<br/>Product availability may vary depending on region or market conditions."
       },
       {
-        "id": "contact",
+        "title": "Copyright and Distribution Rights",
+        "content": "No Viladi product may be repackaged, distributed, or resold under a different name or brand without formal written agreement.<br/>Commercial use is restricted to authorized partnerships only."
+      },
+      {
+        "title": "Responsible Website Use",
+        "content": "You agree not to use this website for any unlawful purposes or to submit misleading, offensive, or fraudulent information.<br/>Viladi reserves the right to take legal action when necessary to protect its rights."
+      },
+      {
+        "title": "Privacy Policy",
+        "content": "We value your privacy. Any personal information collected through this website (e.g., email addresses, contact forms) will be used exclusively for direct communication or to inform you of relevant product offers.<br/>We do not share your personal data with any third parties."
+      },
+      {
         "title": "Contact Us",
-        "content": "For questions about these terms, contact us at:\nEmail: legal@yourcompany.com\nAddress: [Your Company Address]"
+        "content": "For questions related to these terms or business inquiries, please contact us at:<br/>📧 Resources@villadifoodindustries.com<br/>📧 AMMARMANSOUR@villadifoodindustries.com (for partners and export inquiries)<br/>📞 [Phone number to be added]"
+      },
+      {
+        "title": "Updates to These Terms",
+        "content": "Viladi Food Industries reserves the right to amend or update these terms at any time.<br/>We recommend reviewing this page periodically to stay informed."
       }
-    ],
-    "acceptanceText": "By using our services, you acknowledge that you have read and agree to these Terms and Conditions."
+    ]
   },
   "privacy": {
-    "title": "Privacy Policy",
-    "lastUpdated": "2023-11-15",
+    "title": "🔒 Privacy & Data Policy ",
+    "lastUpdated": {
+      "date": "2025-7-17",
+      "title": "Last update"
+    },
     "sections": [
       {
-        "id": "introduction",
-        "title": "Introduction",
-        "content": "At [Company Name], we are committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our website or purchase our products."
+        "title": "",
+        "content": "At Viladi Food Industries, we are committed to protecting your privacy and handling your personal data responsibly and transparently.<br/>By using our website or communicating with us through any digital channel, you agree to the terms outlined in this Privacy Policy:"
       },
       {
-        "id": "data-collection",
         "title": "Information We Collect",
-        "content": "We may collect:\n- Contact details (name, email, phone)\n- Delivery addresses\n- Payment information\n- Purchase history\n- Website usage data (cookies, IP address)"
+        "content": "When you interact with us or use our website, we may collect the following data:<br/><br/>Full Name<br/><br/>Email Address<br/><br/>Phone Number<br/><br/>Country / City<br/><br/>Message content or inquiries<br/><br/>Browsing data (e.g., IP address, browser type)"
       },
       {
-        "id": "usage",
         "title": "How We Use Your Information",
-        "content": "Your data helps us to:\n- Process orders and deliveries\n- Improve our products\n- Send marketing communications (with consent)\n- Comply with legal requirements"
+        "content": "We use collected data for the following purposes:<br/><br/>To respond to inquiries and support requests<br/><br/>To send offers, product updates, and promotions (with your consent)<br/><br/>To enhance your browsing experience<br/><br/>To improve our services based on user interests<br/><br/>To communicate with distributors and business clients"
       },
       {
-        "id": "cookies",
-        "title": "Cookies and Tracking",
-        "content": "We use cookies to:\n- Remember cart items\n- Analyze website traffic\n- Personalize your experience\nYou can manage cookies in your browser settings."
+        "title": "Data Protection",
+        "content": "We implement appropriate technical and organizational measures to protect your data from:<br/><br/>Unauthorized access<br/><br/>Unlawful modification or deletion <br/><br/>Data breaches or misuse"
       },
       {
-        "id": "sharing",
-        "title": "Data Sharing",
-        "content": "We only share data with:\n- Payment processors\n- Delivery partners\n- Legal authorities when required\nWe never sell your personal information."
+        "title": "Information Sharing",
+        "content": "We do not sell or rent your personal data to third parties.<br/>Some information may be shared with trusted service providers (e.g., hosting companies, analytics tools) under strict confidentiality agreements."
       },
       {
-        "id": "security",
-        "title": "Data Security",
-        "content": "We implement:\n- SSL encryption\n- Secure payment gateways\n- Restricted staff access\n- Regular security audits"
+        "title": "Cookies Policy",
+        "content": "We use cookies to enhance site functionality and monitor user behavior in a non-personalized manner.<br/>You can adjust your browser settings at any time to disable cookies."
       },
       {
-        "id": "retention",
-        "title": "Data Retention",
-        "content": "We retain your information:\n- For active customers: 5 years\n- For order records: 7 years (tax compliance)\n- For marketing lists: Until you unsubscribe"
-      },
-      {
-        "id": "rights",
         "title": "Your Rights",
-        "content": "You have the right to:\n- Access your data\n- Request corrections\n- Delete your account\n- Opt-out of marketing\n- Withdraw consent"
+        "content": "You have the right to:<br/><br/>Request a copy of your personal data<br/><br/>Request correction or deletion of your information<br/><br/>Unsubscribe from marketing communications<br/>To submit a request, contact us at: 📧 Resources@villadifoodindustries.com"
       },
       {
-        "id": "children",
-        "title": "Children's Privacy",
-        "content": "We do not knowingly collect data from children under 13. Parents may contact us to review or delete any accidental collections."
+        "title": "External Links",
+        "content": "Our website may contain links to third-party websites.<br/>Viladi is not responsible for the privacy practices of external sites. Please review their privacy policies independently."
       },
       {
-        "id": "changes",
-        "title": "Policy Updates",
-        "content": "We may update this policy periodically. Significant changes will be notified via email or website notices."
+        "title": "Changes to This Policy",
+        "content": "We reserve the right to update or modify this privacy policy at any time.<br/>Any updates will be published on this page. Continued use of the website implies your acceptance of the updated policy."
       },
       {
-        "id": "contact",
-        "title": "Contact Us",
-        "content": "For privacy concerns:\nEmail: privacy@yourcompany.com\nAddress: [Your Company Address]\nPhone: [Customer Service Number]"
+        "title": "📬 Contact Us",
+        "content": "If you have any questions about how we collect, use, or protect your data, please contact us:<br/><br/>📧 Resources@villadifoodindustries.com<br/>📧 AMMARMANSOUR@villadifoodindustries.com"
       }
-    ],
-    "acceptanceText": "By using our services, you acknowledge our privacy practices as described in this policy."
+    ]
+  },
+  "foodservice": {
+    "title": "🍽 Food Service Solutions",
+    "sections": [
+      {
+        "title": "",
+        "content": "Bulk snacks with quality that fits your business.br/>At Viladi Food Industries, we don't just serve end consumers — we offer tailored foodservice solutions for the hospitality, retail, and distribution sectors across Syria and the wider region.<br/><br/>Our services are designed for hotels, restaurants, cafes, cinemas, schools, corporate institutions, and wholesale distributors."
+      },
+      {
+        "title": "✅ What We Offer for the Food Service Sector",
+        "content": "🟢 Bulk packaging in customized weights and sizes (available upon request)<br/><br/>🟢 Wide range of flavors to suit every consumption environment — from classic to spicy<br/><br/>🟢 Private Label options for customized branding and packaging<br/><br/>🟢 High-quality products, locally manufactured with competitive pricing<br/><br/>🟢 Reliable logistics for both domestic and international markets"
+      },
+      {
+        "title": "🎯 Who We Serve",
+        "content": "Food supply and catering companies<br/><br/>Snack shops and mini-markets<br/><br/>Wholesale distributors<br/><br/>Hotels and resorts<br/><br/>Cafes and cinema concessions<br/><br/>Schools and summer camps<br/><br/>Export markets and trade partners"
+      },
+      {
+        "title": "💼 Have Your Own Brand? We’ll Make It for You!",
+        "content": "With our Private Label Manufacturing service, you can choose the product and flavor, and we’ll handle the rest — from production to packaging under your own brand.<br/>We also offer custom design and labeling based on your target market requirements."
+      },
+      {
+        "title": "🚚 Smooth & Scalable Logistics",
+        "content": "We support our partners with:<br/><br/>Local delivery across Syria<br/><br/>International shipping (FOB / CIF as required)<br/><br/>Complete export documentation: (Certificate of Origin , Lab Analysis Reports ,Commercial Invoices and Technical Sheets)<br/><br/>📩 Request a Quote Today <br/>For corporate partnerships and foodservice distribution inquiries:<br/>Production@villadifoodindustries.com"
+      }
+    ]
   },
   "vote": {
     "title": "votes",
@@ -583,5 +633,105 @@
     "instruction": " Please use the following code to set a new password:",
     "expire": "This code will expire in 1 hour.",
     "ignore": "If you didn't request this code, please ignore this email"
+  },
+  "aboutUs": {
+    "whoAreWe": {
+      "title": "Who are we",
+      "description": "Syrian Flavor from the Heart<br/><br/>Viladi Food Industries is a leading Syrian company in the snack and food manufacturing sector. Established in 1987 in Aleppo under the name Al-Widad, the company evolved into Viladi, becoming a trusted brand known for excellence, quality, and innovation in the world of snacks.<br/>For over three decades, Viladi has successfully blended authentic local identity with a modern vision, offering products that appeal to a wide range of tastes both in Syria and abroad."
+    },
+    "history": {
+      "title": "Our Story",
+      "description": "Viladi began its journey in 1987 in the historic city of Aleppo. Driven by passion and a commitment to quality, the company witnessed steady growth year after year.<br/>Today, our factory is located in Sheikh Najjar Industrial City – Aleppo, with an annual production capacity of around 2,000 tons, covering a wide variety of snacks, crunchy treats, and sweets.<br/>This growth reflects our ongoing commitment to expanding production and strengthening our presence across local and regional markets."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "At Viladi, we aim to become a regional benchmark in crafting high-quality snacks with bold and innovative flavors.<br/>We believe that building long-term relationships with our consumers starts with trust, and is earned through originality, flavor, and attention to detail."
+    },
+    "quality": {
+      "title": "Quality You Can Taste",
+      "description": "We use only premium ingredients — from natural corn kernels to healthy vegetable oils and certified flavorings.<br/>Our manufacturing process follows strict quality control standards at every stage of production and packaging, supported by modern technologies that ensure cleanliness, safety, and consistency in every bite."
+    },
+    "brandTitle": {
+      "title": "Our Brands"
+    },
+    "brand": {
+      "villadipuff": {
+        "title": " Viladi Puff",
+        "subtitle": "Light, fun snacks with flavors like:",
+        "products": [
+          "Ketchup",
+          "Cheddar Cheese",
+          "Pizza",
+          "Barbecue",
+          "Mixed Fruits",
+          "Chocolate",
+          "Vanilla"
+        ]
+      },
+      "villadicorn": {
+        "title": "Viladi Corn ",
+        "subtitle": "Roasted corn with a bold crunch and creative seasonings:",
+        "products": [
+          "Sweet Corn",
+          "Noodles",
+          "Ketchup",
+          "Cheese",
+          "Japanese Pepper",
+          "Pizza"
+        ]
+      },
+      "temalicorn": {
+        "title": "Timali Corn",
+        "subtitle": " Trendy-style corn snacks:",
+        "products": [
+          "Melted Cheese",
+          "Parmesan",
+          "Noodles",
+          "Pizza",
+          "Barbecue",
+          "Sweet Corn"
+        ]
+      },
+      "tikapop": {
+        "title": "TikaPop",
+        "subtitle": "Ready-to-eat popcorn perfect for movie nights:",
+        "products": [
+          "Butter",
+          "Cheese",
+          "Caramel (available in selected markets)"
+        ]
+      }
+    },
+    "innovation": {
+      "title": "Flavor Innovation",
+      "description": "Our R&D team at Viladi is constantly creating new and exciting flavor experiences — from the classics like Cheddar and Ketchup to bold ideas like Noodles, Parmesan, or even Fruit flavors!<br/>This wide variety reflects our philosophy: Every mood deserves its own crunch."
+    },
+    "digital": {
+      "title": "Digital Presence & Community Engagement",
+      "description": "We know how important it is to stay close to our audience, especially the younger generation.<br/>That’s why we’re active on Instagram and Facebook — sharing new products, behind-the-scenes content, fun challenges, and youth-oriented campaigns like:",
+      "tags": ["#YourFlavorSpeaks", "#YourSnackYourMood", "#CrunchChallenge"]
+    },
+    "followUs": {
+      "title": "Follow us:",
+      "insta": "@villadico",
+      "face": "Villadi Co"
+    },
+    "export": {
+      "title": " Export & Regional Reach",
+      "description": "Viladi products are now enjoyed not only in Syria but also in countries like:",
+      "cities": ["Iraq", "Lebanon", "Jordan", "Saudi Arabia", "Sudan"],
+      "description2": "We're always exploring new markets to bring the Syrian taste to every Arab home."
+    },
+    "finish": {
+      "title": " In Conclusion",
+      "descritption": "At Viladi Food Industries, we’re more than a snack company — we’re part of people’s daily flavor experience.<br/>We grow with our audience, we listen to them, and we innovate for them.<br/><span style=\"background:#ffd166; margin:5px; padding:4px; border-radius:5px\">Because you deserve the best, we’ll keep crunching and creating... from Aleppo to the world.</span>"
+    }
+  },
+  "footer": {
+    "contactus": "Contact us",
+    "faq": "FAQ",
+    "terms": "Terms & conditions",
+    "privacy": "Privacy & Policy",
+    "food": "Food service"
   }
 }

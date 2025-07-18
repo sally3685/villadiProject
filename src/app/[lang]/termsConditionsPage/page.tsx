@@ -1,7 +1,7 @@
 import React from "react";
 import { getDictionary } from "../dictionaries";
 import CloseBtn from "@/app/ui/CloseBtn";
-export default async function Faq({
+export default async function TermsPage({
   params,
 }: {
   params: Promise<{ lang: string }>;
@@ -9,27 +9,36 @@ export default async function Faq({
   const { lang } = await params;
   const t = await getDictionary(lang);
   return (
-    <div className="w-full h-[80vh] relative pt-[20vh] bg-[#d9d9d9] text-black top-[20%] p-6 rounded-2xl flex flex-col justify-center gap-4 overflow-hidden z-[0] before:absolute before:content-[''] before:w-full before:h-full before:bg-white/20 before:top-0 before:block before:mask-[url(/pattern2.svg)] before:mask-center before:mask-cover">
-      <h1 className="z-[0] text-xl sm:text-2xl font-bold w-full text-center">
+    <div className="relative top-[20%] z-[0] flex h-[100vh] w-full flex-col items-center justify-center gap-[1.5rem] overflow-hidden rounded-2xl bg-[#d9d9d9] p-[10rem_0_4rem_0] text-black before:absolute before:top-0 before:block before:h-full before:w-full before:bg-white/20 before:mask-[url(/pattern2.svg)] before:mask-cover before:mask-center before:content-[''] sm:p-[13rem_0_4rem_0]">
+      <h1 className="z-[0] w-full text-center text-xl font-bold sm:text-2xl">
         {t.terms.title}
       </h1>
-      <p className="z-[0] text-sm text-gray-500 mb-8">
-        {lang === "en" ? "Last updated: " : "اخر تحديث"} {t.terms.lastUpdated}
-      </p>
-      <ul className="z-[0] flex flex-col gap-6 w-full h-full overflow-y-auto pr-2">
-        {t.terms.sections.map((section: any, index: any) => (
-          <li
-            key={index}
-            className="border-b border-gray-200 pb-4 last:border-0"
-          >
-            <h2 className="text-xl font-semibold mb-2">{section.title}</h2>
-            <p className="whitespace-pre-line">{section.content}</p>
-          </li>
-        ))}
-      </ul>{" "}
-      <p className="z-[0] mt-8 p-4 bg-gray-50 rounded-lg">
-        {t.terms.acceptanceText}
-      </p>
+      <h2 className="z-[0] mt-2 text-sm font-bold text-[#595e66]">
+        {t.terms.lastUpdated.date} : {t.terms.lastUpdated.title}
+      </h2>
+      <div className="z-[0] flex h-full w-full max-w-7xl items-center justify-center">
+        <div className="flex h-full w-3/4 flex-col items-start justify-center gap-8">
+          <ul className="z-[0] flex h-full w-full flex-col gap-6 overflow-y-auto pr-2">
+            {t.terms.sections.map((section: any, index: any) => (
+              <li
+                key={index}
+                className="border-b border-gray-200 pb-4 text-center last:border-0"
+              >
+                <h2 className="mb-2 text-xl font-semibold">{section.title}</h2>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: (section.content ? section.content : "").replace(
+                      /\n/g,
+                      "<br />",
+                    ),
+                  }}
+                  className="mt-2 text-center whitespace-pre-line text-black"
+                ></p>
+              </li>
+            ))}
+          </ul>{" "}
+        </div>
+      </div>
     </div>
   );
 }

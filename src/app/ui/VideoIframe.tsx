@@ -1,5 +1,10 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  IframeHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -36,7 +41,7 @@ export default function VideoIframe({
   const box2Ref = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-
+  const nameRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -105,7 +110,9 @@ export default function VideoIframe({
       }, 3000);
     }
   };
-
+  useEffect(() => {
+    setShowVideo(false);
+  }, [video]);
   const handlePrev = () => {
     if (step > 0) {
       setIsPaused(true);
@@ -121,7 +128,6 @@ export default function VideoIframe({
       }, 3000);
     }
   };
-
   useEffect(() => {
     const mainElement = document.getElementById("section2");
 
@@ -139,12 +145,14 @@ export default function VideoIframe({
 
   useGSAP(
     () => {
-      const main = document.getElementById("#main") as HTMLElement;
+      const main = document.getElementById("main") as HTMLElement;
+
       if (
         !imgRef.current ||
         !containerRef.current ||
         !boxRef.current ||
-        !box2Ref.current
+        !box2Ref.current ||
+        !nameRef.current
       ) {
         return;
       }
@@ -159,6 +167,7 @@ export default function VideoIframe({
           end: "bottom center",
         },
       });
+
       if (main)
         tlRef.current.to(main, {
           backgroundColor:
@@ -169,7 +178,11 @@ export default function VideoIframe({
             video && video.product ? video.product.p_color : "#ffffff",
         });
       tlRef.current
-
+        // .to(nameRef, {
+        //   color: getContrastColor(
+        //    video && video.product.color ? video.product.color : black,
+        //   ),
+        // })
         .fromTo(
           containerRef.current,
           {
@@ -197,13 +210,18 @@ export default function VideoIframe({
     { scope: containerRef, dependencies: [step] },
   );
 
+  useEffect(() => {
+    setIsPaused(showVideo);
+  }, [showVideo]);
+
   return (
     <div
       ref={containerRef}
       className={`relative flex aspect-video h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg`}
     >
       <h1
-        className={`mb-12 text-2xl font-bold sm:text-4xl xl:text-5xl text-${video && video.product ? getContrastColor(video.product.p_color) : "white"}`}
+        ref={nameRef}
+        className={`mb-12 text-2xl font-bold sm:text-4xl xl:text-5xl text-${video && video.product ? getContrastColor(video.product.color) : "white"}`}
       >
         {t.videoWrapper.name}
       </h1>
@@ -243,9 +261,6 @@ export default function VideoIframe({
             <iframe
               width="560"
               height="315"
-              onClick={() => {
-                setShowVideo(!showVideo);
-              }}
               className="h-[315px] w-[90%] max-w-[700px]! rounded-3xl sm:h-[450px]!"
               src={`${video.embededLink}`}
               title="YouTube video player"

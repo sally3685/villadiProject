@@ -7,15 +7,12 @@ const locales = ["en", "ar"];
 const defaultLocale = "en";
 const cookieName = "i18nlang";
 
-// Helper to get locale from request
 function getLocale(request: NextRequest): string {
-  // First check cookie
   const cookieLang = request.cookies.get(cookieName)?.value;
   if (cookieLang && locales.includes(cookieLang)) {
     return cookieLang;
   }
 
-  // Then check Accept-Language header
   const acceptLang = request.headers.get("Accept-Language");
   if (acceptLang) {
     const headers = { "accept-language": acceptLang };
@@ -32,7 +29,6 @@ const specialRoutes = ["FAQ", "ContactUs", "PrivacyPolicy", "TermsConditions"];
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
-  // Skip middleware for static files and special paths
   if (
     path.startsWith("/_next") ||
     path.startsWith("/api/uploadthing") ||
@@ -41,7 +37,6 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Handle special route redirects
   for (const route of specialRoutes) {
     const normalizedPath = path.endsWith("/") ? path : `${path}/`;
     const referer = req.headers.get("referer");
@@ -59,7 +54,6 @@ export default async function middleware(req: NextRequest) {
     }
   }
 
-  // Authentication checks
   const isProtectedRoute = path.includes("/Control");
   const needsSignIn =
     path.includes("/SuggestAFlavor") || path.includes("/Opinion");
@@ -80,24 +74,18 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/signIn", req.nextUrl));
   }
 
-  // Update session
   await updateSession(req);
 
-  // Extract current locale from path
   const currentLocale = locales.find(
     (locale) => path.startsWith(`/${locale}/`) || path === `/${locale}`,
   );
 
-  // Create response object
   let response: NextResponse;
   if (currentLocale) {
-    // Path already has locale - use existing response
     response = NextResponse.next();
 
-    // Update language cookie if needed
     const cookieLang = req.cookies.get(cookieName)?.value;
     if (cookieLang !== currentLocale) {
-      // console.log(cookieLang, currentLocale, "Dfsdff");
       response.cookies.set(cookieName, currentLocale, {
         path: "/",
         httpOnly: true,
@@ -106,12 +94,10 @@ export default async function middleware(req: NextRequest) {
       });
     }
   } else {
-    // Add locale to path
     const locale = getLocale(req);
     req.nextUrl.pathname = `/${locale}${path}`;
     response = NextResponse.redirect(req.nextUrl);
 
-    // Set language cookie
     response.cookies.set(cookieName, locale, {
       path: "/",
       httpOnly: true,

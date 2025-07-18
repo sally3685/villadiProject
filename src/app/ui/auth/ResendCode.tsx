@@ -89,7 +89,13 @@ export function ResendCode({
             : t.resendCodeForm.password}
         </h1>
         <div className="text-sm text-neutral-800">
-          <p className={validEmail ? "hidden" : "mb-2 block text-pink-800"}>
+          <p
+            className={
+              !validEmail && emailAddress !== ""
+                ? "mb-2 block text-pink-800"
+                : "hidden"
+            }
+          >
             {t.authForm.validateFields}
           </p>
 

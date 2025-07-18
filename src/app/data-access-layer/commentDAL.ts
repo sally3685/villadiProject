@@ -201,7 +201,6 @@ export const deleteComment = async (
           status: 404,
         };
       }
-      console.log(existingcomment);
       item = await prisma.$transaction([
         prisma.voteOnComment.deleteMany({
           where: {
@@ -212,7 +211,6 @@ export const deleteComment = async (
           where: { id: comment.id },
         }),
       ]);
-      console.log(item);
       if (!item) {
         return {
           status: 500,

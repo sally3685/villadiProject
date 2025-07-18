@@ -10,18 +10,20 @@ export default function CloseBtn({
   title: any;
 }) {
   const pathname = usePathname();
-  const parentPath = pathname?.replace(/\/FAQ$/, "") || `/${lang}`;
   const router = useRouter();
   return (
-    <div className="flex justify-between items-center p-6 border-b">
-      <h1 className="text-xl sm:text-2xl font-bold w-full text-center">
-        {title}
-      </h1>
+    <div className="flex items-center justify-between border-b p-6">
+      <h1
+        dangerouslySetInnerHTML={{
+          __html: title,
+        }}
+        className="w-full text-center text-xl font-bold sm:text-2xl"
+      ></h1>
       <button
         onClick={() => {
           router.back();
         }}
-        className="text-2xl hover:text-gray-500 cursor-pointer"
+        className="cursor-pointer text-2xl hover:text-gray-500"
         aria-label="Close FAQ"
       >
         &times;

@@ -2,6 +2,13 @@ import { getDictionary } from "@/app/[lang]/dictionaries";
 import { getProdsWithFlavs } from "@/app/data-access-layer/productDAL";
 import ErrorPage from "@/app/[lang]/error";
 import { ProductsGrid } from "@/app/ui/ProductGrid/ProductGrid";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  description:
+    "Explore all Viladi products: Viladi Puff, Viladi Corn, Timali Corn, and TikaPop — a flavorful variety that suits every taste.",
+  keywords:
+    "Viladi chips, Viladi corn, Viladi puff, Timali corn, TikaPop, popcorn, snack flavors, halal snacks, Syrian flavors",
+};
 export default async function Product({
   params,
 }: {

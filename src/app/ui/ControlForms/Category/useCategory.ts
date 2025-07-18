@@ -21,7 +21,6 @@ export default function useCategory(
     if (state) {
       nameRef.current?.focus();
       if (state.success) {
-        console.log(state, "Ssss");
         toast.success(
           getMessage(state.general ? state.general : t.done.success, lang),
           {

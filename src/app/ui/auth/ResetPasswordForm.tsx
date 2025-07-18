@@ -71,7 +71,13 @@ export function ResetPasswordForm({
           )}
         </p>
         <div className="text-sm text-neutral-800">
-          <p className={validPwd ? "hidden" : "mb-2 block text-blue-800"}>
+          <p
+            className={
+              !validPwd && password !== ""
+                ? "mb-2 block text-blue-800"
+                : "hidden"
+            }
+          >
             {t.authForm.validateFields}
           </p>
         </div>
